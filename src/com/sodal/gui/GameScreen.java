@@ -1,5 +1,6 @@
 package com.sodal.gui;
 
+import com.sodal.entity.Enemy;
 import com.sodal.entity.Player;
 import com.sodal.handler.KeyHandler;
 
@@ -15,9 +16,14 @@ public class GameScreen extends JPanel implements Runnable {
 
     private Player player = new Player(300,500, "./res/player/standardSpaceShip.png", keyHandler);
 
+    private Enemy enemy = new Enemy(0,0, "./res/alien/alien3.png");
+
+
+    private static final int WIDTH = 500, HEIGHT = 700;
+
     public GameScreen() {
 
-        this.setPreferredSize(new Dimension(500, 700));
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(keyHandler);
@@ -62,6 +68,8 @@ public class GameScreen extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        enemy.update();
+
     }
 
 
@@ -73,8 +81,12 @@ public class GameScreen extends JPanel implements Runnable {
         //////////////////////
 
 
-
+        g.setColor(Color.CYAN);
+        g.fillRect(0,0,9,9);
+        g.fillRect(WIDTH -9,0,9,9);
         player.render(g2);
+        enemy.render(g2);
+
 
 
 
@@ -83,8 +95,13 @@ public class GameScreen extends JPanel implements Runnable {
         g2.dispose();
 
 
+    }
 
 
+    public static int getGameWidth() {
+
+        return WIDTH;
 
     }
+
 }
