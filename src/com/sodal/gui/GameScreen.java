@@ -1,0 +1,90 @@
+package com.sodal.gui;
+
+import com.sodal.entity.Player;
+import com.sodal.handler.KeyHandler;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class GameScreen extends JPanel implements Runnable {
+
+    private boolean isRunning;
+    private int FPS = 60;
+    private Thread gameLoop;
+    private KeyHandler keyHandler = new KeyHandler();
+
+    private Player player = new Player(300,500, "./res/player/standardSpaceShip.png", keyHandler);
+
+    public GameScreen() {
+
+        this.setPreferredSize(new Dimension(500, 700));
+        this.setDoubleBuffered(true);
+        this.setFocusable(true);
+        this.addKeyListener(keyHandler);
+
+
+        gameLoop = new Thread(this);
+        gameLoop.start();
+    }
+
+    //game loop.
+    @Override
+    public void run() {
+        isRunning = true;
+        double drawInterval = 1000_000_000.0 / FPS; // 0.01666 seconds.
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+
+        //display fps variables.
+        long timer = 0;
+        int drawCount = 0;
+
+        while (isRunning) {
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / drawInterval;
+            timer += (currentTime - lastTime);
+            lastTime = currentTime;
+            if (delta >= 1) {
+                update();
+                repaint();
+                delta--;
+                drawCount++;
+            }
+            //displays FPS.
+            if (timer >= 1_000_000_000) {
+                System.out.println("FPS: " + drawCount);
+                drawCount = 0;
+                timer = 0;
+            }
+        }
+    }
+
+    public void update() {
+        player.update();
+    }
+
+
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+
+        //painting.
+        //////////////////////
+
+
+
+        player.render(g2);
+
+
+
+
+        //////////////////////
+        g2.dispose();
+
+
+
+
+
+    }
+}
