@@ -6,23 +6,26 @@ import java.awt.*;
 
 public class Player extends Entity {
 
+    private int xSpeed;
+
     private KeyHandler handler;
 
     public Player(int x, int y, String imagePath, KeyHandler handler) {
         super(x, y, imagePath);
         this.handler = handler;
-        this.setXSpeed(5);
+        this.xSpeed = 5;
     }
+
 
 
     @Override
     public void update() {
 
         if (handler.isLeft()) {
-            this.setX(this.getX() - this.getXSpeed());
+            this.setX(this.getX() - this.xSpeed);
         }
         if (handler.isRight()) {
-            this.setX(this.getX() + this.getXSpeed());
+            this.setX(this.getX() + this.xSpeed);
         }
 
     }

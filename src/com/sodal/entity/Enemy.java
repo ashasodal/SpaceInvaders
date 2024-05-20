@@ -3,11 +3,17 @@ package com.sodal.entity;
 import com.sodal.gui.GameScreen;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Enemy extends Entity {
+
+    private static int xSpeed;
+    private static List<Enemy> enemyList = new ArrayList<>();
+
     public Enemy(int x, int y, String imagePath) {
         super(x, y, imagePath);
-        this.setXSpeed(1);
+       xSpeed = 1;
     }
 
 
@@ -16,20 +22,34 @@ public class Enemy extends Entity {
      * because we scaled the image by 3, that means we now have SCALE*SCALE transparent px.
      * to the left and right of images.
      */
+
     @Override
     public void update() {
         if (this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
-            this.setXSpeed(-1 * this.getXSpeed());
+           xSpeed = -1 * xSpeed;
         }
-        if (this.getX() == ( -1* this.getSCALE() * this.getSCALE()) && this.getXSpeed() < 0) {
-            this.setXSpeed(-1 * this.getXSpeed());
+        if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
+            xSpeed = -1 * xSpeed;
         }
 
-        this.setX(this.getX() + this.getXSpeed());
+        System.out.println("enemy xPos: " + this.getX());
+        this.setX(this.getX() + xSpeed);
     }
 
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
     }
+
+
+
+    public static java.util.List<Enemy> getEnemyList() {
+        return enemyList;
+    }
+
+    public static int getXSpeed() {
+        return xSpeed;
+    }
+
+
 }

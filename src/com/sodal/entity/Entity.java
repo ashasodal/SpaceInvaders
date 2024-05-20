@@ -9,9 +9,10 @@ import java.io.IOException;
 public abstract class Entity {
 
     private int x, y;
-    private final int SCALE = 3;
+    private static final int SCALE = 3;
+    private static int originalTileSize = 16;
 
-    private int xSpeed;
+
 
     private BufferedImage bufferedImage;
 
@@ -40,21 +41,16 @@ public abstract class Entity {
     }
 
 
-    public abstract void update();
+
     public abstract void render(Graphics2D g2);
+    public abstract void update();
 
 
     public BufferedImage getBufferedImage() {
         return bufferedImage;
     }
 
-    public void setXSpeed(int xSpeed) {
-        this.xSpeed = xSpeed;
-    }
 
-    public int getXSpeed() {
-        return xSpeed;
-    }
 
     public int getY() {
         return y;
@@ -76,6 +72,11 @@ public abstract class Entity {
 
     public int getSCALE() {
         return SCALE;
+    }
+
+
+    public  static  int getTileSize() {
+        return  SCALE * originalTileSize;
     }
 
 }

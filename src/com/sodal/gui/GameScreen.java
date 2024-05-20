@@ -1,6 +1,7 @@
 package com.sodal.gui;
 
 import com.sodal.entity.Enemy;
+import com.sodal.entity.Entity;
 import com.sodal.entity.Player;
 import com.sodal.handler.KeyHandler;
 
@@ -14,9 +15,11 @@ public class GameScreen extends JPanel implements Runnable {
     private Thread gameLoop;
     private KeyHandler keyHandler = new KeyHandler();
 
-    private Player player = new Player(300,500, "./res/player/standardSpaceShip.png", keyHandler);
+    private Player player = new Player(300, 500, "./res/player/standardSpaceShip.png", keyHandler);
 
-    private Enemy enemy = new Enemy(0,0, "./res/alien/alien3.png");
+    //   private Enemy enemy = new Enemy(0,0, "./res/alien/alien3.png");
+
+    //  private Enemy enemy1 = new Enemy(enemy.getWidth(),0, "./res/alien/alien3.png");
 
 
     private static final int WIDTH = 500, HEIGHT = 700;
@@ -27,6 +30,10 @@ public class GameScreen extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(keyHandler);
+
+        Enemy.getEnemyList().add(new Enemy(0, 0, "./res/alien/alien3.png"));
+        Enemy.getEnemyList().add(new Enemy(Entity.getTileSize(), 0, "./res/alien/alien3.png"));
+        System.out.println(Entity.getTileSize());
 
 
         gameLoop = new Thread(this);
@@ -68,8 +75,25 @@ public class GameScreen extends JPanel implements Runnable {
 
     public void update() {
         player.update();
-        enemy.update();
+        enemiesUpdate();
+    }
 
+
+
+    /*
+     * if the speed is positive, the enemy to right must move first.
+     * If negative speed, enemy to left must move first.
+     */
+    private void enemiesUpdate() {
+        if (Enemy.getXSpeed() > 0) {
+            for (int i = Enemy.getEnemyList().size() - 1; i >= 0; i--) {
+                Enemy.getEnemyList().get(i).update();
+            }
+        } else {
+            for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
+                Enemy.getEnemyList().get(i).update();
+            }
+        }
     }
 
 
@@ -82,13 +106,13 @@ public class GameScreen extends JPanel implements Runnable {
 
 
         g.setColor(Color.CYAN);
-        g.fillRect(0,0,9,9);
-        g.fillRect(WIDTH -9,0,9,9);
+        g.fillRect(0, 0, 9, 9);
+        g.fillRect(WIDTH - 9, 0, 9, 9);
         player.render(g2);
-        enemy.render(g2);
 
-
-
+        for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
+            Enemy.getEnemyList().get(i).render(g2);
+        }
 
 
         //////////////////////
