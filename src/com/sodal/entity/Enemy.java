@@ -9,6 +9,7 @@ import java.util.List;
 public class Enemy extends Entity {
 
     private static int xSpeed;
+    private static int ySpeed;
     private static List<Enemy> enemyList = new ArrayList<>();
 
     public Enemy(int x, int y, String imagePath) {
@@ -27,13 +28,17 @@ public class Enemy extends Entity {
     public void update() {
         if (this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
            xSpeed = -1 * xSpeed;
+           ySpeed += 20;
         }
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
+            ySpeed += 20;
         }
 
         System.out.println("enemy xPos: " + this.getX());
         this.setX(this.getX() + xSpeed);
+        this.setY(ySpeed);
+
     }
 
     @Override

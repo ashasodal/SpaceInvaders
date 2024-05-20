@@ -34,4 +34,8 @@ public class Player extends Entity {
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
     }
+
+
+
+
 }

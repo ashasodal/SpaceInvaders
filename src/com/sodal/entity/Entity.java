@@ -46,6 +46,8 @@ public abstract class Entity {
     public abstract void update();
 
 
+
+
     public BufferedImage getBufferedImage() {
         return bufferedImage;
     }
@@ -77,6 +79,11 @@ public abstract class Entity {
 
     public  static  int getTileSize() {
         return  SCALE * originalTileSize;
+    }
+
+
+    public void setY(int y) {
+        this.y = y;
     }
 
 }
