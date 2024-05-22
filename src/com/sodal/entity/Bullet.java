@@ -6,8 +6,11 @@ public class Bullet extends Entity {
 
     private int speed;
 
+    private Rectangle bulletRect;
+
     public Bullet(String imagePath, int scale) {
         super(imagePath, scale);
+
     }
 
     @Override
@@ -19,10 +22,23 @@ public class Bullet extends Entity {
     public void update() {
 
         setLocation(getX(), getY() - speed);
-        speed = 4;
+        bulletRect.setLocation(getX(), getY());
+        speed = 1;
 
 
+    }
 
+    public void setBulletRect(Rectangle bulletRect) {
+        this.bulletRect = bulletRect;
+    }
+
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public Rectangle getBulletRect() {
+        return bulletRect;
     }
 
 

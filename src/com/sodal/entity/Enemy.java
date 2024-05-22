@@ -11,6 +11,7 @@ public class Enemy extends Entity {
     private static int xSpeed;
     private static int ySpeed;
     private static List<Enemy> enemyList = new ArrayList<>();
+    private List<Rectangle> rectangleList = new ArrayList<>();
 
     public Enemy(String imagePath) {
         super(imagePath, 3);
@@ -53,6 +54,16 @@ public class Enemy extends Entity {
 
     public static int getXSpeed() {
         return xSpeed;
+    }
+
+    public  void setRectangleList(Rectangle enemyBodyPart) {
+
+        rectangleList.add(enemyBodyPart);
+
+    }
+
+    public List<Rectangle> rectangleList() {
+        return rectangleList;
     }
 
 
