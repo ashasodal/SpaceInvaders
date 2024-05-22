@@ -23,7 +23,7 @@ public class Bullet extends Entity {
 
         setLocation(getX(), getY() - speed);
         bulletRect.setLocation(getX(), getY());
-        speed = 1;
+        speed = 4;
 
 
     }

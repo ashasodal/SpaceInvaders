@@ -31,7 +31,7 @@ public class GameScreen extends JPanel implements Runnable {
         player = new Player("./res/player/standardSpaceShip.png", keyHandler);
         player.setLocation(tileSize * 5, tileSize * 12);
 
-       addAllEnemies();
+        addAllEnemies();
 
         gameLoop = new Thread(this);
         gameLoop.start();
@@ -47,8 +47,7 @@ public class GameScreen extends JPanel implements Runnable {
         int x = tileSize * 3;
         int y = tileSize * 10;
 
-        for(int i = 0; i < 5; i++) {
-
+        for (int i = 0; i < 5; i++) {
             Enemy enemy = new Enemy("./res/alien/alien3.png");
             enemy.setLocation(x, y);
             Enemy.getEnemyList().add(enemy);
@@ -57,21 +56,21 @@ public class GameScreen extends JPanel implements Runnable {
             Rectangle rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
             enemy.setRectangleList(rect);
             //enemy 3 left hand
-            rect = new Rectangle(enemy.getX() + 9,enemy.getY() + 30, 3,3);
+            rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
             enemy.setRectangleList(rect);
             //enemy 3 right hand
-            rect = new Rectangle(enemy.getX() + 36,enemy.getY() + 30,3,3);
+            rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
             enemy.setRectangleList(rect);
 
             x += tileSize;
 
         }
-
     }
 
     //game loop.
     @Override
     public void run() {
+
         isRunning = true;
         double drawInterval = 1000_000_000.0 / FPS; // 0.01666 seconds.
         double delta = 0;
@@ -114,10 +113,7 @@ public class GameScreen extends JPanel implements Runnable {
             //check collision between spaceShip bullet and enemies.
             checkCollision();
         }
-
-        enemiesUpdate();
-
-
+       // enemiesUpdate();
     }
 
 
@@ -128,7 +124,7 @@ public class GameScreen extends JPanel implements Runnable {
             Iterator<Rectangle> rectangleIterator = enemy.rectangleList().iterator();
             while (rectangleIterator.hasNext()) {
                 Rectangle enemyBodyPart = rectangleIterator.next();
-                if(enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
+                if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
                     System.out.println("COLLIDED");
                     player.setBullet(null);
                     Enemy.getEnemyList().remove(enemy);
@@ -137,8 +133,6 @@ public class GameScreen extends JPanel implements Runnable {
             }
         }
     }
-
-
 
 
     /*
@@ -174,34 +168,24 @@ public class GameScreen extends JPanel implements Runnable {
             //enemy 3 stomach.
             g2.fillRect(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
             //enemy 3 left hand
-            g2.fillRect(enemy.getX() + 9,enemy.getY() + 30, 3,3 );
+            g2.fillRect(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
             //enemy 3 right hand.
-            g2.fillRect(enemy.getX() + 36,enemy.getY() + 30,3,3);
+            g2.fillRect(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
 
         }
 
 
-
-
-        g2.setColor(Color.blue);
-        int tileSize = GameScreen.tileSize;
-        for (int i = 0; i <= 10; i++) {
-            if (i == 0 || i == 1) {
-                g2.setColor(Color.pink);
-                g2.drawRect(i * tileSize, player.getY(), tileSize, tileSize);
-                g2.setColor(Color.blue);
-                continue;
+       //draw grids.
+        for (int i = 0; i < 14; i++) {
+            for (int j = 0; j <= 10; j++) {
+                g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
-            g2.drawRect(i * tileSize, player.getY(), tileSize, tileSize);
         }
 
-
-
-
+        //draw bullet
         if (player.getBullet() != null) {
             player.getBullet().render(g2);
         }
-
         //////////////////////
         g2.dispose();
     }
