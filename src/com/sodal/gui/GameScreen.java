@@ -43,8 +43,17 @@ public class GameScreen extends JPanel implements Runnable {
         Enemy enemy = new Enemy("./res/alien/alien3.png");
         enemy.setLocation(0, 0);
         Enemy.getEnemyList().add(enemy);
+        //enemy 3 stomach.
         Rectangle rect = new Rectangle(Enemy.getEnemyList().get(0).getX() + 12, Enemy.getEnemyList().get(0).getY() + 27, 24, 15);
         Enemy.getEnemyList().get(0).setRectangleList(rect);
+        //enemy 3 left hand
+        rect = new Rectangle(Enemy.getEnemyList().get(0).getX() + 9,Enemy.getEnemyList().get(0).getY() + 30, 3,3);
+        Enemy.getEnemyList().get(0).setRectangleList(rect);
+        rect = new Rectangle(Enemy.getEnemyList().get(0).getX() + 36,Enemy.getEnemyList().get(0).getY() + 30,3,3);
+        Enemy.getEnemyList().get(0).setRectangleList(rect);
+
+
+
       /*  enemy = new Enemy("./res/alien/alien3.png");
         enemy.setLocation(enemy.getTileSize(),0);
         Enemy.getEnemyList().add(enemy);*/
@@ -151,7 +160,13 @@ public class GameScreen extends JPanel implements Runnable {
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy.getEnemyList().get(i).render(g2);
             g2.setColor(Color.gray);
+            //enemy 3 stomach.
             g2.fillRect(Enemy.getEnemyList().get(0).getX() + 12, Enemy.getEnemyList().get(0).getY() + 27, 24, 15);
+            //enemy 3 left hand
+            g2.fillRect(Enemy.getEnemyList().get(0).getX() + 9,Enemy.getEnemyList().get(0).getY() + 30, 3,3 );
+            //enemy 3 right hand.
+            g2.fillRect(Enemy.getEnemyList().get(0).getX() + 36,Enemy.getEnemyList().get(0).getY() + 30,3,3);
+
         }
 
 
