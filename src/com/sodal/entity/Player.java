@@ -10,8 +10,10 @@ public class Player extends Entity {
 
     private KeyHandler handler;
 
-    public Player(int x, int y, String imagePath, KeyHandler handler) {
-        super(x, y, imagePath);
+    private Bullet bullet;
+
+    public Player(String imagePath, KeyHandler handler) {
+        super( imagePath,3);
         this.handler = handler;
         this.xSpeed = 5;
     }
@@ -22,20 +24,36 @@ public class Player extends Entity {
     public void update() {
 
         if (handler.isLeft()) {
-            this.setX(this.getX() - this.xSpeed);
+            this.setLocation(this.getX() - this.xSpeed, this.getY());
         }
         if (handler.isRight()) {
-            this.setX(this.getX() + this.xSpeed);
+            this.setLocation(this.getX() + this.xSpeed, this.getY());
+        }
+        if(handler.isShoot()) {
+            shoot();
         }
 
+    }
+
+
+    public void shoot() {
+        if(bullet == null) {
+            bullet = new Bullet("./res/player/bullet/bulletSpaceShip.png", 2,this);
+            bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() - bullet.getHeight() );
+
+        }
     }
 
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
+        if(bullet != null) {
+            bullet.render(g2);
+        }
     }
 
-
-
+    public Bullet getBullet() {
+        return bullet;
+    }
 
 }

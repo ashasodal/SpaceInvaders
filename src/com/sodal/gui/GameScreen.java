@@ -15,12 +15,7 @@ public class GameScreen extends JPanel implements Runnable {
     private Thread gameLoop;
     private KeyHandler keyHandler = new KeyHandler();
 
-    private Player player = new Player(300, 500, "./res/player/standardSpaceShip.png", keyHandler);
-
-    //   private Enemy enemy = new Enemy(0,0, "./res/alien/alien3.png");
-
-    //  private Enemy enemy1 = new Enemy(enemy.getWidth(),0, "./res/alien/alien3.png");
-
+    private Player player;
 
     private static final int WIDTH = 500, HEIGHT = 700;
 
@@ -31,9 +26,16 @@ public class GameScreen extends JPanel implements Runnable {
         this.setFocusable(true);
         this.addKeyListener(keyHandler);
 
-        Enemy.getEnemyList().add(new Enemy(0, 0, "./res/alien/alien3.png"));
-        Enemy.getEnemyList().add(new Enemy(Entity.getTileSize(), 0, "./res/alien/alien3.png"));
-        System.out.println(Entity.getTileSize());
+        player = new Player("./res/player/standardSpaceShip.png", keyHandler);
+        player.setLocation(300, 500);
+
+
+        Enemy enemy = new Enemy("./res/alien/alien3.png");
+        enemy.setLocation(0, 0);
+        Enemy.getEnemyList().add(enemy);
+        enemy = new Enemy("./res/alien/alien3.png");
+        enemy.setLocation(enemy.getTileSize(),0);
+        Enemy.getEnemyList().add(enemy);
 
 
         gameLoop = new Thread(this);
@@ -79,7 +81,6 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
 
-
     /*
      * if the speed is positive, the enemy to right must move first.
      * If negative speed, enemy to left must move first.
@@ -123,9 +124,8 @@ public class GameScreen extends JPanel implements Runnable {
 
 
     public static int getGameWidth() {
-
         return WIDTH;
-
     }
+
 
 }

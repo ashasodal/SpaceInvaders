@@ -12,9 +12,9 @@ public class Enemy extends Entity {
     private static int ySpeed;
     private static List<Enemy> enemyList = new ArrayList<>();
 
-    public Enemy(int x, int y, String imagePath) {
-        super(x, y, imagePath);
-       xSpeed = 1;
+    public Enemy(String imagePath) {
+        super(imagePath, 3);
+        xSpeed = 1;
     }
 
 
@@ -27,25 +27,24 @@ public class Enemy extends Entity {
     @Override
     public void update() {
         if (this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
-           xSpeed = -1 * xSpeed;
-           ySpeed += 20;
+            xSpeed = -1 * xSpeed;
+            ySpeed += 20;
         }
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
             ySpeed += 20;
         }
 
-        System.out.println("enemy xPos: " + this.getX());
-        this.setX(this.getX() + xSpeed);
-        this.setY(ySpeed);
+        //System.out.println("enemy xPos: " + this.getX());
+        this.setLocation(this.getX() + xSpeed, ySpeed);
 
     }
+
 
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
     }
-
 
 
     public static java.util.List<Enemy> getEnemyList() {
