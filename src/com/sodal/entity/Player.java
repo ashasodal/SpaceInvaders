@@ -30,19 +30,30 @@ public class Player extends Entity {
             this.setLocation(this.getX() + this.xSpeed, this.getY());
         }
         if(handler.isShoot()) {
-            shoot();
+            createBullet();
         }
 
     }
-
 
     public void shoot() {
-        if(bullet == null) {
-            bullet = new Bullet("./res/player/bullet/bulletSpaceShip.png", 2,this);
-            bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() - bullet.getHeight() );
 
+        if(bullet != null) {
+            bullet.setLocation(bullet.getX(), bullet.getY() -1);
         }
+
+
     }
+
+    private void createBullet() {
+        if(bullet == null) {
+            bullet = new Bullet("./res/player/bullet/bulletSpaceShip.png", 2);
+            bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() - bullet.getHeight() );
+        }
+
+    }
+
+
+
 
     @Override
     public void render(Graphics2D g2) {

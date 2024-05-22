@@ -10,6 +10,7 @@ import java.awt.*;
 
 public class GameScreen extends JPanel implements Runnable {
 
+    private static int tileSize = Entity.getOriginalTileSize() * 3;
     private boolean isRunning;
     private int FPS = 60;
     private Thread gameLoop;
@@ -17,7 +18,7 @@ public class GameScreen extends JPanel implements Runnable {
 
     private Player player;
 
-    private static final int WIDTH = 500, HEIGHT = 700;
+    private static final int WIDTH = tileSize * 11, HEIGHT = tileSize* 14;
 
     public GameScreen() {
 
@@ -27,7 +28,7 @@ public class GameScreen extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
 
         player = new Player("./res/player/standardSpaceShip.png", keyHandler);
-        player.setLocation(300, 500);
+        player.setLocation(tileSize * 5 , tileSize * 12);
 
 
         Enemy enemy = new Enemy("./res/alien/alien3.png");
@@ -77,6 +78,9 @@ public class GameScreen extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        if(player.getBullet() != null) {
+            player.getBullet().update();
+        }
         enemiesUpdate();
     }
 
@@ -101,25 +105,27 @@ public class GameScreen extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
         //painting.
         //////////////////////
-
-
-        g.setColor(Color.CYAN);
-        g.fillRect(0, 0, 9, 9);
-        g.fillRect(WIDTH - 9, 0, 9, 9);
         player.render(g2);
 
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy.getEnemyList().get(i).render(g2);
         }
 
+        if(player.getBullet() != null) {
+            player.getBullet().render(g2);
+        }
+
+
+        g2.setColor(Color.blue);
+        int tileSize = GameScreen.tileSize;
+        for(int i = 0; i <= 10; i++) {
+            g2.drawRect(i * tileSize, player.getY(), tileSize, tileSize);
+        }
 
         //////////////////////
         g2.dispose();
-
-
     }
 
 

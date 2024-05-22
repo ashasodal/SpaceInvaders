@@ -88,4 +88,8 @@ public abstract class Entity {
     public int getHeight() {
         return height;
     }
+
+    public static int getOriginalTileSize() {
+        return originalTileSize;
+    }
 }

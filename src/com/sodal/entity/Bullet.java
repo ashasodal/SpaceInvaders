@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Bullet extends Entity {
 
-    public Bullet(String imagePath, int scale, Player player) {
+    public Bullet(String imagePath, int scale) {
         super(imagePath, scale);
     }
 
@@ -15,7 +15,7 @@ public class Bullet extends Entity {
 
     @Override
     public void update() {
-
+        setLocation(getX(),getY() -1);
     }
 
 
