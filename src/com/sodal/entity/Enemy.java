@@ -36,8 +36,12 @@ public class Enemy extends Entity {
            // ySpeed += 20;
         }
 
-        //System.out.println("enemy xPos: " + this.getX());
-        this.setLocation(this.getX() + xSpeed, ySpeed);
+        this.setLocation(this.getX() + xSpeed, this.getY() + ySpeed);
+        //move enemy rectangles accordingly.
+        for(int i = 0; i < rectangleList.size(); i++) {
+            Rectangle enemyPart = rectangleList.get(i);
+            enemyPart.setLocation((int) (enemyPart.getX() + xSpeed), (int)enemyPart.getY() + ySpeed);
+        }
 
     }
 
