@@ -23,7 +23,6 @@ public class GameScreen extends JPanel implements Runnable {
 
     public GameScreen() {
 
-
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
@@ -46,7 +45,7 @@ public class GameScreen extends JPanel implements Runnable {
     private void addAllEnemy3() {
 
         int x = tileSize * 3;
-        int y = tileSize * 3;
+        int y = tileSize * 10;
 
         for(int i = 0; i < 5; i++) {
 
@@ -116,7 +115,7 @@ public class GameScreen extends JPanel implements Runnable {
             checkCollision();
         }
 
-      //  enemiesUpdate();
+        enemiesUpdate();
 
 
     }
