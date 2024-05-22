@@ -22,6 +22,8 @@ public class GameScreen extends JPanel implements Runnable {
 
     public GameScreen() {
 
+
+
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
@@ -30,13 +32,20 @@ public class GameScreen extends JPanel implements Runnable {
         player = new Player("./res/player/standardSpaceShip.png", keyHandler);
         player.setLocation(tileSize * 5 , tileSize * 12);
 
+      /*  Rectangle rect1 = new Rectangle(0,player.getY(),tileSize, tileSize);
+        Rectangle rect2 = new Rectangle(tileSize -1,player.getY(),tileSize, tileSize);
+
+        if(rect1.intersects(rect2)) {
+            System.out.println("intersected!!!");
+        }*/
+
 
         Enemy enemy = new Enemy("./res/alien/alien3.png");
         enemy.setLocation(0, 0);
         Enemy.getEnemyList().add(enemy);
-        enemy = new Enemy("./res/alien/alien3.png");
+      /*  enemy = new Enemy("./res/alien/alien3.png");
         enemy.setLocation(enemy.getTileSize(),0);
-        Enemy.getEnemyList().add(enemy);
+        Enemy.getEnemyList().add(enemy);*/
 
 
         gameLoop = new Thread(this);
@@ -69,7 +78,7 @@ public class GameScreen extends JPanel implements Runnable {
             }
             //displays FPS.
             if (timer >= 1_000_000_000) {
-                System.out.println("FPS: " + drawCount);
+               // System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -80,8 +89,12 @@ public class GameScreen extends JPanel implements Runnable {
         player.update();
         if(player.getBullet() != null) {
             player.getBullet().update();
+            if(player.getBullet().getY() <= 0) {
+                System.out.println("bulletY: " + player.getBullet().getY());
+                player.setBullet(null);
+            }
         }
-        enemiesUpdate();
+      //  enemiesUpdate();
     }
 
 
@@ -121,8 +134,22 @@ public class GameScreen extends JPanel implements Runnable {
         g2.setColor(Color.blue);
         int tileSize = GameScreen.tileSize;
         for(int i = 0; i <= 10; i++) {
+            if(i == 0 || i == 1) {
+                g2.setColor(Color.pink);
+                g2.drawRect(i * tileSize, player.getY(), tileSize, tileSize);
+                g2.setColor(Color.blue);
+                continue;
+            }
             g2.drawRect(i * tileSize, player.getY(), tileSize, tileSize);
         }
+
+
+
+        g2.setColor(Color.ORANGE);
+        g2.fillRect( Enemy.getEnemyList().get(0).getX() + 12, Enemy.getEnemyList().get(0).getY() + 27,24,15 );
+
+
+
 
         //////////////////////
         g2.dispose();

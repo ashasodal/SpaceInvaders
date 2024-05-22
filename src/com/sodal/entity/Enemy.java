@@ -28,11 +28,11 @@ public class Enemy extends Entity {
     public void update() {
         if (this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
             xSpeed = -1 * xSpeed;
-            ySpeed += 20;
+           // ySpeed += 20;
         }
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
-            ySpeed += 20;
+           // ySpeed += 20;
         }
 
         //System.out.println("enemy xPos: " + this.getX());

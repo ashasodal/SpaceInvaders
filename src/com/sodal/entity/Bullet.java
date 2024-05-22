@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Bullet extends Entity {
 
+    private int speed;
+
     public Bullet(String imagePath, int scale) {
         super(imagePath, scale);
     }
@@ -15,7 +17,12 @@ public class Bullet extends Entity {
 
     @Override
     public void update() {
-        setLocation(getX(),getY() -1);
+
+        setLocation(getX(), getY() - speed);
+        speed = 4;
+
+
+
     }
 
 

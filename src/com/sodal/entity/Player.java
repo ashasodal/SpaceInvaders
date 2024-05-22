@@ -30,19 +30,12 @@ public class Player extends Entity {
             this.setLocation(this.getX() + this.xSpeed, this.getY());
         }
         if(handler.isShoot()) {
+
             createBullet();
         }
 
     }
 
-    public void shoot() {
-
-        if(bullet != null) {
-            bullet.setLocation(bullet.getX(), bullet.getY() -1);
-        }
-
-
-    }
 
     private void createBullet() {
         if(bullet == null) {
@@ -51,9 +44,6 @@ public class Player extends Entity {
         }
 
     }
-
-
-
 
     @Override
     public void render(Graphics2D g2) {
@@ -65,6 +55,10 @@ public class Player extends Entity {
 
     public Bullet getBullet() {
         return bullet;
+    }
+
+    public void setBullet(Bullet bullet) {
+        this.bullet = bullet;
     }
 
 }
