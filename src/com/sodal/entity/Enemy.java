@@ -29,11 +29,11 @@ public class Enemy extends Entity {
     public void update() {
         if (this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
             xSpeed = -1 * xSpeed;
-            yPos += 20;
+            yPos += GameScreen.getTileSize() / 24;
         }
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
-            yPos += 20;
+            yPos += GameScreen.getTileSize() / 24;
         }
         this.setLocation(this.getX() + xSpeed,  yPos);
         updateAllRectangles();
