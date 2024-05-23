@@ -45,7 +45,8 @@ public class GameScreen extends JPanel implements Runnable {
     private void addAllEnemy3() {
 
         int x = tileSize * 3;
-        int y = tileSize * 11;
+        int y = tileSize * 2;
+
 
         for (int i = 0; i < 5; i++) {
             Enemy enemy = new Enemy("./res/alien/alien3.png");
@@ -61,10 +62,10 @@ public class GameScreen extends JPanel implements Runnable {
             //  System.out.println( enemy.getY() + 30 + 3);
             enemy.setRectangleList(rect);
             //enemy 3 right hand
-            rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
-            //  System.out.println( enemy.getY() + 30 + 3);
-            enemy.setRectangleList(rect);
 
+           rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
+            //  System.out.println( enemy.getY() + 30 + 3);
+           enemy.setRectangleList(rect);
             x += tileSize;
 
         }
@@ -130,9 +131,10 @@ public class GameScreen extends JPanel implements Runnable {
             while (rectangleIterator.hasNext()) {
                 Rectangle enemyBodyPart = rectangleIterator.next();
                 if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
-                    Enemy.getEnemyList().remove(enemy);
-                    player.setBullet(null);
-                    player.getHandler().setShoot(false);
+                   // Enemy.getEnemyList().remove(enemy);
+                    player.getBullet().setSpeed(0);
+                   // player.setBullet(null);
+                   // player.getHandler().setShoot(false);
                     return;
                 }
             }
@@ -161,10 +163,20 @@ public class GameScreen extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
         //painting.
         //////////////////////
-        player.render(g2);
 
-        if(player.getBullet() != null) {
-            player.getBullet().render(g2);
+
+
+
+
+
+
+
+        g.setColor(Color.pink);
+        //draw grids.
+        for (int i = 0; i < 14; i++) {
+            for (int j = 0; j <= 10; j++) {
+                g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
+            }
         }
 
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
@@ -182,14 +194,14 @@ public class GameScreen extends JPanel implements Runnable {
 
         }
 
-        //draw grids.
-        for (int i = 0; i < 14; i++) {
-            for (int j = 0; j <= 10; j++) {
-                g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
-            }
-        }
+        player.render(g2);
         //////////////////////
         g2.dispose();
+    }
+
+
+    public static int getTileSize() {
+        return tileSize;
     }
 
 
