@@ -17,7 +17,7 @@ public class Player extends Entity {
     public Player(String imagePath, KeyHandler handler) {
         super(imagePath, 3);
         this.handler = handler;
-        this.xSpeed = 1;
+        this.xSpeed = 5;
     }
 
 

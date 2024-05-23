@@ -38,7 +38,14 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void addAllEnemies() {
+        //addAllEnemy3();
         addAllEnemy3();
+    }
+
+
+    private void addAllEnemy2() {
+
+
     }
 
 
@@ -47,30 +54,34 @@ public class GameScreen extends JPanel implements Runnable {
         int x = tileSize * 3;
         int y = tileSize * 2;
 
+        for (int i = 0; i < 5 ; i++) {
 
-        for (int i = 0; i < 8; i++) {
-            Enemy enemy = new Enemy("./res/alien/alien3.png");
-            enemy.setLocation(x, y);
-            Enemy.getEnemyList().add(enemy);
+            for (int j = 0; j < 8; j++) {
+                Enemy enemy = new Enemy("./res/alien/alien3.png");
+                enemy.setLocation(x, y);
+                Enemy.getEnemyList().add(enemy);
 
-            //enemy 3 stomach
-            Rectangle rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
-            //    System.out.println( enemy.getY() + 27 + 15);
-            enemy.setRectangleList(rect);
-            //enemy 3 left hand
-            rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
-            //  System.out.println( enemy.getY() + 30 + 3);
-            enemy.setRectangleList(rect);
-            //enemy 3 right hand
+                //enemy 3 stomach
+                Rectangle rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
+                //    System.out.println( enemy.getY() + 27 + 15);
+                enemy.setRectangleList(rect);
+                //enemy 3 left hand
+                rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
+                //  System.out.println( enemy.getY() + 30 + 3);
+                enemy.setRectangleList(rect);
+                //enemy 3 right hand
 
-           rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
-            //  System.out.println( enemy.getY() + 30 + 3);
-           enemy.setRectangleList(rect);
-            x += tileSize;
+                rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
+                //  System.out.println( enemy.getY() + 30 + 3);
+                enemy.setRectangleList(rect);
+                x += tileSize;
 
+            }
+           y += tileSize;
+            x = tileSize * 3;
         }
 
-        Enemy.setYPos(y);
+
     }
 
     //game loop.
@@ -119,7 +130,7 @@ public class GameScreen extends JPanel implements Runnable {
             //check collision between spaceShip bullet and enemies.
             checkCollision();
         }
-        // enemiesUpdate();
+         enemiesUpdate();
     }
 
 
@@ -132,7 +143,7 @@ public class GameScreen extends JPanel implements Runnable {
                 Rectangle enemyBodyPart = rectangleIterator.next();
                 if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
                     Enemy.getEnemyList().remove(enemy);
-                 //   player.getBullet().setSpeed(0);
+                    //   player.getBullet().setSpeed(0);
                     player.setBullet(null);
                     player.getHandler().setShoot(false);
                     return;
@@ -172,18 +183,20 @@ public class GameScreen extends JPanel implements Runnable {
             }
         }
 
+
+        //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
 
             Enemy enemy = Enemy.getEnemyList().get(i);
             enemy.render(g2);
-
-            g2.setColor(Color.gray);
+            //enemy 3
+          /*  g2.setColor(Color.gray);
             //enemy 3 stomach.
             g2.fillRect(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
             //enemy 3 left hand
             g2.fillRect(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
             //enemy 3 right hand.
-            g2.fillRect(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
+            g2.fillRect(enemy.getX() + 36, enemy.getY() + 30, 3, 3);*/
 
         }
 

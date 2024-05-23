@@ -27,15 +27,15 @@ public class Enemy extends Entity {
 
     @Override
     public void update() {
-        if (this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
+        if ( xSpeed > 0 && this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
             xSpeed = -1 * xSpeed;
-            yPos += GameScreen.getTileSize() / 24;
+           // yPos += GameScreen.getTileSize() / 24;
         }
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
-            yPos += GameScreen.getTileSize() / 24;
+           // yPos += GameScreen.getTileSize() / 24;
         }
-        this.setLocation(this.getX() + xSpeed,  yPos);
+        this.setLocation(this.getX() + xSpeed,  getY());
         updateAllRectangles();
     }
 
@@ -43,7 +43,7 @@ public class Enemy extends Entity {
         //move enemy rectangles accordingly.
         for (int i = 0; i < rectangleList.size(); i++) {
             Rectangle enemyPart = rectangleList.get(i);
-            enemyPart.setLocation((int) (enemyPart.getX() + xSpeed), yPos);
+            enemyPart.setLocation((int) (enemyPart.getX() + xSpeed), getY());
         }
     }
 
@@ -72,9 +72,6 @@ public class Enemy extends Entity {
         return rectangleList;
     }
 
-    public static void setYPos(int y) {
-        yPos = y;
-    }
 
 
 }
