@@ -9,7 +9,7 @@ import java.util.List;
 public class Enemy extends Entity {
 
     private static int xSpeed;
-    private static int ySpeed;
+    private static int yPos;
     private static List<Enemy> enemyList = new ArrayList<>();
     private List<Rectangle> rectangleList = new ArrayList<>();
 
@@ -29,23 +29,21 @@ public class Enemy extends Entity {
     public void update() {
         if (this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
             xSpeed = -1 * xSpeed;
-            // ySpeed += 20;
+            yPos += 20;
         }
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
-            // ySpeed += 20;
+            yPos += 20;
         }
-
-        this.setLocation(this.getX() + xSpeed, this.getY() + ySpeed);
+        this.setLocation(this.getX() + xSpeed,  yPos);
         updateAllRectangles();
-
     }
 
     private void updateAllRectangles() {
         //move enemy rectangles accordingly.
         for (int i = 0; i < rectangleList.size(); i++) {
             Rectangle enemyPart = rectangleList.get(i);
-            enemyPart.setLocation((int) (enemyPart.getX() + xSpeed), (int) enemyPart.getY() + ySpeed);
+            enemyPart.setLocation((int) (enemyPart.getX() + xSpeed), yPos);
         }
     }
 
@@ -72,6 +70,10 @@ public class Enemy extends Entity {
 
     public List<Rectangle> rectangleList() {
         return rectangleList;
+    }
+
+    public static void setYPos(int y) {
+        yPos = y;
     }
 
 

@@ -92,4 +92,8 @@ public abstract class Entity {
     public static int getOriginalTileSize() {
         return originalTileSize;
     }
+
+    public void setBufferedImage(BufferedImage bufferedImage) {
+        this.bufferedImage = bufferedImage;
+    }
 }

@@ -17,7 +17,7 @@ public class Player extends Entity {
     public Player(String imagePath, KeyHandler handler) {
         super(imagePath, 3);
         this.handler = handler;
-        this.xSpeed = 5;
+        this.xSpeed = 1;
     }
 
 
@@ -52,9 +52,9 @@ public class Player extends Entity {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
-        if (bullet != null) {
-            bullet.render(g2);
-        }
+      //  if (bullet != null) {
+           // bullet.render(g2);
+       // }
     }
 
     public Bullet getBullet() {
@@ -65,7 +65,8 @@ public class Player extends Entity {
         this.bullet = bullet;
     }
 
-
-
+    public KeyHandler getHandler() {
+        return handler;
+    }
 
 }

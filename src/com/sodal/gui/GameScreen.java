@@ -45,7 +45,7 @@ public class GameScreen extends JPanel implements Runnable {
     private void addAllEnemy3() {
 
         int x = tileSize * 3;
-        int y = tileSize * 10;
+        int y = tileSize * 11;
 
         for (int i = 0; i < 5; i++) {
             Enemy enemy = new Enemy("./res/alien/alien3.png");
@@ -54,17 +54,22 @@ public class GameScreen extends JPanel implements Runnable {
 
             //enemy 3 stomach
             Rectangle rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
+            //    System.out.println( enemy.getY() + 27 + 15);
             enemy.setRectangleList(rect);
             //enemy 3 left hand
             rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
+            //  System.out.println( enemy.getY() + 30 + 3);
             enemy.setRectangleList(rect);
             //enemy 3 right hand
             rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
+            //  System.out.println( enemy.getY() + 30 + 3);
             enemy.setRectangleList(rect);
 
             x += tileSize;
 
         }
+
+        Enemy.setYPos(y);
     }
 
     //game loop.
@@ -106,14 +111,14 @@ public class GameScreen extends JPanel implements Runnable {
         if (player.getBullet() != null) {
             player.getBullet().update();
             if (player.getBullet().getY() <= 0) {
-                System.out.println("bulletY: " + player.getBullet().getY());
                 player.setBullet(null);
+                player.getHandler().setShoot(false);
                 return;
             }
             //check collision between spaceShip bullet and enemies.
             checkCollision();
         }
-       // enemiesUpdate();
+        // enemiesUpdate();
     }
 
 
@@ -125,15 +130,14 @@ public class GameScreen extends JPanel implements Runnable {
             while (rectangleIterator.hasNext()) {
                 Rectangle enemyBodyPart = rectangleIterator.next();
                 if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
-                    System.out.println("COLLIDED");
-                    player.setBullet(null);
                     Enemy.getEnemyList().remove(enemy);
+                    player.setBullet(null);
+                    player.getHandler().setShoot(false);
                     return;
                 }
             }
         }
     }
-
 
     /*
      * if the speed is positive, the enemy to right must move first.
@@ -159,6 +163,10 @@ public class GameScreen extends JPanel implements Runnable {
         //////////////////////
         player.render(g2);
 
+        if(player.getBullet() != null) {
+            player.getBullet().render(g2);
+        }
+
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
 
             Enemy enemy = Enemy.getEnemyList().get(i);
@@ -174,17 +182,11 @@ public class GameScreen extends JPanel implements Runnable {
 
         }
 
-
-       //draw grids.
+        //draw grids.
         for (int i = 0; i < 14; i++) {
             for (int j = 0; j <= 10; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
-        }
-
-        //draw bullet
-        if (player.getBullet() != null) {
-            player.getBullet().render(g2);
         }
         //////////////////////
         g2.dispose();

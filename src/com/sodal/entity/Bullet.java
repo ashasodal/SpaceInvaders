@@ -10,7 +10,6 @@ public class Bullet extends Entity {
 
     public Bullet(String imagePath, int scale) {
         super(imagePath, scale);
-
     }
 
     @Override
@@ -20,12 +19,9 @@ public class Bullet extends Entity {
 
     @Override
     public void update() {
-
         setLocation(getX(), getY() - speed);
         bulletRect.setLocation(getX(), getY());
-        speed = 4;
-
-
+        speed = 6;
     }
 
     public void setBulletRect(Rectangle bulletRect) {
@@ -41,5 +37,6 @@ public class Bullet extends Entity {
         return bulletRect;
     }
 
+   }
 
-}
+

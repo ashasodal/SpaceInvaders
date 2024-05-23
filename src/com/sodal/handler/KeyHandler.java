@@ -24,7 +24,9 @@ public class KeyHandler extends KeyAdapter {
         if (keyCode == KeyEvent.VK_DOWN) down = true;
         if (keyCode == KeyEvent.VK_SPACE) shoot = true;
 
+
     }
+
 
 
     @Override
@@ -40,6 +42,12 @@ public class KeyHandler extends KeyAdapter {
 
     }
 
+
+
+
+    public void setShoot(boolean shoot) {
+        this.shoot = shoot;
+    }
 
     public boolean isRight() {
         return right;
