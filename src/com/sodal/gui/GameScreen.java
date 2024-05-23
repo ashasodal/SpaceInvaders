@@ -19,7 +19,7 @@ public class GameScreen extends JPanel implements Runnable {
 
     private Player player;
 
-    private static final int WIDTH = tileSize * 11, HEIGHT = tileSize * 14;
+    private static final int WIDTH = tileSize * 14, HEIGHT = tileSize * 16; //  672  x 768
 
     public GameScreen() {
 
@@ -29,7 +29,7 @@ public class GameScreen extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
 
         player = new Player("./res/player/standardSpaceShip.png", keyHandler);
-        player.setLocation(tileSize * 5, tileSize * 12);
+        player.setLocation(tileSize * 5, tileSize * 14);
 
         addAllEnemies();
 
@@ -48,7 +48,7 @@ public class GameScreen extends JPanel implements Runnable {
         int y = tileSize * 2;
 
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 8; i++) {
             Enemy enemy = new Enemy("./res/alien/alien3.png");
             enemy.setLocation(x, y);
             Enemy.getEnemyList().add(enemy);
@@ -131,10 +131,10 @@ public class GameScreen extends JPanel implements Runnable {
             while (rectangleIterator.hasNext()) {
                 Rectangle enemyBodyPart = rectangleIterator.next();
                 if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
-                   // Enemy.getEnemyList().remove(enemy);
-                    player.getBullet().setSpeed(0);
-                   // player.setBullet(null);
-                   // player.getHandler().setShoot(false);
+                    Enemy.getEnemyList().remove(enemy);
+                 //   player.getBullet().setSpeed(0);
+                    player.setBullet(null);
+                    player.getHandler().setShoot(false);
                     return;
                 }
             }
@@ -164,17 +164,10 @@ public class GameScreen extends JPanel implements Runnable {
         //painting.
         //////////////////////
 
-
-
-
-
-
-
-
         g.setColor(Color.pink);
         //draw grids.
-        for (int i = 0; i < 14; i++) {
-            for (int j = 0; j <= 10; j++) {
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 14; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
         }
