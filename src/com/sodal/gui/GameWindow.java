@@ -11,6 +11,8 @@ public class GameWindow {
         frame.add(gameScreen);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
         frame.setVisible(true);
         gameScreen.requestFocusInWindow();
     }

@@ -8,8 +8,6 @@ import com.sodal.handler.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class GameScreen extends JPanel implements Runnable {
@@ -20,7 +18,7 @@ public class GameScreen extends JPanel implements Runnable {
     private Thread gameLoop;
     private KeyHandler keyHandler = new KeyHandler();
     private Player player;
-    private static final int WIDTH = tileSize * 14, HEIGHT = tileSize * 16; //  672  x 768
+    private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  672  x 768
 
     private Explosion[] explosions = new Explosion[5];
 
@@ -50,8 +48,6 @@ public class GameScreen extends JPanel implements Runnable {
         explosions[2] = new Explosion("./res/explosion/exp3.png", (1.0 / 80) * tileSize);
         explosions[3] = new Explosion("./res/explosion/exp4.png", (1.0 / 80) * tileSize);
         explosions[4] = new Explosion("./res/explosion/exp5.png", (1.0 / 80) * tileSize);
-
-
         for (int i = 0; i < explosions.length; i++) {
             explosions[i].setBufferedImage(null);
         }
@@ -63,11 +59,11 @@ public class GameScreen extends JPanel implements Runnable {
 
     private void addAllEnemy3() {
 
-        int x = tileSize * 3;
+        int x = tileSize * 3 - (tileSize / 2);
         int y = tileSize * 2;
 
         for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < 7; j++) {
                 Enemy enemy = new Enemy("./res/alien/alien3.png");
                 enemy.setLocation(x, y);
                 Enemy.getEnemyList().add(enemy);
@@ -92,10 +88,10 @@ public class GameScreen extends JPanel implements Runnable {
                 rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
                 enemy.setRectangleList(rect);
 
-                x += tileSize;
+                x += tileSize + (tileSize / 2);
             }
-            y += tileSize;
-            x = tileSize * 3;
+            y += tileSize + (tileSize / 2);
+            x = tileSize * 3 - (tileSize / 2);
         }
     }
 
@@ -160,7 +156,6 @@ public class GameScreen extends JPanel implements Runnable {
                     Enemy.getEnemyList().remove(enemy);
                     player.setBullet(null);
                     player.getHandler().setShoot(false);
-
                     //explosion thread.
                     new Thread(() -> {
                         int imageNum = 1;
@@ -181,7 +176,6 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void sleep(int delay) {
-
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
@@ -205,7 +199,6 @@ public class GameScreen extends JPanel implements Runnable {
         }
     }
 
-
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -219,11 +212,11 @@ public class GameScreen extends JPanel implements Runnable {
         }
 
         //draw grids.
-      /*  for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 14; j++) {
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 15; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
-        }*/
+        }
 
 
         //enemy 3
