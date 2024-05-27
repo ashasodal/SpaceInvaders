@@ -1,9 +1,6 @@
 package com.sodal.gui;
 
-import com.sodal.entity.Enemy;
-import com.sodal.entity.Entity;
-import com.sodal.entity.Explosion;
-import com.sodal.entity.Player;
+import com.sodal.entity.*;
 import com.sodal.handler.KeyHandler;
 
 import javax.swing.*;
@@ -18,10 +15,11 @@ public class GameScreen extends JPanel implements Runnable {
     private Thread gameLoop;
     private KeyHandler keyHandler = new KeyHandler();
     private Player player;
-    private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  672  x 768
-
+    private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  720  x 768
     private Explosion[] explosions = new Explosion[5];
 
+
+    private Background background;
 
     public GameScreen() {
 
@@ -31,8 +29,11 @@ public class GameScreen extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
 
         player = new Player("./res/player/standardSpaceShip.png", keyHandler);
-        player.setLocation(tileSize * 5, tileSize * 14);
+        player.setLocation(tileSize * 7, tileSize * 14);
 
+
+
+        background = new Background("./res/background/bg.png", 1);
         addAllEnemies();
         createAllExplosion();
 
@@ -207,16 +208,20 @@ public class GameScreen extends JPanel implements Runnable {
         g.setColor(Color.pink);
 
 
+
+        background.render(g2);
+
+
         for (int i = 0; i < explosions.length; i++) {
             explosions[i].render(g2);
         }
 
         //draw grids.
-        for (int i = 0; i < 16; i++) {
+      /*  for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 15; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
-        }
+        }*/
 
 
         //enemy 3
