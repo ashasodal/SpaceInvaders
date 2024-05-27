@@ -7,6 +7,8 @@ import com.sodal.handler.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class GameScreen extends JPanel implements Runnable {
@@ -16,9 +18,7 @@ public class GameScreen extends JPanel implements Runnable {
     private int FPS = 60;
     private Thread gameLoop;
     private KeyHandler keyHandler = new KeyHandler();
-
     private Player player;
-
     private static final int WIDTH = tileSize * 14, HEIGHT = tileSize * 16; //  672  x 768
 
     public GameScreen() {
@@ -48,19 +48,19 @@ public class GameScreen extends JPanel implements Runnable {
 
     }
 
-
     private void addAllEnemy3() {
 
         int x = tileSize * 3;
         int y = tileSize * 2;
+        int rowCounter = 1;
 
-        for (int i = 0; i < 5 ; i++) {
+        for (int i = 0; i < 5; i++) {
 
             for (int j = 0; j < 8; j++) {
                 Enemy enemy = new Enemy("./res/alien/alien3.png");
                 enemy.setLocation(x, y);
                 Enemy.getEnemyList().add(enemy);
-
+                enemy.setRow("row" + rowCounter);
                 //enemy 3 stomach
                 Rectangle rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
                 //    System.out.println( enemy.getY() + 27 + 15);
@@ -76,10 +76,16 @@ public class GameScreen extends JPanel implements Runnable {
                 enemy.setRectangleList(rect);
                 x += tileSize;
 
+                Enemy.setRowYPos(i, y);
             }
-           y += tileSize;
+
+            y += tileSize;
             x = tileSize * 3;
+            rowCounter++;
         }
+
+
+        System.out.println(Arrays.toString(Enemy.getRowYPos()));
 
 
     }
@@ -130,7 +136,7 @@ public class GameScreen extends JPanel implements Runnable {
             //check collision between spaceShip bullet and enemies.
             checkCollision();
         }
-         enemiesUpdate();
+        enemiesUpdate();
     }
 
 
@@ -186,20 +192,18 @@ public class GameScreen extends JPanel implements Runnable {
 
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
-
             Enemy enemy = Enemy.getEnemyList().get(i);
             enemy.render(g2);
             //enemy 3
-          /*  g2.setColor(Color.gray);
-            //enemy 3 stomach.
-            g2.fillRect(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
-            //enemy 3 left hand
-            g2.fillRect(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
-            //enemy 3 right hand.
-            g2.fillRect(enemy.getX() + 36, enemy.getY() + 30, 3, 3);*/
+            g2.setColor(Color.BLUE);
+
+            for (int j = 0; j < enemy.rectangleList().size(); j++) {
+
+                g2.fillRect((int) enemy.rectangleList().get(j).getX(), (int) enemy.rectangleList().get(j).getY(), (int) enemy.rectangleList().get(j).getWidth(), (int) enemy.rectangleList().get(j).getHeight());
+
+            }
 
         }
-
         player.render(g2);
         //////////////////////
         g2.dispose();

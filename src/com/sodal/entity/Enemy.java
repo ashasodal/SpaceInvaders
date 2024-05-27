@@ -9,9 +9,11 @@ import java.util.List;
 public class Enemy extends Entity {
 
     private static int xSpeed;
-    private static int yPos;
     private static List<Enemy> enemyList = new ArrayList<>();
     private List<Rectangle> rectangleList = new ArrayList<>();
+    private String row;
+    private static int[] rowYPos = new int[5];
+
 
     public Enemy(String imagePath) {
         super(imagePath, 3);
@@ -24,26 +26,55 @@ public class Enemy extends Entity {
      * because we scaled the image by 3, that means we now have SCALE*SCALE transparent px.
      * to the left and right of images.
      */
-
     @Override
     public void update() {
-        if ( xSpeed > 0 && this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
+        if (xSpeed > 0 && this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
             xSpeed = -1 * xSpeed;
-           // yPos += GameScreen.getTileSize() / 24;
+            updateYPos();
         }
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
-           // yPos += GameScreen.getTileSize() / 24;
+            updateYPos();
+
         }
-        this.setLocation(this.getX() + xSpeed,  getY());
-        updateAllRectangles();
+        updateXPos();
+
+
     }
 
-    private void updateAllRectangles() {
+    private void updateXPos() {
+        this.setX(this.getX() + xSpeed);
+        for (int i = 0; i < this.rectangleList.size(); i++) {
+            Rectangle enemyPart = this.rectangleList.get(i);
+            enemyPart.x += xSpeed;
+        }
+    }
+
+    private void updateYPos() {
+        for (int i = 0; i < enemyList.size(); i++) {
+           Enemy enemy = enemyList.get(i);
+           enemy.setY(enemy.getY() + GameScreen.getTileSize() / 24);
+        }
+        updateRectangleYPos();
+    }
+
+    private void updateRectangleYPos() {
+        //move enemy rectangles accordingly.
+        for (int i = 0; i < enemyList.size(); i++) {
+            Enemy enemy = enemyList.get(i);
+            for (int j = 0; j < enemy.rectangleList.size(); j++) {
+                Rectangle enemyPart = enemy.rectangleList.get(j);
+                enemyPart.y += GameScreen.getTileSize() / 24;
+            }
+        }
+
+    }
+
+    private void updateRectangleXPos() {
         //move enemy rectangles accordingly.
         for (int i = 0; i < rectangleList.size(); i++) {
             Rectangle enemyPart = rectangleList.get(i);
-            enemyPart.setLocation((int) (enemyPart.getX() + xSpeed), getY());
+            enemyPart.x = (int) enemyPart.getX() + xSpeed;
         }
     }
 
@@ -63,9 +94,7 @@ public class Enemy extends Entity {
     }
 
     public void setRectangleList(Rectangle enemyBodyPart) {
-
         rectangleList.add(enemyBodyPart);
-
     }
 
     public List<Rectangle> rectangleList() {
@@ -73,5 +102,15 @@ public class Enemy extends Entity {
     }
 
 
+    public void setRow(String row) {
+        this.row = row;
+    }
 
+    public static void setRowYPos(int index, int y) {
+        rowYPos[index] = y;
+    }
+
+    public static int[] getRowYPos() {
+        return rowYPos;
+    }
 }
