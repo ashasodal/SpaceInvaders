@@ -14,7 +14,7 @@ public abstract class Entity {
     private double scale;
     private static int originalTileSize = 16;
 
-    private BufferedImage bufferedImage;
+    private volatile BufferedImage bufferedImage;
 
     private int width;
     private int height;
