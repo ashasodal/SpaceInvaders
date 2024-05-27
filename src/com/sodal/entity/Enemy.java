@@ -20,12 +20,6 @@ public class Enemy extends Entity {
         xSpeed = 1;
     }
 
-
-    /**
-     * there are 3 transparent px. to the left and right of images.
-     * because we scaled the image by 3, that means we now have SCALE*SCALE transparent px.
-     * to the left and right of images.
-     */
     @Override
     public void update() {
         if (xSpeed > 0 && this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
@@ -52,8 +46,8 @@ public class Enemy extends Entity {
 
     private void updateYPos() {
         for (int i = 0; i < enemyList.size(); i++) {
-           Enemy enemy = enemyList.get(i);
-           enemy.setY(enemy.getY() + GameScreen.getTileSize() / 24);
+            Enemy enemy = enemyList.get(i);
+            enemy.setY(enemy.getY() + GameScreen.getTileSize() / 24);
         }
         updateRectangleYPos();
     }
@@ -68,14 +62,6 @@ public class Enemy extends Entity {
             }
         }
 
-    }
-
-    private void updateRectangleXPos() {
-        //move enemy rectangles accordingly.
-        for (int i = 0; i < rectangleList.size(); i++) {
-            Rectangle enemyPart = rectangleList.get(i);
-            enemyPart.x = (int) enemyPart.getX() + xSpeed;
-        }
     }
 
 
