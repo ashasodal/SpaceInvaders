@@ -19,7 +19,7 @@ public class Enemy extends Entity {
 
     @Override
     public void update() {
-        if (xSpeed > 0 && this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE())) {
+        if (this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE()) && xSpeed > 0) {
             xSpeed = -1 * xSpeed;
             updateYPos();
         }
@@ -27,7 +27,7 @@ public class Enemy extends Entity {
             xSpeed = -1 * xSpeed;
             updateYPos();
         }
-       // updateXPos();
+         updateXPos();
     }
 
     private void updateXPos() {
@@ -56,7 +56,6 @@ public class Enemy extends Entity {
             }
         }
     }
-
 
     @Override
     public void render(Graphics2D g2) {

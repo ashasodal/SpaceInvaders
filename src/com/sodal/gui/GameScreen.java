@@ -39,7 +39,6 @@ public class GameScreen extends JPanel implements Runnable {
         addAllEnemy3();
     }
 
-
     private void addAllEnemy3() {
 
         int x = tileSize * 3;
@@ -50,15 +49,27 @@ public class GameScreen extends JPanel implements Runnable {
                 Enemy enemy = new Enemy("./res/alien/alien3.png");
                 enemy.setLocation(x, y);
                 Enemy.getEnemyList().add(enemy);
-                //enemy 3 stomach
-                Rectangle rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
+
+                //enemy 3 head.
+                Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY() , 30, 24);
                 enemy.setRectangleList(rect);
+
+                //enemy 3 neck.
+                rect = new Rectangle(enemy.getX() + 15, enemy.getY() + 24, 18, 3);
+                enemy.setRectangleList(rect);
+
+                //enemy 3 stomach
+                rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
+                enemy.setRectangleList(rect);
+
                 //enemy 3 left hand
                 rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
                 enemy.setRectangleList(rect);
+
                 //enemy 3 right hand
                 rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
                 enemy.setRectangleList(rect);
+
                 x += tileSize;
             }
             y += tileSize;
@@ -153,7 +164,6 @@ public class GameScreen extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
         //painting.
         //////////////////////
         g.setColor(Color.pink);
@@ -176,7 +186,6 @@ public class GameScreen extends JPanel implements Runnable {
         }
         player.render(g2);
         //////////////////////
-
         g2.dispose();
     }
 
