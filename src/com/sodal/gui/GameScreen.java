@@ -7,8 +7,6 @@ import com.sodal.handler.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class GameScreen extends JPanel implements Runnable {
@@ -38,56 +36,34 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void addAllEnemies() {
-        //addAllEnemy3();
         addAllEnemy3();
     }
 
-
-    private void addAllEnemy2() {
-
-
-    }
 
     private void addAllEnemy3() {
 
         int x = tileSize * 3;
         int y = tileSize * 2;
-        int rowCounter = 1;
 
         for (int i = 0; i < 5; i++) {
-
             for (int j = 0; j < 8; j++) {
                 Enemy enemy = new Enemy("./res/alien/alien3.png");
                 enemy.setLocation(x, y);
                 Enemy.getEnemyList().add(enemy);
-                enemy.setRow("row" + rowCounter);
                 //enemy 3 stomach
                 Rectangle rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
-                //    System.out.println( enemy.getY() + 27 + 15);
                 enemy.setRectangleList(rect);
                 //enemy 3 left hand
                 rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
-                //  System.out.println( enemy.getY() + 30 + 3);
                 enemy.setRectangleList(rect);
                 //enemy 3 right hand
-
                 rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
-                //  System.out.println( enemy.getY() + 30 + 3);
                 enemy.setRectangleList(rect);
                 x += tileSize;
-
-                Enemy.setRowYPos(i, y);
             }
-
             y += tileSize;
             x = tileSize * 3;
-            rowCounter++;
         }
-
-
-        System.out.println(Arrays.toString(Enemy.getRowYPos()));
-
-
     }
 
     //game loop.
@@ -149,7 +125,6 @@ public class GameScreen extends JPanel implements Runnable {
                 Rectangle enemyBodyPart = rectangleIterator.next();
                 if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
                     Enemy.getEnemyList().remove(enemy);
-                    //   player.getBullet().setSpeed(0);
                     player.setBullet(null);
                     player.getHandler().setShoot(false);
                     return;
@@ -159,8 +134,8 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     /*
-     * if the speed is positive, the enemy to right must move first.
-     * If negative speed, enemy to left must move first.
+     * if the speed is positive, the enemy to right most move first.
+     * If negative speed, enemy to left most move first.
      */
     private void enemiesUpdate() {
         if (Enemy.getXSpeed() > 0) {
@@ -178,9 +153,9 @@ public class GameScreen extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+
         //painting.
         //////////////////////
-
         g.setColor(Color.pink);
         //draw grids.
         for (int i = 0; i < 16; i++) {
@@ -189,35 +164,27 @@ public class GameScreen extends JPanel implements Runnable {
             }
         }
 
-
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy enemy = Enemy.getEnemyList().get(i);
             enemy.render(g2);
             //enemy 3
             g2.setColor(Color.BLUE);
-
             for (int j = 0; j < enemy.rectangleList().size(); j++) {
-
                 g2.fillRect((int) enemy.rectangleList().get(j).getX(), (int) enemy.rectangleList().get(j).getY(), (int) enemy.rectangleList().get(j).getWidth(), (int) enemy.rectangleList().get(j).getHeight());
-
             }
-
         }
         player.render(g2);
         //////////////////////
+
         g2.dispose();
     }
-
 
     public static int getTileSize() {
         return tileSize;
     }
 
-
     public static int getGameWidth() {
         return WIDTH;
     }
-
-
 }

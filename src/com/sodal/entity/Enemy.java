@@ -11,9 +11,6 @@ public class Enemy extends Entity {
     private static int xSpeed;
     private static List<Enemy> enemyList = new ArrayList<>();
     private List<Rectangle> rectangleList = new ArrayList<>();
-    private String row;
-    private static int[] rowYPos = new int[5];
-
 
     public Enemy(String imagePath) {
         super(imagePath, 3);
@@ -29,11 +26,8 @@ public class Enemy extends Entity {
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
             updateYPos();
-
         }
-        updateXPos();
-
-
+       // updateXPos();
     }
 
     private void updateXPos() {
@@ -61,7 +55,6 @@ public class Enemy extends Entity {
                 enemyPart.y += GameScreen.getTileSize() / 24;
             }
         }
-
     }
 
 
@@ -69,7 +62,6 @@ public class Enemy extends Entity {
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
     }
-
 
     public static java.util.List<Enemy> getEnemyList() {
         return enemyList;
@@ -87,16 +79,4 @@ public class Enemy extends Entity {
         return rectangleList;
     }
 
-
-    public void setRow(String row) {
-        this.row = row;
-    }
-
-    public static void setRowYPos(int index, int y) {
-        rowYPos[index] = y;
-    }
-
-    public static int[] getRowYPos() {
-        return rowYPos;
-    }
 }
