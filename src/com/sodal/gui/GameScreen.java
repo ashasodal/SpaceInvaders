@@ -45,11 +45,11 @@ public class GameScreen extends JPanel implements Runnable {
 
 
     private void createAllExplosion() {
-        explosions[0] = new Explosion("./res/explosion/exp1.png", (1.0 / 80) * tileSize, 0, 0);
-        explosions[1] = new Explosion("./res/explosion/exp2.png", (1.0 / 80) * tileSize, 0, 0);
-        explosions[2] = new Explosion("./res/explosion/exp3.png", (1.0 / 80) * tileSize, 0, 0);
-        explosions[3] = new Explosion("./res/explosion/exp4.png", (1.0 / 80) * tileSize, 0, 0);
-        explosions[4] = new Explosion("./res/explosion/exp5.png", (1.0 / 80) * tileSize, 0, 0);
+        explosions[0] = new Explosion("./res/explosion/exp1.png", (1.0 / 80) * tileSize);
+        explosions[1] = new Explosion("./res/explosion/exp2.png", (1.0 / 80) * tileSize);
+        explosions[2] = new Explosion("./res/explosion/exp3.png", (1.0 / 80) * tileSize);
+        explosions[3] = new Explosion("./res/explosion/exp4.png", (1.0 / 80) * tileSize);
+        explosions[4] = new Explosion("./res/explosion/exp5.png", (1.0 / 80) * tileSize);
 
 
         for (int i = 0; i < explosions.length; i++) {
@@ -161,19 +161,17 @@ public class GameScreen extends JPanel implements Runnable {
                     player.setBullet(null);
                     player.getHandler().setShoot(false);
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            int imageNum = 1;
-                            for (int i = 0; i < explosions.length; i++) {
-                                explosions[i].setLocation(enemy.getX(), enemy.getY());
-                                explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
-                                imageNum++;
-                                sleep(100);
-                            }
-                            for (int i = 0; i < explosions.length; i++) {
-                                explosions[i].setBufferedImage(null);
-                            }
+                    //explosion thread.
+                    new Thread(() -> {
+                        int imageNum = 1;
+                        for (int i = 0; i < explosions.length; i++) {
+                            explosions[i].setLocation(enemy.getX(), enemy.getY());
+                            explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                            imageNum++;
+                            sleep(100);
+                        }
+                        for (int i = 0; i < explosions.length; i++) {
+                            explosions[i].setBufferedImage(null);
                         }
                     }).start();
                     return;
@@ -214,27 +212,32 @@ public class GameScreen extends JPanel implements Runnable {
         //painting.
         //////////////////////
         g.setColor(Color.pink);
+
+
+        for (int i = 0; i < explosions.length; i++) {
+            explosions[i].render(g2);
+        }
+
         //draw grids.
-        for (int i = 0; i < 16; i++) {
+      /*  for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 14; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
-        }
+        }*/
+
+
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy enemy = Enemy.getEnemyList().get(i);
             enemy.render(g2);
             //enemy 3
-            g2.setColor(Color.BLUE);
+          /*  g2.setColor(Color.BLUE);
             for (int j = 0; j < enemy.rectangleList().size(); j++) {
                 g2.fillRect((int) enemy.rectangleList().get(j).getX(), (int) enemy.rectangleList().get(j).getY(), (int) enemy.rectangleList().get(j).getWidth(), (int) enemy.rectangleList().get(j).getHeight());
-            }
+            }*/
         }
         player.render(g2);
 
-        for (int i = 0; i < explosions.length; i++) {
-            explosions[i].render(g2);
-        }
 
         //////////////////////
         g2.dispose();
