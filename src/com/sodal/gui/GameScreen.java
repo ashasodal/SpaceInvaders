@@ -8,6 +8,8 @@ import com.sodal.handler.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class GameScreen extends JPanel implements Runnable {
@@ -20,8 +22,8 @@ public class GameScreen extends JPanel implements Runnable {
     private Player player;
     private static final int WIDTH = tileSize * 14, HEIGHT = tileSize * 16; //  672  x 768
 
+    private Explosion[] explosions = new Explosion[5];
 
-    Explosion exp1;
 
     public GameScreen() {
 
@@ -34,8 +36,8 @@ public class GameScreen extends JPanel implements Runnable {
         player.setLocation(tileSize * 5, tileSize * 14);
 
         addAllEnemies();
-
         createAllExplosion();
+
 
         gameLoop = new Thread(this);
         gameLoop.start();
@@ -43,7 +45,16 @@ public class GameScreen extends JPanel implements Runnable {
 
 
     private void createAllExplosion() {
-         exp1 = new Explosion("./res/explosion/exp5.png",(1.0/80) * 48);
+        explosions[0] = new Explosion("./res/explosion/exp1.png", (1.0 / 80) * tileSize, 0, 0);
+        explosions[1] = new Explosion("./res/explosion/exp2.png", (1.0 / 80) * tileSize, 0, 0);
+        explosions[2] = new Explosion("./res/explosion/exp3.png", (1.0 / 80) * tileSize, 0, 0);
+        explosions[3] = new Explosion("./res/explosion/exp4.png", (1.0 / 80) * tileSize, 0, 0);
+        explosions[4] = new Explosion("./res/explosion/exp5.png", (1.0 / 80) * tileSize, 0, 0);
+
+
+        for (int i = 0; i < explosions.length; i++) {
+            explosions[i].setBufferedImage(null);
+        }
     }
 
     private void addAllEnemies() {
@@ -62,7 +73,7 @@ public class GameScreen extends JPanel implements Runnable {
                 Enemy.getEnemyList().add(enemy);
 
                 //enemy 3 head.
-                Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY() , 30, 24);
+                Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY(), 30, 24);
                 enemy.setRectangleList(rect);
 
                 //enemy 3 neck.
@@ -149,9 +160,34 @@ public class GameScreen extends JPanel implements Runnable {
                     Enemy.getEnemyList().remove(enemy);
                     player.setBullet(null);
                     player.getHandler().setShoot(false);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            int imageNum = 1;
+                            for (int i = 0; i < explosions.length; i++) {
+                                explosions[i].setLocation(enemy.getX(), enemy.getY());
+                                explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                                imageNum++;
+                                sleep(100);
+                            }
+                            for (int i = 0; i < explosions.length; i++) {
+                                explosions[i].setBufferedImage(null);
+                            }
+                        }
+                    }).start();
                     return;
                 }
             }
+        }
+    }
+
+    private void sleep(int delay) {
+
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -184,7 +220,6 @@ public class GameScreen extends JPanel implements Runnable {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
         }
-
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy enemy = Enemy.getEnemyList().get(i);
@@ -197,8 +232,10 @@ public class GameScreen extends JPanel implements Runnable {
         }
         player.render(g2);
 
+        for (int i = 0; i < explosions.length; i++) {
+            explosions[i].render(g2);
+        }
 
-        exp1.render(g2);
         //////////////////////
         g2.dispose();
     }

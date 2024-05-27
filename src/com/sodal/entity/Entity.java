@@ -1,5 +1,7 @@
 package com.sodal.entity;
 
+import com.sodal.gui.GameScreen;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -27,7 +29,6 @@ public abstract class Entity {
             width = (int) (image.getWidth(null) * scale);
             height = (int) (image.getHeight(null) * scale);
 
-            System.out.println(width);
             bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = (Graphics2D) bufferedImage.getGraphics();
             g2.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
@@ -37,6 +38,26 @@ public abstract class Entity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    public void createBufferImage(String imagePath) {
+
+        try {
+            Image image = ImageIO.read(new File(imagePath));
+            width = (int) (image.getWidth(null) * scale);
+            height = (int) (image.getHeight(null) * scale);
+
+            bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = (Graphics2D) bufferedImage.getGraphics();
+            g2.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
+            g2.dispose();
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 
