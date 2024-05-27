@@ -8,7 +8,7 @@ public class Bullet extends Entity {
 
     private Rectangle bulletRect;
 
-    public Bullet(String imagePath, int scale) {
+    public Bullet(String imagePath, double scale) {
         super(imagePath, scale);
     }
 

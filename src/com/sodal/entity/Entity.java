@@ -9,7 +9,7 @@ import java.io.IOException;
 public abstract class Entity {
 
     private int x, y;
-    private int scale;
+    private double scale;
     private static int originalTileSize = 16;
 
     private BufferedImage bufferedImage;
@@ -18,18 +18,20 @@ public abstract class Entity {
     private int height;
 
 
-    public Entity( String imagePath, int scale) {
+    public Entity(String imagePath, double scale) {
 
         this.scale = scale;
 
         try {
             Image image = ImageIO.read(new File(imagePath));
-            width = image.getWidth(null) * scale;
-            height = image.getHeight(null) * scale;
+            width = (int) (image.getWidth(null) * scale);
+            height = (int) (image.getHeight(null) * scale);
+
+            System.out.println(width);
             bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = (Graphics2D) bufferedImage.getGraphics();
-           g2.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
-           g2.dispose();
+            g2.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
+            g2.dispose();
 
 
         } catch (IOException e) {
@@ -39,16 +41,14 @@ public abstract class Entity {
     }
 
 
-
     public abstract void render(Graphics2D g2);
-    public abstract void update();
 
+    public abstract void update();
 
 
     public BufferedImage getBufferedImage() {
         return bufferedImage;
     }
-
 
 
     public int getY() {
@@ -65,13 +65,13 @@ public abstract class Entity {
         return width;
     }
 
-    public int getSCALE() {
+    public double getSCALE() {
         return scale;
     }
 
 
     public int getTileSize() {
-        return  scale * originalTileSize;
+        return (int) scale * originalTileSize;
     }
 
 

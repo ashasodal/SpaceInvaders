@@ -2,6 +2,7 @@ package com.sodal.gui;
 
 import com.sodal.entity.Enemy;
 import com.sodal.entity.Entity;
+import com.sodal.entity.Explosion;
 import com.sodal.entity.Player;
 import com.sodal.handler.KeyHandler;
 
@@ -19,6 +20,9 @@ public class GameScreen extends JPanel implements Runnable {
     private Player player;
     private static final int WIDTH = tileSize * 14, HEIGHT = tileSize * 16; //  672  x 768
 
+
+    Explosion exp1;
+
     public GameScreen() {
 
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -31,8 +35,15 @@ public class GameScreen extends JPanel implements Runnable {
 
         addAllEnemies();
 
+        createAllExplosion();
+
         gameLoop = new Thread(this);
         gameLoop.start();
+    }
+
+
+    private void createAllExplosion() {
+         exp1 = new Explosion("./res/explosion/exp5.png",(1.0/80) * 48);
     }
 
     private void addAllEnemies() {
@@ -185,6 +196,9 @@ public class GameScreen extends JPanel implements Runnable {
             }
         }
         player.render(g2);
+
+
+        exp1.render(g2);
         //////////////////////
         g2.dispose();
     }
