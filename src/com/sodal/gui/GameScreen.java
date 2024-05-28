@@ -24,7 +24,6 @@ public class GameScreen extends JPanel implements Runnable {
 
     private int timer;
 
-
     private List<Bullet> enemyBullets = new ArrayList<>();
 
     public GameScreen() {
@@ -144,6 +143,12 @@ public class GameScreen extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        playerShoot();
+        enemiesUpdate();
+    }
+
+
+    private void playerShoot() {
         if (player.getBullet() != null) {
             player.getBullet().update();
             if (player.getBullet().getY() <= 0) {
@@ -154,7 +159,66 @@ public class GameScreen extends JPanel implements Runnable {
             //check collision between spaceShip bullet and enemies.
             checkCollision();
         }
-        enemiesUpdate();
+    }
+
+
+    private void checkCollision() {
+        Iterator<Enemy> enemyIterator = Enemy.getEnemyList().iterator();
+        while (enemyIterator.hasNext()) {
+            Enemy enemy = enemyIterator.next();
+            Iterator<Rectangle> rectangleIterator = enemy.rectangleList().iterator();
+            while (rectangleIterator.hasNext()) {
+                Rectangle enemyBodyPart = rectangleIterator.next();
+                if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
+                    Enemy.getEnemyList().remove(enemy);
+                    player.setBullet(null);
+                    player.getHandler().setShoot(false);
+                    //explosion thread.
+                    new Thread(() -> {
+                        int imageNum = 1;
+                        for (int i = 0; i < explosions.length; i++) {
+                            explosions[i].setLocation(enemy.getX(), enemy.getY());
+                            explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                            imageNum++;
+                            sleep(100);
+                        }
+                        for (int i = 0; i < explosions.length; i++) {
+                            explosions[i].setBufferedImage(null);
+                        }
+                    }).start();
+                    return;
+                }
+            }
+        }
+    }
+
+    private void sleep(int delay) {
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*
+     * if the speed is positive, the enemy to right most move first.
+     * If negative speed, enemy to left most move first.
+     */
+    private void enemiesUpdate() {
+        if (Enemy.getXSpeed() > 0) {
+            for (int i = Enemy.getEnemyList().size() - 1; i >= 0; i--) {
+                Enemy.getEnemyList().get(i).update();
+            }
+        } else {
+            for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
+                Enemy.getEnemyList().get(i).update();
+            }
+        }
+       // enemiesShoot();
+    }
+
+
+    private void enemiesShoot() {
         //make random enemy shoot.
         timer++;
         //create bullet after every second.
@@ -164,120 +228,57 @@ public class GameScreen extends JPanel implements Runnable {
             enemyBullets.add(randEnemy.getBullet());
             timer = 0;
         }
-
-
         Iterator<Bullet> bulletIterator = enemyBullets.iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
             bullet.update();
-            if(bullet.getY() == HEIGHT) {
+            if (bullet.getY() == HEIGHT) {
                 bulletIterator.remove();
             }
         }
-
-
-        System.out.println("enemyBullets: " + enemyBullets.size());
-
-
     }
 
-
-
-private void checkCollision() {
-    Iterator<Enemy> enemyIterator = Enemy.getEnemyList().iterator();
-    while (enemyIterator.hasNext()) {
-        Enemy enemy = enemyIterator.next();
-        Iterator<Rectangle> rectangleIterator = enemy.rectangleList().iterator();
-        while (rectangleIterator.hasNext()) {
-            Rectangle enemyBodyPart = rectangleIterator.next();
-            if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
-                Enemy.getEnemyList().remove(enemy);
-                player.setBullet(null);
-                player.getHandler().setShoot(false);
-                //explosion thread.
-                new Thread(() -> {
-                    int imageNum = 1;
-                    for (int i = 0; i < explosions.length; i++) {
-                        explosions[i].setLocation(enemy.getX(), enemy.getY());
-                        explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
-                        imageNum++;
-                        sleep(100);
-                    }
-                    for (int i = 0; i < explosions.length; i++) {
-                        explosions[i].setBufferedImage(null);
-                    }
-                }).start();
-                return;
-            }
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        //painting.
+        //////////////////////
+        g.setColor(Color.pink);
+        background.render(g2);
+        for (int i = 0; i < explosions.length; i++) {
+            explosions[i].render(g2);
         }
-    }
-}
-
-private void sleep(int delay) {
-    try {
-        Thread.sleep(delay);
-    } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-    }
-}
-
-/*
- * if the speed is positive, the enemy to right most move first.
- * If negative speed, enemy to left most move first.
- */
-private void enemiesUpdate() {
-    if (Enemy.getXSpeed() > 0) {
-        for (int i = Enemy.getEnemyList().size() - 1; i >= 0; i--) {
-            Enemy.getEnemyList().get(i).update();
-        }
-    } else {
-        for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
-            Enemy.getEnemyList().get(i).update();
-        }
-    }
-}
-
-protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    Graphics2D g2 = (Graphics2D) g;
-    //painting.
-    //////////////////////
-    g.setColor(Color.pink);
-    background.render(g2);
-    for (int i = 0; i < explosions.length; i++) {
-        explosions[i].render(g2);
-    }
-    //draw grids.
+        //draw grids.
        /* for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 15; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
         }*/
-    //enemy 3
-    for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
-        Enemy enemy = Enemy.getEnemyList().get(i);
-        enemy.render(g2);
         //enemy 3
+        for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
+            Enemy enemy = Enemy.getEnemyList().get(i);
+            enemy.render(g2);
+            //enemy 3
           /*  g2.setColor(Color.BLUE);
             for (int j = 0; j < enemy.rectangleList().size(); j++) {
                 g2.fillRect((int) enemy.rectangleList().get(j).getX(), (int) enemy.rectangleList().get(j).getY(), (int) enemy.rectangleList().get(j).getWidth(), (int) enemy.rectangleList().get(j).getHeight());
             }*/
+        }
+        player.render(g2);
+
+        //enemy bullets
+        for (Bullet bullet : enemyBullets) {
+            bullet.render(g2);
+        }
+        //////////////////////
+        g2.dispose();
     }
-    player.render(g2);
 
-    //enemy bullets
-    for(Bullet bullet : enemyBullets) {
-        bullet.render(g2);
+    public static int getTileSize() {
+        return tileSize;
     }
-    //////////////////////
-    g2.dispose();
-}
 
-public static int getTileSize() {
-    return tileSize;
-}
-
-public static int getGameWidth() {
-    return WIDTH;
-}
+    public static int getGameWidth() {
+        return WIDTH;
+    }
 }
