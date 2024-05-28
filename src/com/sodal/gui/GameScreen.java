@@ -5,10 +5,8 @@ import com.sodal.handler.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 public class GameScreen extends JPanel implements Runnable {
 
@@ -26,6 +24,9 @@ public class GameScreen extends JPanel implements Runnable {
 
     private List<Bullet> enemyBullets = new ArrayList<>();
 
+
+    private Point[] playerCornerPoints = new Point[144];
+
     public GameScreen() {
 
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -35,6 +36,7 @@ public class GameScreen extends JPanel implements Runnable {
 
         player = new Player("./res/player/ss.png", keyHandler);
         player.setLocation(tileSize * 7, tileSize * 14);
+        addPlayerPixels();
 
 
         background = new Background("./res/background/bg.png", 1);
@@ -46,31 +48,30 @@ public class GameScreen extends JPanel implements Runnable {
         gameLoop.start();
 
 
-        int rgb = new Color(23, 206, 77).getRGB();
-        int grey = new Color(70,70,70).getRGB();
-
-
-        int counter = 0;
-
-        System.out.println(Thread.currentThread().getName());
-        for (int i = 0; i < player.getHeight(); i++) {
-            for (int j = 0; j < player.getWidth(); j++) {
-                if(player.getBufferedImage().getRGB(i,j) == grey) {
-                    player.getBufferedImage().setRGB(i, j, rgb);
-                    counter++;
-
-                }
-            }
-        }
-
-        System.out.println(counter);
     }
-
 
     private Enemy getRandomEnemy() {
         Random rand = new Random();
         int randIndex = rand.nextInt(Enemy.getEnemyList().size());
         return Enemy.getEnemyList().get(randIndex);
+    }
+
+    private void addPlayerPixels() {
+        int rgb = new Color(23, 206, 77).getRGB();
+        int grey = new Color(70, 70, 70).getRGB();
+        int index = 0;
+        System.out.println(Thread.currentThread().getName());
+        for (int y = 0; y < player.getHeight(); y++) {
+            for (int x = 0; x < player.getWidth(); x++) {
+                if (player.getBufferedImage().getRGB(x, y) == grey) {
+                    player.getBufferedImage().setRGB(x, y, rgb);
+                    playerCornerPoints[index] = new Point(x, y);
+                    index++;
+                    System.out.println(new Point(x,y));
+                }
+            }
+        }
+        System.out.println(Arrays.toString(playerCornerPoints));
     }
 
 
@@ -164,7 +165,7 @@ public class GameScreen extends JPanel implements Runnable {
     public void update() {
         player.update();
         playerShoot();
-        // enemiesUpdate();
+        enemiesUpdate();
     }
 
 
@@ -234,7 +235,7 @@ public class GameScreen extends JPanel implements Runnable {
                 Enemy.getEnemyList().get(i).update();
             }
         }
-        // enemiesShoot();
+        enemiesShoot();
     }
 
 
@@ -251,7 +252,7 @@ public class GameScreen extends JPanel implements Runnable {
         Iterator<Bullet> bulletIterator = enemyBullets.iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
-            bullet.update();
+            // bullet.update();
             if (bullet.getY() == HEIGHT) {
                 bulletIterator.remove();
             }

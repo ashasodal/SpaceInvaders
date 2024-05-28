@@ -29,7 +29,7 @@ public class Enemy extends Entity {
             xSpeed = -1 * xSpeed;
             //updateYPos();
         }
-         updateXPos();
+        // updateXPos();
 
     }
 
@@ -86,6 +86,25 @@ public class Enemy extends Entity {
     public void createBullet() {
         bullet = new Bullet("./res/alien/bullet/bullet.png",2);
         bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 6);
+
+
+        int rgb = new Color(255, 20, 0).getRGB();
+        int grey = new Color(70, 70, 70).getRGB();
+        int index = 0;
+        System.out.println(Thread.currentThread().getName());
+        for (int y = 0; y < this.getBullet().getHeight(); y++) {
+            for (int x = 0; x < this.getBullet().getWidth(); x++) {
+                  if (y == this.getBullet().getHeight() -1) {
+                    this.getBullet().getBufferedImage().setRGB( x,  y, rgb);
+                   // playerCornerPoints[index] = new Point(x, y);
+                  //  index++;
+                    System.out.println(new Point(x,y));
+                }
+            }
+        }
+
+
+
     }
 
     public Bullet getBullet() {
