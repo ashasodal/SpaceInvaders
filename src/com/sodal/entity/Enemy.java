@@ -29,7 +29,7 @@ public class Enemy extends Entity {
             xSpeed = -1 * xSpeed;
             //updateYPos();
         }
-        // updateXPos();
+         updateXPos();
 
     }
 
@@ -63,9 +63,7 @@ public class Enemy extends Entity {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
-     //   if(bullet != null) {
-           // bullet.render(g2);
-      //  }
+
     }
 
     public static java.util.List<Enemy> getEnemyList() {

@@ -21,7 +21,6 @@ public class Player extends Entity {
 
     @Override
     public void update() {
-
         if (handler.isLeft()) {
             this.setLocation(this.getX() - this.xSpeed, this.getY());
         }
@@ -29,10 +28,8 @@ public class Player extends Entity {
             this.setLocation(this.getX() + this.xSpeed, this.getY());
         }
         if (handler.isShoot()) {
-
             createBullet();
         }
-
     }
 
 

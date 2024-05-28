@@ -31,7 +31,7 @@ public class Bullet extends Entity {
         }
         //enemy bullet.
         else {
-            setLocation(getX(), getY() + 1 );
+            setLocation(getX(), getY() + 2 );
         }
 
     }

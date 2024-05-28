@@ -33,7 +33,7 @@ public class GameScreen extends JPanel implements Runnable {
         this.setFocusable(true);
         this.addKeyListener(keyHandler);
 
-        player = new Player("./res/player/standardSpaceShip.png", keyHandler);
+        player = new Player("./res/player/ss.png", keyHandler);
         player.setLocation(tileSize * 7, tileSize * 14);
 
 
@@ -44,6 +44,26 @@ public class GameScreen extends JPanel implements Runnable {
 
         gameLoop = new Thread(this);
         gameLoop.start();
+
+
+        int rgb = new Color(23, 206, 77).getRGB();
+        int grey = new Color(70,70,70).getRGB();
+
+
+        int counter = 0;
+
+        System.out.println(Thread.currentThread().getName());
+        for (int i = 0; i < player.getHeight(); i++) {
+            for (int j = 0; j < player.getWidth(); j++) {
+                if(player.getBufferedImage().getRGB(i,j) == grey) {
+                    player.getBufferedImage().setRGB(i, j, rgb);
+                    counter++;
+
+                }
+            }
+        }
+
+        System.out.println(counter);
     }
 
 
@@ -144,7 +164,7 @@ public class GameScreen extends JPanel implements Runnable {
     public void update() {
         player.update();
         playerShoot();
-        enemiesUpdate();
+        // enemiesUpdate();
     }
 
 
@@ -214,7 +234,7 @@ public class GameScreen extends JPanel implements Runnable {
                 Enemy.getEnemyList().get(i).update();
             }
         }
-       // enemiesShoot();
+        // enemiesShoot();
     }
 
 
@@ -249,11 +269,11 @@ public class GameScreen extends JPanel implements Runnable {
             explosions[i].render(g2);
         }
         //draw grids.
-       /* for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 15; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
-        }*/
+        }
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy enemy = Enemy.getEnemyList().get(i);
