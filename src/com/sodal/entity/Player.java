@@ -18,7 +18,6 @@ public class Player extends Entity {
         this.xSpeed = 5;
     }
 
-
     @Override
     public void update() {
         if (handler.isLeft()) {
@@ -31,7 +30,6 @@ public class Player extends Entity {
             createBullet();
         }
     }
-
 
     private void createBullet() {
         if (bullet == null) {

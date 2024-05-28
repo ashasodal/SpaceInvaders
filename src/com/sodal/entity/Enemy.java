@@ -11,7 +11,6 @@ public class Enemy extends Entity {
     private static int xSpeed;
     private static List<Enemy> enemyList = new ArrayList<>();
     private List<Rectangle> rectangleList = new ArrayList<>();
-
     private Bullet bullet;
 
     public Enemy(String imagePath) {
@@ -30,7 +29,6 @@ public class Enemy extends Entity {
             //updateYPos();
         }
         // updateXPos();
-
     }
 
     private void updateXPos() {
@@ -69,48 +67,36 @@ public class Enemy extends Entity {
     public static java.util.List<Enemy> getEnemyList() {
         return enemyList;
     }
-
     public static int getXSpeed() {
         return xSpeed;
     }
-
     public void setRectangleList(Rectangle enemyBodyPart) {
         rectangleList.add(enemyBodyPart);
     }
-
     public List<Rectangle> rectangleList() {
         return rectangleList;
     }
 
 
+    //32 pixels.
     public void createBullet() {
+
         bullet = new Bullet("./res/alien/bullet/bullet.png",2);
         bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 6);
 
+        int counter = 0;
 
         int rgb = new Color(255, 20, 0).getRGB();
-        int grey = new Color(70, 70, 70).getRGB();
-        int index = 0;
-        System.out.println(Thread.currentThread().getName());
         for (int y = 0; y < this.getBullet().getHeight(); y++) {
             for (int x = 0; x < this.getBullet().getWidth(); x++) {
-                  if (y == this.getBullet().getHeight() -1) {
                     this.getBullet().getBufferedImage().setRGB( x,  y, rgb);
-                   // playerCornerPoints[index] = new Point(x, y);
-                  //  index++;
-                    System.out.println(new Point(x,y));
-                }
+                    counter++;
             }
         }
-
-
-
+        System.out.println(counter);
     }
 
     public Bullet getBullet() {
         return bullet;
     }
-
-
-
 }

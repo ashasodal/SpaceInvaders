@@ -25,7 +25,7 @@ public class GameScreen extends JPanel implements Runnable {
     private List<Bullet> enemyBullets = new ArrayList<>();
 
 
-    private Point[] playerCornerPoints = new Point[144];
+    private Point[] playerCornerPoints = new Point[252];
 
     public GameScreen() {
 
@@ -47,7 +47,6 @@ public class GameScreen extends JPanel implements Runnable {
         gameLoop = new Thread(this);
         gameLoop.start();
 
-
     }
 
     private Enemy getRandomEnemy() {
@@ -58,20 +57,20 @@ public class GameScreen extends JPanel implements Runnable {
 
     private void addPlayerPixels() {
         int rgb = new Color(23, 206, 77).getRGB();
-        int grey = new Color(70, 70, 70).getRGB();
+        int grey = new Color(71, 71, 71).getRGB();
         int index = 0;
-        System.out.println(Thread.currentThread().getName());
+        int counter = 0;
         for (int y = 0; y < player.getHeight(); y++) {
             for (int x = 0; x < player.getWidth(); x++) {
                 if (player.getBufferedImage().getRGB(x, y) == grey) {
                     player.getBufferedImage().setRGB(x, y, rgb);
                     playerCornerPoints[index] = new Point(x, y);
                     index++;
-                    System.out.println(new Point(x,y));
+                    counter++;
+                   // System.out.println(new Point(x,y));
                 }
             }
         }
-        System.out.println(Arrays.toString(playerCornerPoints));
     }
 
 
