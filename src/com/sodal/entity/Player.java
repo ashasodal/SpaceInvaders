@@ -12,8 +12,6 @@ public class Player extends Entity {
 
     private Bullet bullet;
 
-
-
     public Player(String imagePath, KeyHandler handler) {
         super(imagePath, 3);
         this.handler = handler;
@@ -44,9 +42,7 @@ public class Player extends Entity {
             bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() - bullet.getHeight());
             Rectangle bulletRect = new Rectangle(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
             bullet.setBulletRect(bulletRect);
-
         }
-
     }
 
     @Override

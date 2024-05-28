@@ -6,6 +6,7 @@ import com.sodal.handler.KeyHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
+import java.util.Random;
 
 public class GameScreen extends JPanel implements Runnable {
 
@@ -17,9 +18,9 @@ public class GameScreen extends JPanel implements Runnable {
     private Player player;
     private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  720  x 768
     private Explosion[] explosions = new Explosion[5];
-
-
     private Background background;
+
+    private Enemy randomEnemy;
 
     public GameScreen() {
 
@@ -32,7 +33,6 @@ public class GameScreen extends JPanel implements Runnable {
         player.setLocation(tileSize * 7, tileSize * 14);
 
 
-
         background = new Background("./res/background/bg.png", 1);
         addAllEnemies();
         createAllExplosion();
@@ -40,6 +40,13 @@ public class GameScreen extends JPanel implements Runnable {
 
         gameLoop = new Thread(this);
         gameLoop.start();
+    }
+
+
+    private Enemy getRandomEnemy() {
+        Random rand = new Random();
+        int randIndex = rand.nextInt(Enemy.getEnemyList().size());
+        return Enemy.getEnemyList().get(randIndex);
     }
 
 
@@ -143,6 +150,20 @@ public class GameScreen extends JPanel implements Runnable {
             checkCollision();
         }
         enemiesUpdate();
+
+        //make random enemy shoot.
+        if (randomEnemy == null) {
+            randomEnemy = getRandomEnemy();
+            randomEnemy.createBullet();
+
+        } else {
+            randomEnemy.getBullet().update();
+            if(randomEnemy.getBullet().getY() >= HEIGHT) {
+                randomEnemy = null;
+            }
+        }
+
+
     }
 
 
@@ -206,24 +227,16 @@ public class GameScreen extends JPanel implements Runnable {
         //painting.
         //////////////////////
         g.setColor(Color.pink);
-
-
-
         background.render(g2);
-
-
         for (int i = 0; i < explosions.length; i++) {
             explosions[i].render(g2);
         }
-
         //draw grids.
-      /*  for (int i = 0; i < 16; i++) {
+       /* for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 15; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
         }*/
-
-
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy enemy = Enemy.getEnemyList().get(i);
@@ -235,8 +248,9 @@ public class GameScreen extends JPanel implements Runnable {
             }*/
         }
         player.render(g2);
-
-
+        if(randomEnemy != null) {
+            randomEnemy.getBullet().render(g2);
+        }
         //////////////////////
         g2.dispose();
     }

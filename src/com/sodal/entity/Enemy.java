@@ -12,6 +12,8 @@ public class Enemy extends Entity {
     private static List<Enemy> enemyList = new ArrayList<>();
     private List<Rectangle> rectangleList = new ArrayList<>();
 
+    private Bullet bullet;
+
     public Enemy(String imagePath) {
         super(imagePath, 3);
         xSpeed = 1;
@@ -21,13 +23,14 @@ public class Enemy extends Entity {
     public void update() {
         if (this.getX() == (GameScreen.getGameWidth() - this.getWidth()) + (this.getSCALE() * this.getSCALE()) && xSpeed > 0) {
             xSpeed = -1 * xSpeed;
-           // updateYPos();
+            // updateYPos();
         }
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
             //updateYPos();
         }
         // updateXPos();
+
     }
 
     private void updateXPos() {
@@ -60,6 +63,9 @@ public class Enemy extends Entity {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
+     //   if(bullet != null) {
+           // bullet.render(g2);
+      //  }
     }
 
     public static java.util.List<Enemy> getEnemyList() {
@@ -77,5 +83,17 @@ public class Enemy extends Entity {
     public List<Rectangle> rectangleList() {
         return rectangleList;
     }
+
+
+    public void createBullet() {
+        bullet = new Bullet("./res/alien/bullet/bullet.png",2);
+        bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 6);
+    }
+
+    public Bullet getBullet() {
+        return bullet;
+    }
+
+
 
 }
