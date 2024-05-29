@@ -48,12 +48,24 @@ public class Player extends Entity {
 
         xPixels = 3;
         yPixels = 7;
-        Rectangle rect5 = new Rectangle(getX() + (scale * xPixels), getY() + (scale * yPixels), scale * 10, scale );
+        Rectangle rect5 = new Rectangle(getX() + (scale * xPixels), getY() + (scale * yPixels), scale * 10, scale);
 
         xPixels = 2;
         yPixels = 8;
-        Rectangle rect6 = new Rectangle(getX() +(scale * xPixels), getY() + (scale * yPixels), scale * 12, scale);
-        playerRectangles.add(rect6);
+        Rectangle rect6 = new Rectangle(getX() + (scale * xPixels), getY() + (scale * yPixels), scale * 12, scale);
+
+        xPixels = 1;
+        yPixels = 9;
+        Rectangle rect7 = new Rectangle(getX() + (scale * xPixels), getY() + (scale * yPixels), scale * 14, scale);
+
+        xPixels = 0;
+        yPixels = 10;
+        Rectangle rect8 = new Rectangle(getX(), getY() + (scale * yPixels), scale * 16, scale * 4);
+
+        xPixels = 1;
+        yPixels = 14;
+        Rectangle rect9 = new Rectangle(getX() + (scale * xPixels), getY() + (scale * yPixels), scale * 14, scale);
+        playerRectangles.add(rect8);
 
     }
 
