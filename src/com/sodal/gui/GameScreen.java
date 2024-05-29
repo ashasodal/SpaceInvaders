@@ -222,6 +222,24 @@ public class GameScreen extends JPanel implements Runnable {
                     player.setXSpeed(0);
                     Bullet.setSpeed(0);
                     System.out.println("collided!!!");
+
+
+                  /*  new Thread(() -> {
+                        int imageNum = 1;
+                        for (int i = 0; i < explosions.length; i++) {
+                            explosions[i].setLocation(enemy.getX(), enemy.getY());
+                            explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                            imageNum++;
+                            sleep(100);
+                        }
+                        for (int i = 0; i < explosions.length; i++) {
+                            explosions[i].setBufferedImage(null);
+                        }
+                    }).start();*/
+
+
+
+
                 }
             }
         }
@@ -232,7 +250,7 @@ public class GameScreen extends JPanel implements Runnable {
         //make random enemy shoot.
         timer++;
         //create bullet after every second.
-        if (timer == 60) {
+        if (timer == 60 && !Enemy.getEnemyList().isEmpty()) {
             Enemy randEnemy = getRandomEnemy();
             randEnemy.createBullet();
             enemyBullets.add(randEnemy.getBullet());
@@ -254,11 +272,7 @@ public class GameScreen extends JPanel implements Runnable {
         //painting.
         //////////////////////
         g.setColor(Color.pink);
-
-
         background.render(g2);
-
-
         for (int i = 0; i < explosions.length; i++) {
             explosions[i].render(g2);
         }
@@ -268,8 +282,6 @@ public class GameScreen extends JPanel implements Runnable {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
         }
-
-
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy enemy = Enemy.getEnemyList().get(i);
@@ -300,7 +312,6 @@ public class GameScreen extends JPanel implements Runnable {
             Rectangle rect = bullet.getBulletRect();
             g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
         }
-
         //////////////////////
         g2.dispose();
     }

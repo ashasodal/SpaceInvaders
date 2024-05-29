@@ -28,7 +28,7 @@ public class Enemy extends Entity {
             xSpeed = -1 * xSpeed;
             //updateYPos();
         }
-        // updateXPos();
+         updateXPos();
     }
 
     private void updateXPos() {
