@@ -21,7 +21,9 @@ public class GameScreen extends JPanel implements Runnable {
     private Background background;
     private int timer;
     private List<Bullet> enemyBullets = new ArrayList<>();
-    private Point[] playerCornerPoints = new Point[252];
+
+
+    private Explosion[] enemyBulletExplosion = new Explosion[5];
 
     public GameScreen() {
 
@@ -34,7 +36,12 @@ public class GameScreen extends JPanel implements Runnable {
 
         background = new Background("./res/background/bg.png", 1);
         addAllEnemies();
-        createAllExplosion();
+
+        //explosions.
+        explosions = createAllExplosion((1.0 / 80) * tileSize);
+        int bulletHeight = 12;
+        enemyBulletExplosion = createAllExplosion((1.0/80) *bulletHeight);
+
 
         gameLoop = new Thread(this);
         gameLoop.start();
@@ -48,16 +55,19 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
 
-    private void createAllExplosion() {
-        explosions[0] = new Explosion("./res/explosion/exp1.png", (1.0 / 80) * tileSize);
-        explosions[1] = new Explosion("./res/explosion/exp2.png", (1.0 / 80) * tileSize);
-        explosions[2] = new Explosion("./res/explosion/exp3.png", (1.0 / 80) * tileSize);
-        explosions[3] = new Explosion("./res/explosion/exp4.png", (1.0 / 80) * tileSize);
-        explosions[4] = new Explosion("./res/explosion/exp5.png", (1.0 / 80) * tileSize);
+    private Explosion[] createAllExplosion(double scale) {
+        Explosion[] explosions = new Explosion[5];
+        explosions[0] = new Explosion("./res/explosion/exp1.png", scale);
+        explosions[1] = new Explosion("./res/explosion/exp2.png", scale);
+        explosions[2] = new Explosion("./res/explosion/exp3.png", scale);
+        explosions[3] = new Explosion("./res/explosion/exp4.png", scale);
+        explosions[4] = new Explosion("./res/explosion/exp5.png", scale);
         for (int i = 0; i < explosions.length; i++) {
             explosions[i].setBufferedImage(null);
         }
+        return explosions;
     }
+
 
     private void addAllEnemies() {
         addAllEnemy3();
@@ -219,26 +229,19 @@ public class GameScreen extends JPanel implements Runnable {
             while (playerRectangles.hasNext()) {
                 Rectangle playerRect = playerRectangles.next();
                 if (bulletRect.intersects(playerRect)) {
-                    player.setXSpeed(0);
-                    Bullet.setSpeed(0);
-                    System.out.println("collided!!!");
-
-
-                  /*  new Thread(() -> {
+                    bulletIterator.remove();
+                   new Thread(() -> {
                         int imageNum = 1;
-                        for (int i = 0; i < explosions.length; i++) {
-                            explosions[i].setLocation(enemy.getX(), enemy.getY());
-                            explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                        for (int i = 0; i < enemyBulletExplosion.length; i++) {
+                            enemyBulletExplosion[i].setLocation(bullet.getX(), bullet.getY());
+                            enemyBulletExplosion[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
                             imageNum++;
                             sleep(100);
                         }
-                        for (int i = 0; i < explosions.length; i++) {
-                            explosions[i].setBufferedImage(null);
+                        for (int i = 0; i < enemyBulletExplosion.length; i++) {
+                            enemyBulletExplosion[i].setBufferedImage(null);
                         }
-                    }).start();*/
-
-
-
+                    }).start();
 
                 }
             }
@@ -273,15 +276,19 @@ public class GameScreen extends JPanel implements Runnable {
         //////////////////////
         g.setColor(Color.pink);
         background.render(g2);
+
+        //EXPLOSIONS.
         for (int i = 0; i < explosions.length; i++) {
             explosions[i].render(g2);
         }
+
         //draw grids.
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 15; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
         }
+
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy enemy = Enemy.getEnemyList().get(i);
@@ -293,25 +300,32 @@ public class GameScreen extends JPanel implements Runnable {
             }
         }
 
-
+        //PLAYER
         player.render(g2);
         g2.setColor(Color.YELLOW);
-        for (int i = 0; i < player.getPlayerRectangles().size(); i++) {
+
+       /* for (int i = 0; i < player.getPlayerRectangles().size(); i++) {
             Rectangle rect = player.getPlayerRectangles().get(i);
             g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
-        }
+        }*/
 
 
-        //enemy bullets
+        //ENEMY BULLETS
         for (Bullet bullet : enemyBullets) {
             bullet.render(g2);
         }
-
         g2.setColor(new Color(200, 0, 255));
         for (Bullet bullet : enemyBullets) {
             Rectangle rect = bullet.getBulletRect();
             g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
+            System.out.println("height rect: " + rect.getHeight() + " width rect: " + rect.getWidth());
         }
+
+
+        for (int i = 0; i < enemyBulletExplosion.length; i++) {
+            enemyBulletExplosion[i].render(g2);
+        }
+
         //////////////////////
         g2.dispose();
     }

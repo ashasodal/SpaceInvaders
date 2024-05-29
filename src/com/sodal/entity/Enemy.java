@@ -28,7 +28,7 @@ public class Enemy extends Entity {
             xSpeed = -1 * xSpeed;
             //updateYPos();
         }
-         updateXPos();
+        // updateXPos();
     }
 
     private void updateXPos() {
@@ -84,6 +84,9 @@ public class Enemy extends Entity {
         bullet = new Bullet("./res/alien/bullet/bullet.png",2);
         bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 6);
         bullet.setBulletRect(new Rectangle(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight()));
+
+
+
 
     }
 

@@ -23,7 +23,6 @@ public abstract class Entity {
     public Entity(String imagePath, double scale) {
 
         this.scale = scale;
-
         try {
             Image image = ImageIO.read(new File(imagePath));
             width = (int) (image.getWidth(null) * scale);
@@ -33,9 +32,8 @@ public abstract class Entity {
             Graphics2D g2 = (Graphics2D) bufferedImage.getGraphics();
             g2.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
             g2.dispose();
-
-
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -124,5 +122,10 @@ public abstract class Entity {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }
