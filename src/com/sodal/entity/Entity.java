@@ -96,7 +96,7 @@ public abstract class Entity {
     }
 
 
-    public void setSCALE(int scale) {
+    public void setScale(int scale) {
         this.scale = scale;
     }
 

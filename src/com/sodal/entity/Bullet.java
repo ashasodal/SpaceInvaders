@@ -4,7 +4,9 @@ import java.awt.*;
 
 public class Bullet extends Entity {
 
-    private int speed;
+    private int speed = 6;
+
+    private static int enemyBulletSpeed = 2;
 
     private Rectangle bulletRect;
 
@@ -27,13 +29,11 @@ public class Bullet extends Entity {
         if (imagePath.equals("./res/player/bullet/bulletSpaceShip.png")) {
             setLocation(getX(), getY() - speed);
             bulletRect.setLocation(getX(), getY());
-            speed = 6;
         }
         //enemy bullet.
         else {
-            this.setLocation(getX(), getY() + 2);
+            this.setLocation(getX(), getY() + enemyBulletSpeed);
             this.bulletRect.y = this.getY();
-
         }
 
     }
@@ -42,8 +42,8 @@ public class Bullet extends Entity {
         this.bulletRect = bulletRect;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public static void setSpeed(int speed) {
+       enemyBulletSpeed = speed;
     }
 
     public Rectangle getBulletRect() {

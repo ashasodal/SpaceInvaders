@@ -27,10 +27,33 @@ public class Player extends Entity {
     }
 
 
-
     public void addAllRectangles() {
-    Rectangle rect1 = new Rectangle(getX() + 21 , getY(), 3,3);
-    playerRectangles.add(rect1);
+
+        int xPixels = 7;
+        int yPixels;
+        int scale = (int) getSCALE();
+        Rectangle rect1 = new Rectangle(getX() + (xPixels * scale), getY(), scale * 2, scale * 2);
+
+        xPixels = 6;
+        yPixels = 2;
+        Rectangle rect2 = new Rectangle(getX() + (xPixels * scale), getY() + (yPixels * scale), scale * 4, scale);
+
+        xPixels = 5;
+        yPixels = 3;
+        Rectangle rect3 = new Rectangle(getX() + (xPixels * scale), getY() + (yPixels * scale), scale * 6, scale);
+
+        xPixels = 4;
+        yPixels = 4;
+        Rectangle rect4 = new Rectangle(getX() + (xPixels * scale), getY() + (yPixels * scale), scale * 8, scale * 3);
+
+        xPixels = 3;
+        yPixels = 7;
+        Rectangle rect5 = new Rectangle(getX() + (scale * xPixels), getY() + (scale * yPixels), scale * 10, scale );
+
+        xPixels = 2;
+        yPixels = 8;
+        Rectangle rect6 = new Rectangle(getX() +(scale * xPixels), getY() + (scale * yPixels), scale * 12, scale);
+        playerRectangles.add(rect6);
 
     }
 
@@ -38,14 +61,14 @@ public class Player extends Entity {
     public void update() {
         if (handler.isLeft()) {
             this.setLocation(this.getX() - this.xSpeed, this.getY());
-            for(int i = 0; i < playerRectangles.size(); i++) {
+            for (int i = 0; i < playerRectangles.size(); i++) {
                 Rectangle rect = playerRectangles.get(i);
                 rect.x -= this.xSpeed;
             }
         }
         if (handler.isRight()) {
             this.setLocation(this.getX() + this.xSpeed, this.getY());
-            for(int i = 0; i < playerRectangles.size(); i++) {
+            for (int i = 0; i < playerRectangles.size(); i++) {
                 Rectangle rect = playerRectangles.get(i);
                 rect.x += this.xSpeed;
             }
@@ -86,6 +109,10 @@ public class Player extends Entity {
 
     public List<Rectangle> getPlayerRectangles() {
         return playerRectangles;
+    }
+
+    public void setXSpeed(int speed) {
+        xSpeed = speed;
     }
 
 }

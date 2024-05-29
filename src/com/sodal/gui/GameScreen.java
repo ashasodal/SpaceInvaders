@@ -36,7 +36,6 @@ public class GameScreen extends JPanel implements Runnable {
         addAllEnemies();
         createAllExplosion();
 
-
         gameLoop = new Thread(this);
         gameLoop.start();
 
@@ -47,7 +46,6 @@ public class GameScreen extends JPanel implements Runnable {
         int randIndex = rand.nextInt(Enemy.getEnemyList().size());
         return Enemy.getEnemyList().get(randIndex);
     }
-
 
 
     private void createAllExplosion() {
@@ -220,8 +218,10 @@ public class GameScreen extends JPanel implements Runnable {
             Iterator<Rectangle> playerRectangles = player.getPlayerRectangles().iterator();
             while (playerRectangles.hasNext()) {
                 Rectangle playerRect = playerRectangles.next();
-                if(bulletRect.intersects(playerRect)) {
-                    throw new RuntimeException("Collided!!!!!");
+                if (bulletRect.intersects(playerRect)) {
+                    player.setXSpeed(0);
+                    Bullet.setSpeed(0);
+                    System.out.println("collided!!!");
                 }
             }
         }
@@ -241,7 +241,7 @@ public class GameScreen extends JPanel implements Runnable {
         Iterator<Bullet> bulletIterator = enemyBullets.iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
-             bullet.update();
+            bullet.update();
             if (bullet.getY() == HEIGHT) {
                 bulletIterator.remove();
             }
@@ -284,9 +284,9 @@ public class GameScreen extends JPanel implements Runnable {
 
         player.render(g2);
         g2.setColor(Color.YELLOW);
-        for(int i = 0; i < player.getPlayerRectangles().size(); i++) {
+        for (int i = 0; i < player.getPlayerRectangles().size(); i++) {
             Rectangle rect = player.getPlayerRectangles().get(i);
-            g2.fillRect(rect.x, rect.y, (int)rect.getWidth(), (int)rect.getHeight());
+            g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
         }
 
 
@@ -294,6 +294,13 @@ public class GameScreen extends JPanel implements Runnable {
         for (Bullet bullet : enemyBullets) {
             bullet.render(g2);
         }
+
+        g2.setColor(new Color(200, 0, 255));
+        for (Bullet bullet : enemyBullets) {
+            Rectangle rect = bullet.getBulletRect();
+            g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
+        }
+
         //////////////////////
         g2.dispose();
     }
