@@ -19,12 +19,8 @@ public class GameScreen extends JPanel implements Runnable {
     private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  720  x 768
     private Explosion[] explosions = new Explosion[5];
     private Background background;
-
     private int timer;
-
     private List<Bullet> enemyBullets = new ArrayList<>();
-
-
     private Point[] playerCornerPoints = new Point[252];
 
     public GameScreen() {
@@ -35,9 +31,6 @@ public class GameScreen extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
 
         player = new Player("./res/player/ss.png", keyHandler);
-        player.setLocation(tileSize * 7, tileSize * 14);
-        addPlayerPixels();
-
 
         background = new Background("./res/background/bg.png", 1);
         addAllEnemies();
@@ -55,23 +48,6 @@ public class GameScreen extends JPanel implements Runnable {
         return Enemy.getEnemyList().get(randIndex);
     }
 
-    private void addPlayerPixels() {
-        int rgb = new Color(23, 206, 77).getRGB();
-        int grey = new Color(71, 71, 71).getRGB();
-        int index = 0;
-        int counter = 0;
-        for (int y = 0; y < player.getHeight(); y++) {
-            for (int x = 0; x < player.getWidth(); x++) {
-                if (player.getBufferedImage().getRGB(x, y) == grey) {
-                    player.getBufferedImage().setRGB(x, y, rgb);
-                    playerCornerPoints[index] = new Point(x, y);
-                    index++;
-                    counter++;
-                   // System.out.println(new Point(x,y));
-                }
-            }
-        }
-    }
 
 
     private void createAllExplosion() {
@@ -235,6 +211,20 @@ public class GameScreen extends JPanel implements Runnable {
             }
         }
         enemiesShoot();
+
+        //check collision between enemy bullet and player.
+        Iterator<Bullet> bulletIterator = enemyBullets.iterator();
+        while (bulletIterator.hasNext()) {
+            Bullet bullet = bulletIterator.next();
+            Rectangle bulletRect = bullet.getBulletRect();
+            Iterator<Rectangle> playerRectangles = player.getPlayerRectangles().iterator();
+            while (playerRectangles.hasNext()) {
+                Rectangle playerRect = playerRectangles.next();
+                if(bulletRect.intersects(playerRect)) {
+                    throw new RuntimeException("Collided!!!!!");
+                }
+            }
+        }
     }
 
 
@@ -251,7 +241,7 @@ public class GameScreen extends JPanel implements Runnable {
         Iterator<Bullet> bulletIterator = enemyBullets.iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
-            // bullet.update();
+             bullet.update();
             if (bullet.getY() == HEIGHT) {
                 bulletIterator.remove();
             }
@@ -264,7 +254,11 @@ public class GameScreen extends JPanel implements Runnable {
         //painting.
         //////////////////////
         g.setColor(Color.pink);
+
+
         background.render(g2);
+
+
         for (int i = 0; i < explosions.length; i++) {
             explosions[i].render(g2);
         }
@@ -274,17 +268,27 @@ public class GameScreen extends JPanel implements Runnable {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
         }
+
+
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy enemy = Enemy.getEnemyList().get(i);
             enemy.render(g2);
             //enemy 3
-          /*  g2.setColor(Color.BLUE);
+            g2.setColor(Color.BLUE);
             for (int j = 0; j < enemy.rectangleList().size(); j++) {
                 g2.fillRect((int) enemy.rectangleList().get(j).getX(), (int) enemy.rectangleList().get(j).getY(), (int) enemy.rectangleList().get(j).getWidth(), (int) enemy.rectangleList().get(j).getHeight());
-            }*/
+            }
         }
+
+
         player.render(g2);
+        g2.setColor(Color.YELLOW);
+        for(int i = 0; i < player.getPlayerRectangles().size(); i++) {
+            Rectangle rect = player.getPlayerRectangles().get(i);
+            g2.fillRect(rect.x, rect.y, (int)rect.getWidth(), (int)rect.getHeight());
+        }
+
 
         //enemy bullets
         for (Bullet bullet : enemyBullets) {

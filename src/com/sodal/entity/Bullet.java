@@ -31,7 +31,9 @@ public class Bullet extends Entity {
         }
         //enemy bullet.
         else {
-            setLocation(getX(), getY() + 2 );
+            this.setLocation(getX(), getY() + 2);
+            this.bulletRect.y = this.getY();
+
         }
 
     }
@@ -47,8 +49,6 @@ public class Bullet extends Entity {
     public Rectangle getBulletRect() {
         return bulletRect;
     }
-
-
 
 
 }

@@ -83,17 +83,14 @@ public class Enemy extends Entity {
 
         bullet = new Bullet("./res/alien/bullet/bullet.png",2);
         bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 6);
-
-        int counter = 0;
+        bullet.setBulletRect(new Rectangle(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight()));
 
         int rgb = new Color(255, 20, 0).getRGB();
         for (int y = 0; y < this.getBullet().getHeight(); y++) {
             for (int x = 0; x < this.getBullet().getWidth(); x++) {
                     this.getBullet().getBufferedImage().setRGB( x,  y, rgb);
-                    counter++;
             }
         }
-        System.out.println(counter);
     }
 
     public Bullet getBullet() {
