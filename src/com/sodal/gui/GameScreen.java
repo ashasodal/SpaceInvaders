@@ -5,6 +5,7 @@ import com.sodal.handler.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
@@ -24,6 +25,11 @@ public class GameScreen extends JPanel implements Runnable {
 
     private Explosion[] enemyBulletExplosion;
 
+    private Explosion[] playerDeadExplosion;
+
+    private String gameOverText = "";
+
+
     public GameScreen() {
 
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -40,6 +46,7 @@ public class GameScreen extends JPanel implements Runnable {
         explosions = createExplosions((1.0 / 80) * tileSize);
         int bulletHeight = 12;
         enemyBulletExplosion = createExplosions((1.0 / 80) * bulletHeight);
+        playerDeadExplosion = createExplosions((1.0 / 80) * 3 * tileSize);
 
 
         gameLoop = new Thread(this);
@@ -141,56 +148,67 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update();
-        playerShoot();
-        enemiesUpdate();
-        enemiesShoot();
+
+        if(player != null) {
+
+            player.update();
+            enemiesUpdate();
+            playerShoot();
+            enemiesShoot();
+            checkCollision();
+        }
+
+
+
     }
 
 
     private void playerShoot() {
-        if (player.getBullet() != null) {
+        if ( player.getBullet() != null) {
             player.getBullet().update();
             if (player.getBullet().getY() <= 0) {
                 player.setBullet(null);
                 player.getHandler().setShoot(false);
-                return;
             }
-            //check collision between spaceShip bullet and enemies.
-            checkCollision();
+        }
+    }
+
+    private void checkIfEnemyHasBeenHit() {
+        if( player.getBullet() != null) {
+            Iterator<Enemy> enemyIterator = Enemy.getEnemyList().iterator();
+            while (enemyIterator.hasNext()) {
+                Enemy enemy = enemyIterator.next();
+                Iterator<Rectangle> rectangleIterator = enemy.rectangleList().iterator();
+                while (rectangleIterator.hasNext()) {
+                    Rectangle enemyBodyPart = rectangleIterator.next();
+                    if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
+                        Enemy.getEnemyList().remove(enemy);
+                        player.setBullet(null);
+                        player.getHandler().setShoot(false);
+                        //explosion thread.
+                        new Thread(() -> {
+                            player.playSound("./res/explosion/sound/explosion2.wav");
+                            int imageNum = 1;
+                            for (int i = 0; i < explosions.length; i++) {
+                                explosions[i].setLocation(enemy.getX(), enemy.getY());
+                                explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                                imageNum++;
+                                sleep(100);
+                            }
+                            for (int i = 0; i < explosions.length; i++) {
+                                explosions[i].setBufferedImage(null);
+                            }
+                        }).start();
+                        return;
+                    }
+                }
+            }
         }
     }
 
 
     private void checkCollision() {
-        Iterator<Enemy> enemyIterator = Enemy.getEnemyList().iterator();
-        while (enemyIterator.hasNext()) {
-            Enemy enemy = enemyIterator.next();
-            Iterator<Rectangle> rectangleIterator = enemy.rectangleList().iterator();
-            while (rectangleIterator.hasNext()) {
-                Rectangle enemyBodyPart = rectangleIterator.next();
-                if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
-                    Enemy.getEnemyList().remove(enemy);
-                    player.setBullet(null);
-                    player.getHandler().setShoot(false);
-                    //explosion thread.
-                    new Thread(() -> {
-                        player.playSound("./res/explosion/sound/explosion2.wav");
-                        int imageNum = 1;
-                        for (int i = 0; i < explosions.length; i++) {
-                            explosions[i].setLocation(enemy.getX(), enemy.getY());
-                            explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
-                            imageNum++;
-                            sleep(100);
-                        }
-                        for (int i = 0; i < explosions.length; i++) {
-                            explosions[i].setBufferedImage(null);
-                        }
-                    }).start();
-                    return;
-                }
-            }
-        }
+      checkIfEnemyHasBeenHit();
     }
 
     private void sleep(int delay) {
@@ -231,21 +249,33 @@ public class GameScreen extends JPanel implements Runnable {
 
                     if (player.getLives() == 0) {
                         new Thread(() -> {
-                            player.playSound("./res/explosion/sound/explosion2.wav");
+                            Player p = player;
+                            p.playSound("./res/explosion/sound/explosion2.wav");
                             int imageNum = 1;
-                            for (int i = 0; i < explosions.length; i++) {
-                                explosions[i].setLocation(player.getX(), player.getY());
-                                explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                            for (int i = 0; i < playerDeadExplosion.length; i++) {
+                                playerDeadExplosion[i].setLocation(p.getX() -tileSize , p.getY() - tileSize);
+                                playerDeadExplosion[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
                                 imageNum++;
                                 sleep(100);
                             }
-                            for (int i = 0; i < explosions.length; i++) {
-                                explosions[i].setBufferedImage(null);
+                            for (int i = 0; i < playerDeadExplosion.length; i++) {
+                                playerDeadExplosion[i].setBufferedImage(null);
                             }
+                            player = null;
+
+                            BufferedImage bf = background.getBufferedImage();
+
+                            Graphics g = bf.getGraphics();
+                            g.setColor(Color.YELLOW);
+                            g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
+                            g.drawString("GAME OVER", tileSize * 5,tileSize * 10);
+
+                            g.dispose();
+
+                           // gameOverText = "Game Over";
                         }).start();
+                        player.setXSpeed(0);
                     } else {
-
-
                         new Thread(() -> {
                             player.playSound("./res/explosion/sound/explosion2.wav");
                             int imageNum = 1;
@@ -259,11 +289,7 @@ public class GameScreen extends JPanel implements Runnable {
                                 enemyBulletExplosion[i].setBufferedImage(null);
                             }
                         }).start();
-
-
                     }
-
-
                 }
             }
         }
@@ -299,12 +325,26 @@ public class GameScreen extends JPanel implements Runnable {
         background.render(g2);
 
 
-        player.render(g2);
+        if(player != null) {
+            player.render(g2);
+        }
+
 
         //EXPLOSIONS.
         for (int i = 0; i < explosions.length; i++) {
             explosions[i].render(g2);
         }
+
+        //EXPLOSIONS.
+        for (int i = 0; i < playerDeadExplosion.length; i++) {
+            playerDeadExplosion[i].render(g2);
+        }
+
+
+        //GAME OVER
+           // g2.setColor(Color.YELLOW);
+           // g2.drawString(gameOverText, tileSize * 5,tileSize * 10);
+
 
 
         g2.setColor(Color.pink);
@@ -343,7 +383,6 @@ public class GameScreen extends JPanel implements Runnable {
         for (Bullet bullet : enemyBullets) {
             Rectangle rect = bullet.getBulletRect();
             g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
-            System.out.println("height rect: " + rect.getHeight() + " width rect: " + rect.getWidth());
         }
 
 
