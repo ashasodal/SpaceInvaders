@@ -231,6 +231,7 @@ public class GameScreen extends JPanel implements Runnable {
                 if (bulletRect.intersects(playerRect)) {
                     bulletIterator.remove();
                    new Thread(() -> {
+                       player.playSound("./res/explosion/sound/explosion2.wav");
                         int imageNum = 1;
                         for (int i = 0; i < enemyBulletExplosion.length; i++) {
                             enemyBulletExplosion[i].setLocation(bullet.getX(), bullet.getY());
@@ -304,10 +305,10 @@ public class GameScreen extends JPanel implements Runnable {
         player.render(g2);
         g2.setColor(Color.YELLOW);
 
-        for (int i = 0; i < player.getPlayerRectangles().size(); i++) {
+      /*  for (int i = 0; i < player.getPlayerRectangles().size(); i++) {
             Rectangle rect = player.getPlayerRectangles().get(i);
             g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
-        }
+        }*/
 
 
         //ENEMY BULLETS
