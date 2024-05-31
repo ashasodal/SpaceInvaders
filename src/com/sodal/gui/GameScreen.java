@@ -229,21 +229,50 @@ public class GameScreen extends JPanel implements Runnable {
             while (playerRectangles.hasNext()) {
                 Rectangle playerRect = playerRectangles.next();
                 if (bulletRect.intersects(playerRect)) {
-                    bulletIterator.remove();
-                    new Thread(() -> {
-                        player.playSound("./res/explosion/sound/explosion2.wav");
-                        int imageNum = 1;
-                        for (int i = 0; i < enemyBulletExplosion.length; i++) {
-                            enemyBulletExplosion[i].setLocation(bullet.getX(), bullet.getY());
-                            enemyBulletExplosion[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
-                            imageNum++;
-                            sleep(100);
-                        }
-                        for (int i = 0; i < enemyBulletExplosion.length; i++) {
-                            enemyBulletExplosion[i].setBufferedImage(null);
-                        }
-                    }).start();
                     player.setLives(player.getLives() - 1);
+                    bulletIterator.remove();
+
+
+                    if(player.getLives() == 0) {
+                        new Thread(() -> {
+                            player.playSound("./res/explosion/sound/explosion2.wav");
+                            int imageNum = 1;
+                            for (int i = 0; i < explosions.length; i++) {
+                                explosions[i].setLocation(player.getX(), player.getY());
+                                explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                                imageNum++;
+                                sleep(100);
+                            }
+                            for (int i = 0; i < explosions.length; i++) {
+                                explosions[i].setBufferedImage(null);
+                            }
+                        }).start();
+                    }
+
+
+                    else {
+
+
+                        new Thread(() -> {
+                            player.playSound("./res/explosion/sound/explosion2.wav");
+                            int imageNum = 1;
+                            for (int i = 0; i < enemyBulletExplosion.length; i++) {
+                                enemyBulletExplosion[i].setLocation(bullet.getX(), bullet.getY());
+                                enemyBulletExplosion[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                                imageNum++;
+                                sleep(100);
+                            }
+                            for (int i = 0; i < enemyBulletExplosion.length; i++) {
+                                enemyBulletExplosion[i].setBufferedImage(null);
+                            }
+                        }).start();
+
+
+
+
+                    }
+
+
                 }
             }
         }
@@ -278,11 +307,16 @@ public class GameScreen extends JPanel implements Runnable {
         g.setColor(Color.pink);
         background.render(g2);
 
+
+        player.render(g2);
+
         //EXPLOSIONS.
         for (int i = 0; i < explosions.length; i++) {
             explosions[i].render(g2);
         }
 
+
+        g2.setColor(Color.pink);
         //draw grids.
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 15; j++) {
@@ -302,8 +336,7 @@ public class GameScreen extends JPanel implements Runnable {
         }
 
         //PLAYER
-        player.render(g2);
-        g2.setColor(Color.YELLOW);
+
 
       /*  for (int i = 0; i < player.getPlayerRectangles().size(); i++) {
             Rectangle rect = player.getPlayerRectangles().get(i);
