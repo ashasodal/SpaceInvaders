@@ -20,6 +20,8 @@ public class GameScreen extends JPanel implements Runnable {
     private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  720  x 768
     private Explosion[] explosions;
     private Background background;
+    private Background gameOverBackground;
+
     private int timer;
     private List<Bullet> enemyBullets = new ArrayList<>();
 
@@ -40,6 +42,7 @@ public class GameScreen extends JPanel implements Runnable {
         player = new Player("./res/player/ss.png", keyHandler);
 
         background = new Background("./res/background/bg.png", 1);
+        gameOverBackground = new Background("./res/background/gameOver.png", 1);
         addAllEnemies();
 
         //explosions.
@@ -263,14 +266,14 @@ public class GameScreen extends JPanel implements Runnable {
                             }
                             player = null;
 
-                            BufferedImage bf = background.getBufferedImage();
+                          /*  BufferedImage bf = background.getBufferedImage();
 
                             Graphics g = bf.getGraphics();
                             g.setColor(Color.YELLOW);
                             g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
                             g.drawString("GAME OVER", tileSize * 5,tileSize * 10);
 
-                            g.dispose();
+                            g.dispose();*/
 
                            // gameOverText = "Game Over";
                         }).start();
@@ -322,7 +325,15 @@ public class GameScreen extends JPanel implements Runnable {
         //painting.
         //////////////////////
         g.setColor(Color.pink);
-        background.render(g2);
+
+
+        if(player != null) {
+            background.render(g2);
+        }
+        else {
+            gameOverBackground.render(g2);
+        }
+
 
 
         if(player != null) {
