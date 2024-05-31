@@ -39,7 +39,7 @@ public class GameScreen extends JPanel implements Runnable {
         //explosions.
         explosions = createAllExplosion((1.0 / 80) * tileSize);
         int bulletHeight = 12;
-        enemyBulletExplosion = createAllExplosion((1.0/80) *bulletHeight);
+        enemyBulletExplosion = createAllExplosion((1.0 / 80) * bulletHeight);
 
 
         gameLoop = new Thread(this);
@@ -230,8 +230,8 @@ public class GameScreen extends JPanel implements Runnable {
                 Rectangle playerRect = playerRectangles.next();
                 if (bulletRect.intersects(playerRect)) {
                     bulletIterator.remove();
-                   new Thread(() -> {
-                       player.playSound("./res/explosion/sound/explosion2.wav");
+                    new Thread(() -> {
+                        player.playSound("./res/explosion/sound/explosion2.wav");
                         int imageNum = 1;
                         for (int i = 0; i < enemyBulletExplosion.length; i++) {
                             enemyBulletExplosion[i].setLocation(bullet.getX(), bullet.getY());
@@ -243,7 +243,7 @@ public class GameScreen extends JPanel implements Runnable {
                             enemyBulletExplosion[i].setBufferedImage(null);
                         }
                     }).start();
-
+                    player.setLives(player.getLives() - 1);
                 }
             }
         }

@@ -107,11 +107,28 @@ public class Player extends Entity {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
-
-        g2.setColor(Color.GREEN);
         //health bar
-        g2.fillRect(this.getX(),this.getY() + GameScreen.getTileSize(), GameScreen.getTileSize(), 16);
-
+        if (lives == 3) {
+            g2.setColor(Color.GREEN);
+            g2.fillRect(this.getX(), this.getY() + GameScreen.getTileSize(), GameScreen.getTileSize(), 16);
+        } else if (lives == 2) {
+            g2.setColor(Color.GREEN);
+            g2.fillRect(this.getX(), this.getY() + GameScreen.getTileSize(), 16, 16);
+            g2.setColor(Color.GREEN);
+            g2.fillRect(this.getX() + 16, this.getY() + GameScreen.getTileSize(), 16, 16);
+            g2.setColor(Color.RED);
+            g2.fillRect(this.getX() + 16 * 2, this.getY() + GameScreen.getTileSize(), 16, 16);
+        } else if (lives == 1) {
+            g2.setColor(Color.GREEN);
+            g2.fillRect(this.getX(), this.getY() + GameScreen.getTileSize(), 16, 16);
+            g2.setColor(Color.RED);
+            g2.fillRect(this.getX() + 16, this.getY() + GameScreen.getTileSize(), 16, 16);
+            g2.setColor(Color.RED);
+            g2.fillRect(this.getX() + 16 * 2, this.getY() + GameScreen.getTileSize(), 16, 16);
+        } else if (lives == 0) {
+            g2.setColor(Color.RED);
+            g2.fillRect(this.getX(), this.getY() + GameScreen.getTileSize(), GameScreen.getTileSize(), 16);
+        }
 
         if (bullet != null) {
             bullet.render(g2);
@@ -136,6 +153,15 @@ public class Player extends Entity {
 
     public void setXSpeed(int speed) {
         xSpeed = speed;
+    }
+
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    public int getLives() {
+        return lives;
     }
 
 }
