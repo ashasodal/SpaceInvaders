@@ -17,12 +17,12 @@ public class GameScreen extends JPanel implements Runnable {
     private KeyHandler keyHandler = new KeyHandler();
     private Player player;
     private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  720  x 768
-    private Explosion[] explosions = new Explosion[5];
+    private Explosion[] explosions;
     private Background background;
     private int timer;
     private List<Bullet> enemyBullets = new ArrayList<>();
 
-    private Explosion[] enemyBulletExplosion = new Explosion[5];
+    private Explosion[] enemyBulletExplosion;
 
     public GameScreen() {
 
@@ -37,9 +37,9 @@ public class GameScreen extends JPanel implements Runnable {
         addAllEnemies();
 
         //explosions.
-        explosions = createAllExplosion((1.0 / 80) * tileSize);
+        explosions = createExplosions((1.0 / 80) * tileSize);
         int bulletHeight = 12;
-        enemyBulletExplosion = createAllExplosion((1.0 / 80) * bulletHeight);
+        enemyBulletExplosion = createExplosions((1.0 / 80) * bulletHeight);
 
 
         gameLoop = new Thread(this);
@@ -54,14 +54,10 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
 
-    private Explosion[] createAllExplosion(double scale) {
+    private Explosion[] createExplosions(double scale) {
         Explosion[] explosions = new Explosion[5];
-        explosions[0] = new Explosion("./res/explosion/exp1.png", scale);
-        explosions[1] = new Explosion("./res/explosion/exp2.png", scale);
-        explosions[2] = new Explosion("./res/explosion/exp3.png", scale);
-        explosions[3] = new Explosion("./res/explosion/exp4.png", scale);
-        explosions[4] = new Explosion("./res/explosion/exp5.png", scale);
         for (int i = 0; i < explosions.length; i++) {
+            explosions[i] = new Explosion("./res/explosion/exp" + (i + 1) + ".png", scale);
             explosions[i].setBufferedImage(null);
         }
         return explosions;
@@ -233,7 +229,7 @@ public class GameScreen extends JPanel implements Runnable {
                     bulletIterator.remove();
 
 
-                    if(player.getLives() == 0) {
+                    if (player.getLives() == 0) {
                         new Thread(() -> {
                             player.playSound("./res/explosion/sound/explosion2.wav");
                             int imageNum = 1;
@@ -247,10 +243,7 @@ public class GameScreen extends JPanel implements Runnable {
                                 explosions[i].setBufferedImage(null);
                             }
                         }).start();
-                    }
-
-
-                    else {
+                    } else {
 
 
                         new Thread(() -> {
@@ -266,8 +259,6 @@ public class GameScreen extends JPanel implements Runnable {
                                 enemyBulletExplosion[i].setBufferedImage(null);
                             }
                         }).start();
-
-
 
 
                     }
