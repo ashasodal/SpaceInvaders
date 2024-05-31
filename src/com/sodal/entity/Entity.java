@@ -3,6 +3,7 @@ package com.sodal.entity;
 import com.sodal.gui.GameScreen;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -32,8 +33,7 @@ public abstract class Entity {
             Graphics2D g2 = (Graphics2D) bufferedImage.getGraphics();
             g2.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
             g2.dispose();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -127,5 +127,26 @@ public abstract class Entity {
 
     public void setWidth(int width) {
         this.width = width;
+    }
+
+
+    public void playSound(String filePath) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                File file = new File(filePath);
+                try {
+                    AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioStream);
+                    clip.start();
+                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
     }
 }

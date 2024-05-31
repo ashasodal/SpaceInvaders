@@ -22,7 +22,6 @@ public class GameScreen extends JPanel implements Runnable {
     private int timer;
     private List<Bullet> enemyBullets = new ArrayList<>();
 
-
     private Explosion[] enemyBulletExplosion = new Explosion[5];
 
     public GameScreen() {
@@ -149,6 +148,7 @@ public class GameScreen extends JPanel implements Runnable {
         player.update();
         playerShoot();
         enemiesUpdate();
+        enemiesShoot();
     }
 
 
@@ -179,6 +179,7 @@ public class GameScreen extends JPanel implements Runnable {
                     player.getHandler().setShoot(false);
                     //explosion thread.
                     new Thread(() -> {
+                        player.playSound("./res/explosion/sound/explosion2.wav");
                         int imageNum = 1;
                         for (int i = 0; i < explosions.length; i++) {
                             explosions[i].setLocation(enemy.getX(), enemy.getY());
@@ -218,7 +219,6 @@ public class GameScreen extends JPanel implements Runnable {
                 Enemy.getEnemyList().get(i).update();
             }
         }
-        enemiesShoot();
 
         //check collision between enemy bullet and player.
         Iterator<Bullet> bulletIterator = enemyBullets.iterator();
@@ -294,20 +294,20 @@ public class GameScreen extends JPanel implements Runnable {
             Enemy enemy = Enemy.getEnemyList().get(i);
             enemy.render(g2);
             //enemy 3
-            g2.setColor(Color.BLUE);
+           /* g2.setColor(Color.BLUE);
             for (int j = 0; j < enemy.rectangleList().size(); j++) {
                 g2.fillRect((int) enemy.rectangleList().get(j).getX(), (int) enemy.rectangleList().get(j).getY(), (int) enemy.rectangleList().get(j).getWidth(), (int) enemy.rectangleList().get(j).getHeight());
-            }
+            }*/
         }
 
         //PLAYER
         player.render(g2);
         g2.setColor(Color.YELLOW);
 
-       /* for (int i = 0; i < player.getPlayerRectangles().size(); i++) {
+        for (int i = 0; i < player.getPlayerRectangles().size(); i++) {
             Rectangle rect = player.getPlayerRectangles().get(i);
             g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
-        }*/
+        }
 
 
         //ENEMY BULLETS

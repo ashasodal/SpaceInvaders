@@ -96,6 +96,8 @@ public class Player extends Entity {
             bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() - bullet.getHeight());
             Rectangle bulletRect = new Rectangle(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
             bullet.setBulletRect(bulletRect);
+
+            playSound("./res/player/shootSound/laser.wav");
         }
     }
 
