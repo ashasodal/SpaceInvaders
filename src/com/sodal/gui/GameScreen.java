@@ -32,6 +32,9 @@ public class GameScreen extends JPanel implements Runnable {
     private Explosion[] playerDeadExplosion;
 
 
+    private boolean gameOver;
+
+
     public GameScreen() {
 
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -151,11 +154,14 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update();
-        enemiesUpdate();
-        playerShoot();
-        enemiesShoot();
-        checkCollision();
+        if(!gameOver) {
+            player.update();
+            enemiesUpdate();
+            playerShoot();
+            enemiesShoot();
+            checkCollision();
+        }
+
     }
 
 
@@ -208,17 +214,13 @@ public class GameScreen extends JPanel implements Runnable {
                         Enemy.getEnemyList().remove(enemy);
                         player.setBullet(null);
                         player.getHandler().setShoot(false);
-                        createExplosion(enemy.getX(),enemy.getY(), explosions, "./res/explosion/sound/explosion2.wav");
+                        createExplosion(enemy.getX(), enemy.getY(), explosions, "./res/explosion/sound/explosion2.wav");
                         return;
                     }
                 }
             }
         }
     }
-
-
-
-
 
     private void sleep(int delay) {
         try {
@@ -260,9 +262,11 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void gameOver() {
-        createExplosion(player.getX() - tileSize, player.getY() -tileSize, playerDeadExplosion, "./res/explosion/sound/explosion2.wav");
+        createExplosion(player.getX() - tileSize, player.getY() - tileSize, playerDeadExplosion, "./res/explosion/sound/explosion2.wav");
+        background = gameOverBackground;
+        player.setXSpeed(0);
+        gameOver = true;
     }
-
 
     private void enemiesShoot() {
         //make random enemy shoot.
@@ -289,20 +293,11 @@ public class GameScreen extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
         //painting.
         //////////////////////
-        g.setColor(Color.pink);
 
-
-        if (player != null) {
-            background.render(g2);
-        } else {
-            gameOverBackground.render(g2);
-        }
-
-
-        if (player != null) {
+        background.render(g2);
+        if(!gameOver) {
             player.render(g2);
         }
-
 
         //EXPLOSIONS.
         for (int i = 0; i < explosions.length; i++) {
@@ -314,38 +309,19 @@ public class GameScreen extends JPanel implements Runnable {
             playerDeadExplosion[i].render(g2);
         }
 
-
-        //GAME OVER
-        // g2.setColor(Color.YELLOW);
-        // g2.drawString(gameOverText, tileSize * 5,tileSize * 10);
-
-
-        g2.setColor(Color.pink);
+        /* g2.setColor(Color.pink);
         //draw grids.
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 15; j++) {
                 g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
             }
-        }
+        }*/
 
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
             Enemy enemy = Enemy.getEnemyList().get(i);
             enemy.render(g2);
-            //enemy 3
-           /* g2.setColor(Color.BLUE);
-            for (int j = 0; j < enemy.rectangleList().size(); j++) {
-                g2.fillRect((int) enemy.rectangleList().get(j).getX(), (int) enemy.rectangleList().get(j).getY(), (int) enemy.rectangleList().get(j).getWidth(), (int) enemy.rectangleList().get(j).getHeight());
-            }*/
         }
-
-        //PLAYER
-
-
-      /*  for (int i = 0; i < player.getPlayerRectangles().size(); i++) {
-            Rectangle rect = player.getPlayerRectangles().get(i);
-            g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
-        }*/
 
 
         //ENEMY BULLETS
