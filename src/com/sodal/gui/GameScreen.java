@@ -1,7 +1,9 @@
 package com.sodal.gui;
 
 import com.sodal.entity.*;
+import com.sodal.entity.Button;
 import com.sodal.handler.KeyHandler;
+import com.sodal.handler.MouseHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +20,8 @@ public class GameScreen extends JPanel implements Runnable {
     private int FPS = 60;
     private Thread gameLoop;
     private KeyHandler keyHandler = new KeyHandler();
+    private Button originalButton = new Button("./res/button/originalButton.png", 1);
+    private MouseHandler mouseHandler = new MouseHandler(originalButton);
     private Player player;
     private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  720  x 768
     private Explosion[] explosions;
@@ -32,7 +36,7 @@ public class GameScreen extends JPanel implements Runnable {
     private Explosion[] playerDeadExplosion;
 
 
-    private boolean gameOver;
+    private static boolean gameOver;
 
 
     public GameScreen() {
@@ -41,6 +45,7 @@ public class GameScreen extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(keyHandler);
+        this.addMouseListener(mouseHandler);
 
         player = new Player("./res/player/ss.png", keyHandler);
 
@@ -298,6 +303,10 @@ public class GameScreen extends JPanel implements Runnable {
         if(!gameOver) {
             player.render(g2);
         }
+        else {
+            //draw gameOver button.
+
+        }
 
         //EXPLOSIONS.
         for (int i = 0; i < explosions.length; i++) {
@@ -328,16 +337,17 @@ public class GameScreen extends JPanel implements Runnable {
         for (Bullet bullet : enemyBullets) {
             bullet.render(g2);
         }
-        g2.setColor(new Color(200, 0, 255));
-        for (Bullet bullet : enemyBullets) {
-            Rectangle rect = bullet.getBulletRect();
-            g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
-        }
+
 
 
         for (int i = 0; i < enemyBulletExplosion.length; i++) {
             enemyBulletExplosion[i].render(g2);
         }
+
+
+
+
+        originalButton.render(g2);
 
         //////////////////////
         g2.dispose();
@@ -349,5 +359,10 @@ public class GameScreen extends JPanel implements Runnable {
 
     public static int getGameWidth() {
         return WIDTH;
+    }
+
+
+    public static boolean getGameOver() {
+        return gameOver;
     }
 }
