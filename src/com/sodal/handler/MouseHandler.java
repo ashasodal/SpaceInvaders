@@ -28,6 +28,9 @@ public class MouseHandler extends MouseAdapter {
             screen.restartGame();
         }
 
+
+        System.out.println("djjdjdjdjd");
+
     }
 
 }
