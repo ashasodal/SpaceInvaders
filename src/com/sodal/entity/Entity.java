@@ -130,7 +130,7 @@ public abstract class Entity {
     }
 
 
-    public void playSound(String filePath) {
+    public static void playSound(String filePath) {
 
         new Thread(new Runnable() {
             @Override
