@@ -15,8 +15,7 @@ public class Player extends Entity {
 
     private Bullet bullet;
 
-
-    int lives = 3;
+   private int lives = 3;
 
 
     private List<Rectangle> playerRectangles = new ArrayList<>();

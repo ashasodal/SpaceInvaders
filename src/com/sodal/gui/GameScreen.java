@@ -21,10 +21,12 @@ public class GameScreen extends JPanel implements Runnable {
     private Thread gameLoop;
     private KeyHandler keyHandler = new KeyHandler();
     private Button originalButton = new Button("./res/button/originalButton.png", 1);
-    private MouseHandler mouseHandler = new MouseHandler(originalButton);
+    private MouseHandler mouseHandler;
     private Player player;
     private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  720  x 768
     private Explosion[] explosions;
+    private Background normalBackground;
+
     private Background background;
     private Background gameOverBackground;
 
@@ -45,12 +47,15 @@ public class GameScreen extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(keyHandler);
+        mouseHandler = new MouseHandler(this, originalButton);
         this.addMouseListener(mouseHandler);
 
         player = new Player("./res/player/ss.png", keyHandler);
 
-        background = new Background("./res/background/bg.png", 1);
+        //Background.
+        normalBackground = new Background("./res/background/bg.png", 1);
         gameOverBackground = new Background("./res/background/gameOver.png", 1);
+        background = normalBackground;
         addAllEnemies();
 
         //explosions.
@@ -60,9 +65,22 @@ public class GameScreen extends JPanel implements Runnable {
         playerDeadExplosion = createExplosions((1.0 / 80) * 3 * tileSize);
 
 
+
         gameLoop = new Thread(this);
         gameLoop.start();
 
+    }
+
+
+
+    public  void restartGame() {
+       // gameOver = false;
+        Enemy.getEnemyList().clear();
+        enemyBullets.clear();
+        background = normalBackground;
+        addAllEnemies();
+        player =  new Player("./res/player/ss.png", keyHandler);
+        gameOver = false;
     }
 
     private Enemy getRandomEnemy() {
