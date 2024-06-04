@@ -214,9 +214,12 @@ public class GameScreen extends JPanel implements Runnable {
                     if (player.getLives() == 0) {
                         createExplosion(player.getX() - tileSize, player.getY() - tileSize, playerDeadExplosion, "./res/explosion/sound/explosion2.wav");
                         gameOver();
+                        return;
                     } else {
                         createExplosion(bullet.getX(), bullet.getY(), enemyBulletExplosion, "./res/explosion/sound/explosion2.wav");
+                        break;
                     }
+
                 }
             }
         }
@@ -332,24 +335,10 @@ public class GameScreen extends JPanel implements Runnable {
         background.render(g2);
         player.render(g2);
 
-
-        //EXPLOSIONS.
-        for (int i = 0; i < explosions.length; i++) {
-            explosions[i].render(g2);
+        //ENEMY BULLETS
+        for (Bullet bullet : enemyBullets) {
+            bullet.render(g2);
         }
-
-        //EXPLOSIONS.
-        for (int i = 0; i < playerDeadExplosion.length; i++) {
-            playerDeadExplosion[i].render(g2);
-        }
-
-        /* g2.setColor(Color.pink);
-        //draw grids.
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 15; j++) {
-                g2.drawRect(tileSize * j, tileSize * i, tileSize, tileSize);
-            }
-        }*/
 
         //enemy 3
         for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
@@ -357,18 +346,14 @@ public class GameScreen extends JPanel implements Runnable {
             enemy.render(g2);
         }
 
-
-        //ENEMY BULLETS
-        for (Bullet bullet : enemyBullets) {
-            bullet.render(g2);
-        }
-
-
-        for (int i = 0; i < enemyBulletExplosion.length; i++) {
+        //EXPLOSIONS (all the explosions have the same length)
+        for (int i = 0; i < explosions.length; i++) {
+            explosions[i].render(g2);
+            playerDeadExplosion[i].render(g2);
             enemyBulletExplosion[i].render(g2);
         }
 
-
+        //RESTART BUTTON.
         originalButton.render(g2);
 
         //////////////////////
