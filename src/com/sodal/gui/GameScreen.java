@@ -29,7 +29,6 @@ public class GameScreen extends JPanel implements Runnable {
 
     private Explosion[] playerDeadExplosion;
 
-    private String gameOverText = "";
 
 
     public GameScreen() {
@@ -195,37 +194,10 @@ public class GameScreen extends JPanel implements Runnable {
         }
     }
 
-    private void createExplosion(Entity entity, Explosion[] explosion, String filePath) {
-        new Thread(() -> {
-            entity.playSound(filePath);
-            for (int i = 0; i < explosion.length; i++) {
-                explosion[i].setLocation(entity.getX(), entity.getY());
-                explosion[i].createBufferImage("./res/explosion/exp" + (i+1) + ".png");
-                sleep(100);
-            }
-            for (int i = 0; i < explosion.length; i++) {
-                explosion[i].setBufferedImage(null);
-            }
-        }).start();
-    }
+
 
     private void gameOver() {
-        new Thread(() -> {
-            Player p = player;
-            p.playSound("./res/explosion/sound/explosion2.wav");
-            int imageNum = 1;
-            for (int i = 0; i < playerDeadExplosion.length; i++) {
-                playerDeadExplosion[i].setLocation(p.getX() - tileSize, p.getY() - tileSize);
-                playerDeadExplosion[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
-                imageNum++;
-                sleep(100);
-            }
-            for (int i = 0; i < playerDeadExplosion.length; i++) {
-                playerDeadExplosion[i].setBufferedImage(null);
-            }
-            player = null;
-        }).start();
-        player.setXSpeed(0);
+        createExplosion(player, playerDeadExplosion, "./res/explosion/sound/explosion2.wav");
     }
 
 
@@ -268,36 +240,9 @@ public class GameScreen extends JPanel implements Runnable {
                     player.setLives(player.getLives() - 1);
                     bulletIterator.remove();
                     if (player.getLives() == 0) {
-                        new Thread(() -> {
-                            Player p = player;
-                            p.playSound("./res/explosion/sound/explosion2.wav");
-                            int imageNum = 1;
-                            for (int i = 0; i < playerDeadExplosion.length; i++) {
-                                playerDeadExplosion[i].setLocation(p.getX() - tileSize, p.getY() - tileSize);
-                                playerDeadExplosion[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
-                                imageNum++;
-                                sleep(100);
-                            }
-                            for (int i = 0; i < playerDeadExplosion.length; i++) {
-                                playerDeadExplosion[i].setBufferedImage(null);
-                            }
-                            player = null;
-                        }).start();
-                        player.setXSpeed(0);
+                        gameOver();
                     } else {
-                        new Thread(() -> {
-                            player.playSound("./res/explosion/sound/explosion2.wav");
-                            int imageNum = 1;
-                            for (int i = 0; i < enemyBulletExplosion.length; i++) {
-                                enemyBulletExplosion[i].setLocation(bullet.getX(), bullet.getY());
-                                enemyBulletExplosion[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
-                                imageNum++;
-                                sleep(100);
-                            }
-                            for (int i = 0; i < enemyBulletExplosion.length; i++) {
-                                enemyBulletExplosion[i].setBufferedImage(null);
-                            }
-                        }).start();
+                        createExplosion(bullet, enemyBulletExplosion, "./res/explosion/sound/explosion2.wav");
                     }
                 }
             }
@@ -305,7 +250,19 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
 
-
+    private void createExplosion(Entity entity, Explosion[] explosion, String filePath) {
+        new Thread(() -> {
+            entity.playSound(filePath);
+            for (int i = 0; i < explosion.length; i++) {
+                explosion[i].setLocation(entity.getX(), entity.getY());
+                explosion[i].createBufferImage("./res/explosion/exp" + (i + 1) + ".png");
+                sleep(100);
+            }
+            for (int i = 0; i < explosion.length; i++) {
+                explosion[i].setBufferedImage(null);
+            }
+        }).start();
+    }
 
 
     private void enemiesShoot() {
