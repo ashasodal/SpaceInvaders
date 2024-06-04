@@ -30,7 +30,6 @@ public class GameScreen extends JPanel implements Runnable {
     private Explosion[] playerDeadExplosion;
 
 
-
     public GameScreen() {
 
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -150,17 +149,38 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     public void update() {
+        player.update();
+        enemiesUpdate();
+        playerShoot();
+        enemiesShoot();
+        checkCollision();
+    }
 
-        if (player != null) {
 
-            player.update();
-            enemiesUpdate();
-            playerShoot();
-            enemiesShoot();
-            checkCollision();
+    private void checkCollision() {
+        checkIfEnemyHasBeenHit();
+        checkIfPlayerHasBeenHit();
+    }
+
+    private void checkIfPlayerHasBeenHit() {
+        Iterator<Bullet> bulletIterator = enemyBullets.iterator();
+        while (bulletIterator.hasNext()) {
+            Bullet bullet = bulletIterator.next();
+            Rectangle bulletRect = bullet.getBulletRect();
+            Iterator<Rectangle> playerRectangles = player.getPlayerRectangles().iterator();
+            while (playerRectangles.hasNext()) {
+                Rectangle playerRect = playerRectangles.next();
+                if (bulletRect.intersects(playerRect)) {
+                    player.setLives(player.getLives() - 1);
+                    bulletIterator.remove();
+                    if (player.getLives() == 0) {
+                        gameOver();
+                    } else {
+                        createExplosion(bullet, enemyBulletExplosion, "./res/explosion/sound/explosion2.wav");
+                    }
+                }
+            }
         }
-
-
     }
 
 
@@ -195,15 +215,10 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
 
-
     private void gameOver() {
         createExplosion(player, playerDeadExplosion, "./res/explosion/sound/explosion2.wav");
     }
 
-
-    private void checkCollision() {
-        checkIfEnemyHasBeenHit();
-    }
 
     private void sleep(int delay) {
         try {
@@ -225,26 +240,6 @@ public class GameScreen extends JPanel implements Runnable {
         } else {
             for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
                 Enemy.getEnemyList().get(i).update();
-            }
-        }
-
-        //check collision between enemy bullet and player.
-        Iterator<Bullet> bulletIterator = enemyBullets.iterator();
-        while (bulletIterator.hasNext()) {
-            Bullet bullet = bulletIterator.next();
-            Rectangle bulletRect = bullet.getBulletRect();
-            Iterator<Rectangle> playerRectangles = player.getPlayerRectangles().iterator();
-            while (playerRectangles.hasNext()) {
-                Rectangle playerRect = playerRectangles.next();
-                if (bulletRect.intersects(playerRect)) {
-                    player.setLives(player.getLives() - 1);
-                    bulletIterator.remove();
-                    if (player.getLives() == 0) {
-                        gameOver();
-                    } else {
-                        createExplosion(bullet, enemyBulletExplosion, "./res/explosion/sound/explosion2.wav");
-                    }
-                }
             }
         }
     }
