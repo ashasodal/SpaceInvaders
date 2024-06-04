@@ -15,31 +15,42 @@ import static com.sodal.entity.Entity.playSound;
 
 public class GameScreen extends JPanel implements Runnable {
 
+    //SIZES.
     private static int tileSize = Entity.getOriginalTileSize() * 3;
+    private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  720  x 768
+
+    //HANDLERS.
+    private KeyHandler keyHandler = new KeyHandler();
+    private MouseHandler mouseHandler;
+
+    //GAME OVER FLAG.
+    private static boolean gameOver;
+
+    //TIMER
+    private int timer;
+
+    //GAME LOOP.
     private boolean isRunning;
     private int FPS = 60;
     private Thread gameLoop;
-    private KeyHandler keyHandler = new KeyHandler();
 
-    private MouseHandler mouseHandler;
+    //PLAYER
     private Player player;
-    private static final int WIDTH = tileSize * 15, HEIGHT = tileSize * 16; //  720  x 768
-    private Explosion[] explosions;
-    private Background normalBackground;
 
+    //BACKGROUND.
+    private Background normalBackground;
     private Background background;
     private Background gameOverBackground;
 
-    private int timer;
-    private List<Bullet> enemyBullets = new ArrayList<>();
-
+    //EXPLOSIONS.
+    private Explosion[] enemyDeadExplosion;
     private Explosion[] enemyBulletExplosion;
-
     private Explosion[] playerDeadExplosion;
 
-    private static boolean gameOver;
-
+    //BUTTONS.
     private Button originalButton;
+
+    private List<Bullet> enemyBullets = new ArrayList<>();
 
 
     public GameScreen() {
@@ -74,10 +85,20 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void createAllExplosions() {
-        explosions = createExplosions((1.0 / 80) * tileSize);
+        enemyDeadExplosion = createExplosions((1.0 / 80) * tileSize);
         int bulletHeight = 12;
         enemyBulletExplosion = createExplosions((1.0 / 80) * bulletHeight);
         playerDeadExplosion = createExplosions((1.0 / 80) * 3 * tileSize);
+    }
+
+
+    private Explosion[] createExplosions(double scale) {
+        Explosion[] explosions = new Explosion[5];
+        for (int i = 0; i < explosions.length; i++) {
+            explosions[i] = new Explosion("./res/explosion/exp" + (i + 1) + ".png", scale);
+            explosions[i].setBufferedImage(null);
+        }
+        return explosions;
     }
 
     private void addAllEnemies() {
@@ -98,16 +119,6 @@ public class GameScreen extends JPanel implements Runnable {
         Random rand = new Random();
         int randIndex = rand.nextInt(Enemy.getEnemyList().size());
         return Enemy.getEnemyList().get(randIndex);
-    }
-
-
-    private Explosion[] createExplosions(double scale) {
-        Explosion[] explosions = new Explosion[5];
-        for (int i = 0; i < explosions.length; i++) {
-            explosions[i] = new Explosion("./res/explosion/exp" + (i + 1) + ".png", scale);
-            explosions[i].setBufferedImage(null);
-        }
-        return explosions;
     }
 
 
@@ -191,7 +202,6 @@ public class GameScreen extends JPanel implements Runnable {
             enemiesShoot();
             checkCollision();
         }
-
     }
 
 
@@ -219,7 +229,6 @@ public class GameScreen extends JPanel implements Runnable {
                         createExplosion(bullet.getX(), bullet.getY(), enemyBulletExplosion, "./res/explosion/sound/explosion2.wav");
                         break;
                     }
-
                 }
             }
         }
@@ -248,8 +257,7 @@ public class GameScreen extends JPanel implements Runnable {
                         Enemy.getEnemyList().remove(enemy);
                         player.setBullet(null);
                         player.getHandler().setShoot(false);
-                        createExplosion(enemy.getX(), enemy.getY(), explosions, "./res/explosion/sound/explosion2.wav");
-
+                        createExplosion(enemy.getX(), enemy.getY(), enemyDeadExplosion, "./res/explosion/sound/explosion2.wav");
                         if (Enemy.getEnemyList().isEmpty()) {
                             gameOver();
                         }
@@ -329,9 +337,9 @@ public class GameScreen extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+
         //painting.
         //////////////////////
-
         background.render(g2);
         player.render(g2);
 
@@ -346,17 +354,17 @@ public class GameScreen extends JPanel implements Runnable {
             enemy.render(g2);
         }
 
-        //EXPLOSIONS (all the explosions have the same length)
-        for (int i = 0; i < explosions.length; i++) {
-            explosions[i].render(g2);
+        //EXPLOSIONS (all the explosions have the same length, 5.)
+        for (int i = 0; i < 5; i++) {
+            enemyDeadExplosion[i].render(g2);
             playerDeadExplosion[i].render(g2);
             enemyBulletExplosion[i].render(g2);
         }
 
         //RESTART BUTTON.
         originalButton.render(g2);
-
         //////////////////////
+
         g2.dispose();
     }
 
