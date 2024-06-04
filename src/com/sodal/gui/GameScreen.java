@@ -152,7 +152,7 @@ public class GameScreen extends JPanel implements Runnable {
 
     public void update() {
 
-        if(player != null) {
+        if (player != null) {
 
             player.update();
             enemiesUpdate();
@@ -162,12 +162,11 @@ public class GameScreen extends JPanel implements Runnable {
         }
 
 
-
     }
 
 
     private void playerShoot() {
-        if ( player.getBullet() != null) {
+        if (player.getBullet() != null) {
             player.getBullet().update();
             if (player.getBullet().getY() <= 0) {
                 player.setBullet(null);
@@ -177,7 +176,7 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void checkIfEnemyHasBeenHit() {
-        if( player.getBullet() != null) {
+        if (player.getBullet() != null) {
             Iterator<Enemy> enemyIterator = Enemy.getEnemyList().iterator();
             while (enemyIterator.hasNext()) {
                 Enemy enemy = enemyIterator.next();
@@ -188,20 +187,7 @@ public class GameScreen extends JPanel implements Runnable {
                         Enemy.getEnemyList().remove(enemy);
                         player.setBullet(null);
                         player.getHandler().setShoot(false);
-                        //explosion thread.
-                        new Thread(() -> {
-                            player.playSound("./res/explosion/sound/explosion2.wav");
-                            int imageNum = 1;
-                            for (int i = 0; i < explosions.length; i++) {
-                                explosions[i].setLocation(enemy.getX(), enemy.getY());
-                                explosions[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
-                                imageNum++;
-                                sleep(100);
-                            }
-                            for (int i = 0; i < explosions.length; i++) {
-                                explosions[i].setBufferedImage(null);
-                            }
-                        }).start();
+                        createExplosion(enemy, explosions, "./res/explosion/sound/explosion2.wav");
                         return;
                     }
                 }
@@ -209,9 +195,42 @@ public class GameScreen extends JPanel implements Runnable {
         }
     }
 
+    private void createExplosion(Entity entity, Explosion[] explosion, String filePath) {
+        new Thread(() -> {
+            entity.playSound(filePath);
+            for (int i = 0; i < explosion.length; i++) {
+                explosion[i].setLocation(entity.getX(), entity.getY());
+                explosion[i].createBufferImage("./res/explosion/exp" + (i+1) + ".png");
+                sleep(100);
+            }
+            for (int i = 0; i < explosion.length; i++) {
+                explosion[i].setBufferedImage(null);
+            }
+        }).start();
+    }
+
+    private void gameOver() {
+        new Thread(() -> {
+            Player p = player;
+            p.playSound("./res/explosion/sound/explosion2.wav");
+            int imageNum = 1;
+            for (int i = 0; i < playerDeadExplosion.length; i++) {
+                playerDeadExplosion[i].setLocation(p.getX() - tileSize, p.getY() - tileSize);
+                playerDeadExplosion[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
+                imageNum++;
+                sleep(100);
+            }
+            for (int i = 0; i < playerDeadExplosion.length; i++) {
+                playerDeadExplosion[i].setBufferedImage(null);
+            }
+            player = null;
+        }).start();
+        player.setXSpeed(0);
+    }
+
 
     private void checkCollision() {
-      checkIfEnemyHasBeenHit();
+        checkIfEnemyHasBeenHit();
     }
 
     private void sleep(int delay) {
@@ -248,15 +267,13 @@ public class GameScreen extends JPanel implements Runnable {
                 if (bulletRect.intersects(playerRect)) {
                     player.setLives(player.getLives() - 1);
                     bulletIterator.remove();
-
-
                     if (player.getLives() == 0) {
                         new Thread(() -> {
                             Player p = player;
                             p.playSound("./res/explosion/sound/explosion2.wav");
                             int imageNum = 1;
                             for (int i = 0; i < playerDeadExplosion.length; i++) {
-                                playerDeadExplosion[i].setLocation(p.getX() -tileSize , p.getY() - tileSize);
+                                playerDeadExplosion[i].setLocation(p.getX() - tileSize, p.getY() - tileSize);
                                 playerDeadExplosion[i].createBufferImage("./res/explosion/exp" + imageNum + ".png");
                                 imageNum++;
                                 sleep(100);
@@ -265,17 +282,6 @@ public class GameScreen extends JPanel implements Runnable {
                                 playerDeadExplosion[i].setBufferedImage(null);
                             }
                             player = null;
-
-                          /*  BufferedImage bf = background.getBufferedImage();
-
-                            Graphics g = bf.getGraphics();
-                            g.setColor(Color.YELLOW);
-                            g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
-                            g.drawString("GAME OVER", tileSize * 5,tileSize * 10);
-
-                            g.dispose();*/
-
-                           // gameOverText = "Game Over";
                         }).start();
                         player.setXSpeed(0);
                     } else {
@@ -297,6 +303,9 @@ public class GameScreen extends JPanel implements Runnable {
             }
         }
     }
+
+
+
 
 
     private void enemiesShoot() {
@@ -327,16 +336,14 @@ public class GameScreen extends JPanel implements Runnable {
         g.setColor(Color.pink);
 
 
-        if(player != null) {
+        if (player != null) {
             background.render(g2);
-        }
-        else {
+        } else {
             gameOverBackground.render(g2);
         }
 
 
-
-        if(player != null) {
+        if (player != null) {
             player.render(g2);
         }
 
@@ -353,9 +360,8 @@ public class GameScreen extends JPanel implements Runnable {
 
 
         //GAME OVER
-           // g2.setColor(Color.YELLOW);
-           // g2.drawString(gameOverText, tileSize * 5,tileSize * 10);
-
+        // g2.setColor(Color.YELLOW);
+        // g2.drawString(gameOverText, tileSize * 5,tileSize * 10);
 
 
         g2.setColor(Color.pink);
