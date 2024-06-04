@@ -205,6 +205,7 @@ public class GameScreen extends JPanel implements Runnable {
                     player.setLives(player.getLives() - 1);
                     bulletIterator.remove();
                     if (player.getLives() == 0) {
+                        createExplosion(player.getX() - tileSize, player.getY() - tileSize, playerDeadExplosion, "./res/explosion/sound/explosion2.wav");
                         gameOver();
                     } else {
                         createExplosion(bullet.getX(), bullet.getY(), enemyBulletExplosion, "./res/explosion/sound/explosion2.wav");
@@ -238,6 +239,11 @@ public class GameScreen extends JPanel implements Runnable {
                         player.setBullet(null);
                         player.getHandler().setShoot(false);
                         createExplosion(enemy.getX(), enemy.getY(), explosions, "./res/explosion/sound/explosion2.wav");
+
+                        if(Enemy.getEnemyList().isEmpty()) {
+                            gameOver();
+                        }
+
                         return;
                     }
                 }
@@ -285,7 +291,6 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void gameOver() {
-        createExplosion(player.getX() - tileSize, player.getY() - tileSize, playerDeadExplosion, "./res/explosion/sound/explosion2.wav");
         background = gameOverBackground;
         player.setXSpeed(0);
         gameOver = true;
