@@ -2,8 +2,6 @@ package com.sodal.main;
 
 import com.sodal.gui.GameWindow;
 
-import javax.swing.*;
-import java.awt.*;
 
 public class Main {
 
@@ -11,4 +9,3 @@ public class Main {
         new GameWindow();
     }
 }
-  

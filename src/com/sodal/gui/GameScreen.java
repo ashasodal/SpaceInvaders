@@ -44,14 +44,14 @@ public class GameScreen extends JPanel implements Runnable {
     //BUTTONS.
     private Button originalButton;
 
-    private static volatile boolean enemyHasBeenHit;
+
 
 
     public GameScreen() {
 
         setUpGameScreen();
 
-        player = new Player("./res/player/ss.png", keyHandler);
+        player = new Player("./res/player/player.png", keyHandler);
         originalButton = new Button("./res/button/originalButton.png", 1);
         mouseHandler = new MouseHandler(this, originalButton);
 
@@ -100,7 +100,7 @@ public class GameScreen extends JPanel implements Runnable {
     public void restartGame() {
         background = normalBackground;
         addAllEnemies();
-        player = new Player("./res/player/ss.png", keyHandler);
+        player = new Player("./res/player/player.png", keyHandler);
         gameOver = false;
         this.removeMouseListener(mouseHandler);
         Enemy.resetTimer();
@@ -208,12 +208,12 @@ public class GameScreen extends JPanel implements Runnable {
                     player.setLives(player.getLives() - 1);
                     bulletIterator.remove();
                     if (player.getLives() == 0) {
-                        player.playSound("./res/explosion/sound/explosion2.wav");
+                        Entity.playSound("./res/explosion/sound/explosion.wav");
                         createExplosion(player.getX() - tileSize, player.getY() - tileSize, playerDeadExplosion);
                         gameOver();
                         return;
                     } else {
-                        player.playSound("./res/explosion/sound/explosion2.wav");
+                        Entity.playSound("./res/explosion/sound/explosion.wav");
                         createExplosion(bullet.getX(), bullet.getY(), enemyBulletExplosion);
                         break;
                     }
@@ -244,8 +244,7 @@ public class GameScreen extends JPanel implements Runnable {
                         Enemy.getEnemyList().remove(enemy);
                         player.setBullet(null);
                         player.getHandler().setShoot(false);
-                        enemyHasBeenHit = true;
-                        player.playSound("./res/explosion/sound/explosion2.wav");
+                        Entity.playSound("./res/explosion/sound/explosion.wav");
                         createExplosion(enemy.getX(), enemy.getY(), enemyDeadExplosion);
                         if (Enemy.getEnemyList().isEmpty()) {
                             gameOver();
@@ -287,7 +286,7 @@ public class GameScreen extends JPanel implements Runnable {
             for (int i = 0; i < explosion.length; i++) {
                 explosion[i].setLocation(x, y);
                 explosion[i].createBufferImage("./res/explosion/exp" + (i + 1) + ".png");
-                sleep(100);
+                sleep(70);
             }
             for (int i = 0; i < explosion.length; i++) {
                 explosion[i].setBufferedImage(null);
@@ -354,12 +353,5 @@ public class GameScreen extends JPanel implements Runnable {
         return HEIGHT;
     }
 
-    public static boolean getEnemyHasBeenHit() {
-        return enemyHasBeenHit;
-    }
-
-    public static void resetEnemyHasBeenHit(boolean reset) {
-        enemyHasBeenHit = reset;
-    }
 
 }

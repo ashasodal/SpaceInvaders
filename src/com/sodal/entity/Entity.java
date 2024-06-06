@@ -21,9 +21,6 @@ public abstract class Entity {
     private int height;
 
 
-    private static int counter;
-
-
     public Entity(String imagePath, double scale) {
 
         this.scale = scale;
@@ -59,9 +56,7 @@ public abstract class Entity {
             throw new RuntimeException(e);
         }
 
-
     }
-
 
     public abstract void render(Graphics2D g2);
 
@@ -133,33 +128,18 @@ public abstract class Entity {
     }
 
 
-    public void playSound(String filePath) {
+    public static void playSound(String filePath) {
 
 
-         new Thread(new Runnable() {
-             @Override
-             public void run() {
-               File  file = new File(filePath);
-                 try {
-                     AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-                    Clip clip = AudioSystem.getClip();
-                     clip.open(audioStream);
-                     clip.start();
-                     while (filePath.equals("./res/player/sound/laser.wav")) {
-                         if (GameScreen.getEnemyHasBeenHit()) {
-                             counter++;
-                             System.out.println(counter);
-                             clip.stop();
-                             GameScreen.resetEnemyHasBeenHit(false);
-                             return;
-                         }
-                     }
-                 } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-                     e.printStackTrace();
-                 }
-             }
-         }).start();
-
+        File file = new File(filePath);
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
 }
