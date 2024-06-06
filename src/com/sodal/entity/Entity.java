@@ -1,7 +1,5 @@
 package com.sodal.entity;
 
-import com.sodal.gui.GameScreen;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import java.awt.*;
@@ -14,9 +12,7 @@ public abstract class Entity {
     private int x, y;
     private double scale;
     private static int originalTileSize = 16;
-
     private volatile BufferedImage bufferedImage;
-
     private int width;
     private int height;
 
@@ -40,7 +36,6 @@ public abstract class Entity {
     }
 
     public void createBufferImage(String imagePath) {
-
         try {
             Image image = ImageIO.read(new File(imagePath));
             width = (int) (image.getWidth(null) * scale);
@@ -50,12 +45,9 @@ public abstract class Entity {
             Graphics2D g2 = (Graphics2D) bufferedImage.getGraphics();
             g2.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
             g2.dispose();
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public abstract void render(Graphics2D g2);
@@ -126,7 +118,6 @@ public abstract class Entity {
     public void setWidth(int width) {
         this.width = width;
     }
-
 
     public static void playSound(String filePath) {
 

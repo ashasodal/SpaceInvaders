@@ -7,8 +7,9 @@ import java.awt.*;
 public class Button extends Entity {
     public Button(String imagePath, double scale) {
         super(imagePath, scale);
-        setX(300);
-        setY(500);
+        int width = 100, height = 50;
+        setX((GameScreen.getGameWidth() - width) / 2);
+        setY((GameScreen.getHEIGHT() - height) / 2);
     }
 
     @Override

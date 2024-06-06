@@ -32,9 +32,8 @@ public class GameScreen extends JPanel implements Runnable {
     private Player player;
 
     //BACKGROUND.
-    private Background normalBackground;
     private Background background;
-    private Background gameOverBackground;
+    private static Background gameOverText;
 
     //EXPLOSIONS.
     private Explosion[] enemyDeadExplosion;
@@ -43,9 +42,6 @@ public class GameScreen extends JPanel implements Runnable {
 
     //BUTTONS.
     private Button originalButton;
-
-
-
 
     public GameScreen() {
 
@@ -72,9 +68,8 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void createAllBackgrounds() {
-        normalBackground = new Background("./res/background/bg.png", 1);
-        gameOverBackground = new Background("./res/background/gameOver.png", 1);
-        background = normalBackground;
+        background = new Background("./res/background/background.png", 1);
+        gameOverText = new Background("./res/background/gameOverText.png", 1);
     }
 
     private void createAllExplosions() {
@@ -98,7 +93,6 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     public void restartGame() {
-        background = normalBackground;
         addAllEnemies();
         player = new Player("./res/player/player.png", keyHandler);
         gameOver = false;
@@ -111,8 +105,8 @@ public class GameScreen extends JPanel implements Runnable {
         int x = tileSize * 3 - (tileSize / 2);
         int y = tileSize * 2;
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 7; j++) {
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 1; j++) {
                 Enemy enemy = new Enemy("./res/alien/alien3.png");
                 enemy.setLocation(x, y);
                 Enemy.getEnemyList().add(enemy);
@@ -298,7 +292,6 @@ public class GameScreen extends JPanel implements Runnable {
         Enemy.getEnemyList().clear();
         Enemy.getEnemyBullets().clear();
         this.addMouseListener(mouseHandler);
-        background = gameOverBackground;
         player.setXSpeed(0);
         gameOver = true;
     }
@@ -333,7 +326,6 @@ public class GameScreen extends JPanel implements Runnable {
         //RESTART BUTTON.
         originalButton.render(g2);
         //////////////////////
-
         g2.dispose();
     }
 
@@ -353,5 +345,7 @@ public class GameScreen extends JPanel implements Runnable {
         return HEIGHT;
     }
 
-
+    public static Background getGameOverText() {
+        return gameOverText;
+    }
 }
