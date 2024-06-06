@@ -7,9 +7,7 @@ import com.sodal.handler.MouseHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.*;
-import java.util.List;
 
 import static com.sodal.entity.Entity.playSound;
 
@@ -25,9 +23,6 @@ public class GameScreen extends JPanel implements Runnable {
 
     //GAME OVER FLAG.
     private static boolean gameOver;
-
-    //TIMER
-    private int timer;
 
     //GAME LOOP.
     private boolean isRunning;
@@ -50,8 +45,6 @@ public class GameScreen extends JPanel implements Runnable {
     //BUTTONS.
     private Button originalButton;
 
-    private List<Bullet> enemyBullets = new ArrayList<>();
-
 
     public GameScreen() {
 
@@ -68,7 +61,6 @@ public class GameScreen extends JPanel implements Runnable {
 
         gameLoop = new Thread(this);
         gameLoop.start();
-
     }
 
     private void setUpGameScreen() {
@@ -91,7 +83,6 @@ public class GameScreen extends JPanel implements Runnable {
         playerDeadExplosion = createExplosions((1.0 / 80) * 3 * tileSize);
     }
 
-
     private Explosion[] createExplosions(double scale) {
         Explosion[] explosions = new Explosion[5];
         for (int i = 0; i < explosions.length; i++) {
@@ -106,21 +97,13 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     public void restartGame() {
-        Enemy.getEnemyList().clear();
-        enemyBullets.clear();
         background = normalBackground;
         addAllEnemies();
         player = new Player("./res/player/ss.png", keyHandler);
         gameOver = false;
         this.removeMouseListener(mouseHandler);
+         Enemy.resetTimer();
     }
-
-    private Enemy getRandomEnemy() {
-        Random rand = new Random();
-        int randIndex = rand.nextInt(Enemy.getEnemyList().size());
-        return Enemy.getEnemyList().get(randIndex);
-    }
-
 
     private void addAllEnemy3() {
 
@@ -196,14 +179,16 @@ public class GameScreen extends JPanel implements Runnable {
 
     public void update() {
         if (!gameOver) {
-            player.update();
+            playerUpdate();
             enemiesUpdate();
-            playerShoot();
-            enemiesShoot();
             checkCollision();
         }
     }
 
+    private void playerUpdate() {
+        player.update();
+        playerShoot();
+    }
 
     private void checkCollision() {
         checkIfEnemyHasBeenHit();
@@ -211,7 +196,7 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void checkIfPlayerHasBeenHit() {
-        Iterator<Bullet> bulletIterator = enemyBullets.iterator();
+        Iterator<Bullet> bulletIterator = Enemy.getEnemyBullets().iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
             Rectangle bulletRect = bullet.getBulletRect();
@@ -233,7 +218,6 @@ public class GameScreen extends JPanel implements Runnable {
             }
         }
     }
-
 
     private void playerShoot() {
         if (player.getBullet() != null) {
@@ -290,8 +274,8 @@ public class GameScreen extends JPanel implements Runnable {
                 Enemy.getEnemyList().get(i).update();
             }
         }
+        Enemy.enemiesShoot();
     }
-
 
     private void createExplosion(int x, int y, Explosion[] explosion, String filePath) {
         new Thread(() -> {
@@ -308,30 +292,12 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void gameOver() {
+        Enemy.getEnemyList().clear();
+        Enemy.getEnemyBullets().clear();
         this.addMouseListener(mouseHandler);
         background = gameOverBackground;
         player.setXSpeed(0);
         gameOver = true;
-    }
-
-    private void enemiesShoot() {
-        //make random enemy shoot.
-        timer++;
-        //create bullet after every second.
-        if (timer == 60 && !Enemy.getEnemyList().isEmpty()) {
-            Enemy randEnemy = getRandomEnemy();
-            randEnemy.createBullet();
-            enemyBullets.add(randEnemy.getBullet());
-            timer = 0;
-        }
-        Iterator<Bullet> bulletIterator = enemyBullets.iterator();
-        while (bulletIterator.hasNext()) {
-            Bullet bullet = bulletIterator.next();
-            bullet.update();
-            if (bullet.getY() == HEIGHT) {
-                bulletIterator.remove();
-            }
-        }
     }
 
     protected void paintComponent(Graphics g) {
@@ -344,7 +310,7 @@ public class GameScreen extends JPanel implements Runnable {
         player.render(g2);
 
         //ENEMY BULLETS
-        for (Bullet bullet : enemyBullets) {
+        for (Bullet bullet : Enemy.getEnemyBullets()) {
             bullet.render(g2);
         }
 
@@ -376,8 +342,11 @@ public class GameScreen extends JPanel implements Runnable {
         return WIDTH;
     }
 
-
     public static boolean getGameOver() {
         return gameOver;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
     }
 }
