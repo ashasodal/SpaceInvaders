@@ -29,7 +29,7 @@ public class GameScreen extends JPanel implements Runnable {
     private Thread gameLoop;
 
     //PLAYER
-    private Player player;
+    private static Player player;
 
     //BACKGROUND.
     private Background background;
@@ -42,6 +42,9 @@ public class GameScreen extends JPanel implements Runnable {
 
     //BUTTONS.
     private Button originalButton;
+
+
+    private static volatile boolean bulletRendered;
 
     public GameScreen() {
 
@@ -175,8 +178,8 @@ public class GameScreen extends JPanel implements Runnable {
     public void update() {
         if (!gameOver) {
             playerUpdate();
-            enemiesUpdate();
-            checkCollision();
+            //enemiesUpdate();
+           // checkCollision();
         }
     }
 
@@ -217,11 +220,10 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void playerShoot() {
-        if (player.getBullet() != null) {
+        if ( bulletRendered && player.getBullet() != null) {
             player.getBullet().update();
             if (player.getBullet().getY() <= 0) {
                 player.setBullet(null);
-                player.getHandler().setShoot(false);
             }
         }
     }
@@ -237,7 +239,6 @@ public class GameScreen extends JPanel implements Runnable {
                     if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
                         Enemy.getEnemyList().remove(enemy);
                         player.setBullet(null);
-                        player.getHandler().setShoot(false);
                         Entity.playSound("./res/explosion/sound/explosion.wav");
                         createExplosion(enemy.getX(), enemy.getY(), enemyDeadExplosion);
                         if (Enemy.getEnemyList().isEmpty()) {
@@ -305,6 +306,11 @@ public class GameScreen extends JPanel implements Runnable {
         background.render(g2);
         player.render(g2);
 
+        if (player.getBullet() != null) {
+            player.getBullet().render(g2);
+            GameScreen.setBulletRendered(true);
+        }
+
         //ENEMY BULLETS
         for (Bullet bullet : Enemy.getEnemyBullets()) {
             bullet.render(g2);
@@ -347,5 +353,18 @@ public class GameScreen extends JPanel implements Runnable {
 
     public static Background getGameOverText() {
         return gameOverText;
+    }
+
+    public static Player getPlayer() {{
+        return player;
+    }}
+
+    public static boolean getBulletRendered() {
+        return bulletRendered;
+    }
+
+    public static void setBulletRendered(boolean reset) {
+
+            bulletRendered = reset;
     }
 }

@@ -7,7 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class KeyHandler extends KeyAdapter {
-    private boolean up, down, left, right, shoot;
+    private boolean up, down, left, right;
 
 
     public KeyHandler() {
@@ -22,7 +22,11 @@ public class KeyHandler extends KeyAdapter {
         if (keyCode == KeyEvent.VK_RIGHT) right = true;
         if (keyCode == KeyEvent.VK_UP) up = true;
         if (keyCode == KeyEvent.VK_DOWN) down = true;
-        if (keyCode == KeyEvent.VK_SPACE) shoot = true;
+        if (keyCode == KeyEvent.VK_SPACE){
+            if(GameScreen.getPlayer().getBullet() == null) {
+                GameScreen.getPlayer().createBullet();
+            }
+        }
     }
 
     @Override
@@ -34,13 +38,10 @@ public class KeyHandler extends KeyAdapter {
         if (keyCode == KeyEvent.VK_RIGHT) right = false;
         if (keyCode == KeyEvent.VK_UP) up = false;
         if (keyCode == KeyEvent.VK_DOWN) down = false;
-        if (keyCode == KeyEvent.VK_SPACE) shoot = false;
 
     }
 
-    public void setShoot(boolean shoot) {
-        this.shoot = shoot;
-    }
+
 
     public boolean isRight() {
         return right;
@@ -50,15 +51,5 @@ public class KeyHandler extends KeyAdapter {
         return left;
     }
 
-    public boolean isShoot() {
-        return shoot;
-    }
 
-    public boolean isDown() {
-        return down;
-    }
-
-    public boolean isUp() {
-        return up;
-    }
 }
