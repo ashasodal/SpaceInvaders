@@ -45,7 +45,7 @@ public class Bullet extends Entity {
         this.bulletRect = bulletRect;
     }
 
-    
+
     public Rectangle getBulletRect() {
         return bulletRect;
     }

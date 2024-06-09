@@ -19,6 +19,7 @@ public class GameScreen extends JPanel implements Runnable {
     //HANDLERS.
     private KeyHandler keyHandler = new KeyHandler();
     private MouseHandler mouseHandler;
+    private MouseMotionHandler mouseMotionHandler;
 
     //GAME OVER FLAG.
     private static boolean gameOver;
@@ -41,17 +42,20 @@ public class GameScreen extends JPanel implements Runnable {
     private Explosion[] playerDeadExplosion;
 
     //BUTTONS.
-    private Button originalButton;
-
+    private static Button originalButton;
+    private static Button darkerButton;
 
 
     public GameScreen() {
 
-        setUpGameScreen();
 
         player = new Player("./res/player/player.png", keyHandler);
         originalButton = new Button("./res/button/originalButton.png", 1);
+        darkerButton = new Button("./res/button/darkerButton.png", 1);
         mouseHandler = new MouseHandler(this, originalButton);
+        mouseMotionHandler = new MouseMotionHandler(originalButton,darkerButton);
+
+        setUpGameScreen();
 
         //Background.
         createAllBackgrounds();
@@ -67,6 +71,8 @@ public class GameScreen extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(keyHandler);
+        this.addMouseListener(mouseHandler);
+        this.addMouseMotionListener(mouseMotionHandler);
     }
 
     private void createAllBackgrounds() {
@@ -219,8 +225,8 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void playerShoot() {
-        if ( player.getBullet() != null) {
-           // player.getBullet().update();
+        if (player.getBullet() != null) {
+            // player.getBullet().update();
             if (player.getBullet().getY() <= 0) {
                 player.setBullet(null);
             }
@@ -309,14 +315,17 @@ public class GameScreen extends JPanel implements Runnable {
             player.getBullet().render(g2);
         }
 
-        //ENEMY BULLETS
-        for (Bullet bullet : Enemy.getEnemyBullets()) {
+          //ENEMY BULLETS
+        Iterator<Bullet> bulletIterator = Enemy.getEnemyBullets().iterator();
+        while (bulletIterator.hasNext()) {
+            Bullet bullet = bulletIterator.next();
             bullet.render(g2);
         }
 
         //enemy 3
-        for (int i = 0; i < Enemy.getEnemyList().size(); i++) {
-            Enemy enemy = Enemy.getEnemyList().get(i);
+        Iterator<Enemy> enemyIterator = Enemy.getEnemyList().iterator();
+        while (enemyIterator.hasNext()) {
+            Enemy enemy = enemyIterator.next();
             enemy.render(g2);
         }
 
@@ -328,7 +337,7 @@ public class GameScreen extends JPanel implements Runnable {
         }
 
         //RESTART BUTTON.
-        originalButton.render(g2);
+        MouseMotionHandler.getButton().render(g2);
         //////////////////////
         g2.dispose();
     }
@@ -358,6 +367,18 @@ public class GameScreen extends JPanel implements Runnable {
             return player;
         }
     }
+
+    public static void setOriginalButton(Button button) {
+        originalButton = button;
+    }
+
+    public static Button getDarkerButton() {
+        return darkerButton;
+    }
+
+
+
+
 
 
 }

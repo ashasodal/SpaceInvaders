@@ -5,8 +5,12 @@ import com.sodal.gui.GameScreen;
 import java.awt.*;
 
 public class Button extends Entity {
+
+
+    private String imagePath;
     public Button(String imagePath, double scale) {
         super(imagePath, scale);
+        this.imagePath = imagePath;
         int width = 100, height = 50;
         setX((GameScreen.getGameWidth() - width) / 2);
         setY((GameScreen.getHEIGHT() - height) / 2);
@@ -24,5 +28,10 @@ public class Button extends Entity {
     @Override
     public void update() {
 
+    }
+
+
+    public String getImagePath() {
+        return imagePath;
     }
 }
