@@ -33,6 +33,10 @@ public class Bullet extends Entity {
         if (imagePath.equals("./res/player/bullet/bulletSpaceShip.png")) {
             setLocation(getX(), getY() - speed);
             bulletRect.setLocation(getX(), getY());
+
+            if (getY() <= 0) {
+               Player.setBullet(null);
+            }
         }
         //enemy bullet.
         else {

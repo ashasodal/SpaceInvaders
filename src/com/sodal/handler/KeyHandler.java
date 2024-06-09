@@ -23,7 +23,7 @@ public class KeyHandler extends KeyAdapter {
         if (keyCode == KeyEvent.VK_UP) up = true;
         if (keyCode == KeyEvent.VK_DOWN) down = true;
         if (keyCode == KeyEvent.VK_SPACE){
-            if(GameScreen.getPlayer().getBullet() == null) {
+            if(GameScreen.getPlayer().getBullet() == null && !GameScreen.getGameOver()) {
                 GameScreen.getPlayer().createBullet();
             }
         }

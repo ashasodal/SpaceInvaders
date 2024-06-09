@@ -1,5 +1,6 @@
-package com.sodal.entity;
+package com.sodal.handler;
 
+import com.sodal.entity.Button;
 import com.sodal.gui.GameScreen;
 
 import java.awt.*;
@@ -11,14 +12,14 @@ import java.awt.event.MouseMotionListener;
 public class MouseMotionHandler extends  MouseMotionAdapter {
 
 
-    private static Button originalButton;
+    private static com.sodal.entity.Button originalButton;
 
-    private static Button darkerButton;
+    private static com.sodal.entity.Button darkerButton;
 
-    private static Button button;
+    private static com.sodal.entity.Button button;
 
 
-   public MouseMotionHandler(Button original, Button darker) {
+   public MouseMotionHandler(com.sodal.entity.Button original, com.sodal.entity.Button darker) {
        originalButton = original;
        darkerButton = darker;
        button = originalButton;
@@ -34,7 +35,6 @@ public class MouseMotionHandler extends  MouseMotionAdapter {
             button = originalButton;
             System.out.println("original button");
         }
-
     }
 
 

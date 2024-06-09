@@ -4,6 +4,7 @@ import com.sodal.entity.*;
 import com.sodal.entity.Button;
 import com.sodal.handler.KeyHandler;
 import com.sodal.handler.MouseHandler;
+import com.sodal.handler.MouseMotionHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -190,7 +191,6 @@ public class GameScreen extends JPanel implements Runnable {
 
     private void playerUpdate() {
         player.update();
-        playerShoot();
     }
 
     private void checkCollision() {
@@ -220,15 +220,6 @@ public class GameScreen extends JPanel implements Runnable {
                         break;
                     }
                 }
-            }
-        }
-    }
-
-    private void playerShoot() {
-        if (player.getBullet() != null) {
-            // player.getBullet().update();
-            if (player.getBullet().getY() <= 0) {
-                player.setBullet(null);
             }
         }
     }
@@ -299,6 +290,7 @@ public class GameScreen extends JPanel implements Runnable {
         Enemy.getEnemyBullets().clear();
         this.addMouseListener(mouseHandler);
         player.setXSpeed(0);
+        Player.setBullet(null);
         gameOver = true;
     }
 
@@ -311,7 +303,7 @@ public class GameScreen extends JPanel implements Runnable {
         background.render(g2);
         player.render(g2);
 
-        if (player.getBullet() != null) {
+        if (player.getBullet() != null && !gameOver) {
             player.getBullet().render(g2);
         }
 
@@ -367,18 +359,5 @@ public class GameScreen extends JPanel implements Runnable {
             return player;
         }
     }
-
-    public static void setOriginalButton(Button button) {
-        originalButton = button;
-    }
-
-    public static Button getDarkerButton() {
-        return darkerButton;
-    }
-
-
-
-
-
 
 }

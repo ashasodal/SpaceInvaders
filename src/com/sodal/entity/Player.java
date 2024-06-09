@@ -11,7 +11,7 @@ public class Player extends Entity {
 
     private int xSpeed;
     private KeyHandler handler;
-    private Bullet bullet;
+    private static Bullet bullet;
     private int lives = 3;
 
     private List<Rectangle> playerRectangles = new ArrayList<>();
@@ -137,8 +137,8 @@ public class Player extends Entity {
         return bullet;
     }
 
-    public void setBullet(Bullet bullet) {
-        this.bullet = bullet;
+    public static void setBullet(Bullet bull) {
+        bullet = bull;
     }
 
     public KeyHandler getHandler() {
