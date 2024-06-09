@@ -177,8 +177,8 @@ public class GameScreen extends JPanel implements Runnable {
     public void update() {
         if (!gameOver) {
             playerUpdate();
-            //enemiesUpdate();
-            // checkCollision();
+            enemiesUpdate();
+            checkCollision();
         }
     }
 

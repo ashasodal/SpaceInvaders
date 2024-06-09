@@ -24,13 +24,8 @@ public class MouseHandler extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         Point point = e.getPoint();
         if(GameScreen.getGameOver() && point.x >= button.getX() && point.x <= button.getX() + button.getWidth() && point.y >= button.getY() && point.y <= button.getY() + button.getHeight()) {
-            System.out.println("pressed!!!");
             screen.restartGame();
         }
-
-
-        System.out.println("djjdjdjdjd");
-
     }
 
 }

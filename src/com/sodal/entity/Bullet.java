@@ -22,7 +22,6 @@ public class Bullet extends Entity {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(getBufferedImage(), this.getX(), this.getY(), null);
-        System.out.println("bullet rendered: " + getY());
         update();
     }
 
@@ -32,10 +31,6 @@ public class Bullet extends Entity {
         if (imagePath.equals("./res/player/bullet/bulletSpaceShip.png")) {
             setLocation(getX(), getY() - speed);
             bulletRect.setLocation(getX(), getY());
-            System.out.println("bullet updated " + getY());
-
-
-
         }
         //enemy bullet.
         else {
