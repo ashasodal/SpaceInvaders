@@ -107,6 +107,8 @@ public class GameScreen extends JPanel implements Runnable {
         gameOver = false;
         this.removeMouseListener(mouseHandler);
         Enemy.resetTimer();
+        MouseMotionHandler.setButton(originalButton);
+        
     }
 
     private void addAllEnemy3() {

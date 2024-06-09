@@ -41,4 +41,8 @@ public class MouseMotionHandler extends  MouseMotionAdapter {
     public static Button getButton() {
        return button;
     }
+
+    public static void setButton(Button b) {
+       button = b;
+    }
 }
