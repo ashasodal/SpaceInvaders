@@ -362,4 +362,9 @@ public class GameScreen extends JPanel implements Runnable {
         }
     }
 
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
 }

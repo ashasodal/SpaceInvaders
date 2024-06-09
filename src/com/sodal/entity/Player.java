@@ -68,6 +68,9 @@ public class Player extends Entity {
     @Override
     public void update() {
         if (handler.isLeft()) {
+            if(getX() <= -(GameScreen.getTileSize()/2)) {
+                return;
+            }
             this.setLocation(this.getX() - this.xSpeed, this.getY());
             for (int i = 0; i < playerRectangles.size(); i++) {
                 Rectangle rect = playerRectangles.get(i);
@@ -75,6 +78,9 @@ public class Player extends Entity {
             }
         }
         if (handler.isRight()) {
+            if(getX() >= (GameScreen.getWIDTH() - GameScreen.getTileSize()) + (GameScreen.getTileSize()/2)) {
+                return;
+            }
             this.setLocation(this.getX() + this.xSpeed, this.getY());
             for (int i = 0; i < playerRectangles.size(); i++) {
                 Rectangle rect = playerRectangles.get(i);
