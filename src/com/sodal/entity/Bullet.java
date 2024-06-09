@@ -23,7 +23,7 @@ public class Bullet extends Entity {
     public void render(Graphics2D g2) {
         g2.drawImage(getBufferedImage(), this.getX(), this.getY(), null);
         System.out.println("bullet rendered: " + getY());
-
+        update();
     }
 
     @Override
@@ -33,7 +33,9 @@ public class Bullet extends Entity {
             setLocation(getX(), getY() - speed);
             bulletRect.setLocation(getX(), getY());
             System.out.println("bullet updated " + getY());
-              GameScreen.setBulletRendered(false);
+
+
+
         }
         //enemy bullet.
         else {

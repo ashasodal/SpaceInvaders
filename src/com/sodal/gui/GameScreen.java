@@ -44,7 +44,6 @@ public class GameScreen extends JPanel implements Runnable {
     private Button originalButton;
 
 
-    private static volatile boolean bulletRendered;
 
     public GameScreen() {
 
@@ -108,8 +107,8 @@ public class GameScreen extends JPanel implements Runnable {
         int x = tileSize * 3 - (tileSize / 2);
         int y = tileSize * 2;
 
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 1; j++) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
                 Enemy enemy = new Enemy("./res/alien/alien3.png");
                 enemy.setLocation(x, y);
                 Enemy.getEnemyList().add(enemy);
@@ -179,7 +178,7 @@ public class GameScreen extends JPanel implements Runnable {
         if (!gameOver) {
             playerUpdate();
             //enemiesUpdate();
-           // checkCollision();
+            // checkCollision();
         }
     }
 
@@ -220,8 +219,8 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void playerShoot() {
-        if ( bulletRendered && player.getBullet() != null) {
-            player.getBullet().update();
+        if ( player.getBullet() != null) {
+           // player.getBullet().update();
             if (player.getBullet().getY() <= 0) {
                 player.setBullet(null);
             }
@@ -308,7 +307,6 @@ public class GameScreen extends JPanel implements Runnable {
 
         if (player.getBullet() != null) {
             player.getBullet().render(g2);
-            GameScreen.setBulletRendered(true);
         }
 
         //ENEMY BULLETS
@@ -355,16 +353,11 @@ public class GameScreen extends JPanel implements Runnable {
         return gameOverText;
     }
 
-    public static Player getPlayer() {{
-        return player;
-    }}
-
-    public static boolean getBulletRendered() {
-        return bulletRendered;
+    public static Player getPlayer() {
+        {
+            return player;
+        }
     }
 
-    public static void setBulletRendered(boolean reset) {
 
-            bulletRendered = reset;
-    }
 }
