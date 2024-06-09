@@ -8,7 +8,7 @@ public class Bullet extends Entity {
 
     private int speed = 6;
 
-    private static int enemyBulletSpeed = 2;
+    private static int enemyBulletSpeed = 4;
 
     private Rectangle bulletRect;
 
@@ -22,7 +22,9 @@ public class Bullet extends Entity {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(getBufferedImage(), this.getX(), this.getY(), null);
-        update();
+        if (imagePath.equals("./res/player/bullet/bulletSpaceShip.png")) {
+            update();
+        }
     }
 
     @Override
@@ -43,10 +45,7 @@ public class Bullet extends Entity {
         this.bulletRect = bulletRect;
     }
 
-    public static void setSpeed(int speed) {
-        enemyBulletSpeed = speed;
-    }
-
+    
     public Rectangle getBulletRect() {
         return bulletRect;
     }
