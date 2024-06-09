@@ -46,15 +46,13 @@ public class GameScreen extends JPanel implements Runnable {
     private static Button originalButton;
     private static Button darkerButton;
 
-
     public GameScreen() {
-
 
         player = new Player("./res/player/player.png", keyHandler);
         originalButton = new Button("./res/button/originalButton.png", 1);
         darkerButton = new Button("./res/button/darkerButton.png", 1);
         mouseHandler = new MouseHandler(this, originalButton);
-        mouseMotionHandler = new MouseMotionHandler(originalButton,darkerButton);
+        mouseMotionHandler = new MouseMotionHandler(originalButton, darkerButton);
 
         setUpGameScreen();
 
@@ -108,7 +106,6 @@ public class GameScreen extends JPanel implements Runnable {
         this.removeMouseListener(mouseHandler);
         Enemy.resetTimer();
         MouseMotionHandler.setButton(originalButton);
-        
     }
 
     private void addAllEnemy3() {
@@ -236,7 +233,7 @@ public class GameScreen extends JPanel implements Runnable {
                     Rectangle enemyBodyPart = rectangleIterator.next();
                     if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
                         Enemy.getEnemyList().remove(enemy);
-                        player.setBullet(null);
+                        Player.setBullet(null);
                         Entity.playSound("./res/explosion/sound/explosion.wav");
                         createExplosion(enemy.getX(), enemy.getY(), enemyDeadExplosion);
                         if (Enemy.getEnemyList().isEmpty()) {
@@ -309,7 +306,7 @@ public class GameScreen extends JPanel implements Runnable {
             player.getBullet().render(g2);
         }
 
-          //ENEMY BULLETS
+        //ENEMY BULLETS
         Iterator<Bullet> bulletIterator = Enemy.getEnemyBullets().iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
@@ -357,14 +354,10 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     public static Player getPlayer() {
-        {
-            return player;
-        }
+        return player;
     }
-
 
     public static int getWIDTH() {
         return WIDTH;
     }
-
 }

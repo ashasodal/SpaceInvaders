@@ -68,7 +68,7 @@ public class Player extends Entity {
     @Override
     public void update() {
         if (handler.isLeft()) {
-            if(getX() <= -(GameScreen.getTileSize()/2)) {
+            if (getX() <= -(GameScreen.getTileSize()/2)) {
                 return;
             }
             this.setLocation(this.getX() - this.xSpeed, this.getY());
@@ -78,7 +78,7 @@ public class Player extends Entity {
             }
         }
         if (handler.isRight()) {
-            if(getX() >= (GameScreen.getWIDTH() - GameScreen.getTileSize()) + (GameScreen.getTileSize()/2)) {
+            if (getX() >= (GameScreen.getWIDTH() - GameScreen.getTileSize()) + (GameScreen.getTileSize() / 2)) {
                 return;
             }
             this.setLocation(this.getX() + this.xSpeed, this.getY());
@@ -87,7 +87,6 @@ public class Player extends Entity {
                 rect.x += this.xSpeed;
             }
         }
-
     }
 
     public void createBullet() {
