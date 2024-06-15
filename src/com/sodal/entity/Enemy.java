@@ -1,7 +1,6 @@
 package com.sodal.entity;
 
 import com.sodal.gui.GameScreen;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,12 +43,9 @@ public class Enemy extends Entity {
         }
     }
 
-
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
-
-
     }
 
     public static java.util.List<Enemy> getEnemyList() {
@@ -68,7 +64,6 @@ public class Enemy extends Entity {
         return rectangleList;
     }
 
-
     //32 pixels.
     public void createBullet() {
         bullet = new Bullet("./res/alien/bullet/bullet.png", 2);
@@ -81,7 +76,6 @@ public class Enemy extends Entity {
         else if (imagePath.equals("./res/alien/alien3.png")) {
             bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 6);
         }
-
         bullet.setBulletRect(new Rectangle(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight()));
     }
 
@@ -113,7 +107,6 @@ public class Enemy extends Entity {
         }
     }
 
-
     public static List<Bullet> getEnemyBullets() {
         return enemyBullets;
     }
@@ -123,13 +116,7 @@ public class Enemy extends Entity {
         return bullet;
     }
 
-
     public static void resetTimer() {
         timer = 0;
-    }
-
-
-    public List<Rectangle> getRectangleList() {
-        return rectangleList;
     }
 }

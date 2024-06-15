@@ -16,9 +16,7 @@ public abstract class Entity {
     private int width;
     private int height;
 
-
     public Entity(String imagePath, double scale) {
-
         this.scale = scale;
         try {
             Image image = ImageIO.read(new File(imagePath));
@@ -32,7 +30,6 @@ public abstract class Entity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void createBufferImage(String imagePath) {
@@ -54,21 +51,17 @@ public abstract class Entity {
 
     public abstract void update();
 
-
     public BufferedImage getBufferedImage() {
         return bufferedImage;
     }
-
 
     public int getY() {
         return y;
     }
 
-
     public int getX() {
         return x;
     }
-
 
     public int getWidth() {
         return width;
@@ -78,16 +71,9 @@ public abstract class Entity {
         return scale;
     }
 
-
     public int getTileSize() {
         return (int) scale * originalTileSize;
     }
-
-
-    public void setScale(int scale) {
-        this.scale = scale;
-    }
-
 
     public void setLocation(int x, int y) {
         this.x = x;
@@ -114,14 +100,7 @@ public abstract class Entity {
         this.y = y;
     }
 
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public static void playSound(String filePath) {
-
-
         File file = new File(filePath);
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
@@ -132,5 +111,4 @@ public abstract class Entity {
             e.printStackTrace();
         }
     }
-
 }

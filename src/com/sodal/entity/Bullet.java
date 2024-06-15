@@ -1,17 +1,11 @@
 package com.sodal.entity;
 
-import com.sodal.gui.GameScreen;
-
 import java.awt.*;
 
 public class Bullet extends Entity {
-
     private int speed = 6;
-
     private static int enemyBulletSpeed = 4;
-
     private Rectangle bulletRect;
-
     private String imagePath;
 
     public Bullet(String imagePath, double scale) {
@@ -48,7 +42,6 @@ public class Bullet extends Entity {
     public void setBulletRect(Rectangle bulletRect) {
         this.bulletRect = bulletRect;
     }
-
 
     public Rectangle getBulletRect() {
         return bulletRect;

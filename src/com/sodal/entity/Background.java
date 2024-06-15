@@ -1,7 +1,6 @@
 package com.sodal.entity;
 
 import com.sodal.gui.GameScreen;
-
 import java.awt.*;
 
 public class Background extends Entity {

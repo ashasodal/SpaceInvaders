@@ -1,16 +1,12 @@
 package com.sodal.gui;
-
 import com.sodal.entity.*;
 import com.sodal.entity.Button;
 import com.sodal.handler.KeyHandler;
 import com.sodal.handler.MouseHandler;
 import com.sodal.handler.MouseMotionHandler;
-
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
 
 public class GameScreen extends JPanel implements Runnable {
 
@@ -48,7 +44,6 @@ public class GameScreen extends JPanel implements Runnable {
     private static Button darkerButton;
 
     public GameScreen() {
-
         player = new Player("./res/player/player.png", keyHandler);
         originalButton = new Button("./res/button/originalButton.png", 1);
         darkerButton = new Button("./res/button/darkerButton.png", 1);
@@ -118,11 +113,9 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void addEnemy1(int x, int y) {
-
         Enemy enemy = new Enemy("./res/alien/alien1.png");
         enemy.setLocation(x, y);
         Enemy.getEnemyList().add(enemy);
-        //starting to the left all the way to the right.
 
         // whole left foot
         Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 36, 3, 6);
@@ -134,11 +127,9 @@ public class GameScreen extends JPanel implements Runnable {
         rect = new Rectangle(enemy.getX() + 18, enemy.getY() + 36, 3, 6);
         enemy.setRectangleList(rect);
 
-
         //stomach
         rect = new Rectangle(enemy.getX() + 21, enemy.getY() + 33, 6, 3);
         enemy.setRectangleList(rect);
-
 
         // whole right foot
         rect = new Rectangle(enemy.getX() + 27, enemy.getY() + 36, 3, 6);
@@ -213,7 +204,6 @@ public class GameScreen extends JPanel implements Runnable {
         Enemy.resetTimer();
         MouseMotionHandler.setButton(originalButton);
     }
-
 
     //game loop.
     @Override
@@ -395,15 +385,6 @@ public class GameScreen extends JPanel implements Runnable {
             playerDeadExplosion[i].render(g2);
             enemyBulletExplosion[i].render(g2);
         }
-
-
-      /*  g2.setColor(Color.yellow);
-        for (Enemy enemy : Enemy.getEnemyList()) {
-            for (Rectangle rect : enemy.getRectangleList()) {
-                g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
-            }
-
-        }*/
 
         //RESTART BUTTON.
         MouseMotionHandler.getButton().render(g2);

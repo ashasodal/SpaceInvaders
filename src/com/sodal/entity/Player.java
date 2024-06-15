@@ -2,18 +2,15 @@ package com.sodal.entity;
 
 import com.sodal.gui.GameScreen;
 import com.sodal.handler.KeyHandler;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Entity {
-
     private int xSpeed;
     private KeyHandler handler;
     private static Bullet bullet;
     private int lives = 3;
-
     private List<Rectangle> playerRectangles = new ArrayList<>();
 
     public Player(String imagePath, KeyHandler handler) {
@@ -23,7 +20,6 @@ public class Player extends Entity {
         this.setLocation(GameScreen.getTileSize() * 7, GameScreen.getTileSize() * 14);
         addAllRectangles();
     }
-
 
     public void addAllRectangles() {
         int xPixels = 7;
@@ -96,13 +92,11 @@ public class Player extends Entity {
             Rectangle bulletRect = new Rectangle(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
             bullet.setBulletRect(bulletRect);
             Entity.playSound("./res/player/sound/laser.wav");
-
         }
     }
 
     @Override
     public void render(Graphics2D g2) {
-
         if (!GameScreen.getGameOver()) {
             g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
             //health bar
@@ -115,56 +109,40 @@ public class Player extends Entity {
             } else if (lives == 0) {
                 zeroDamage(g2, Color.RED);
             }
-
         }
     }
-
 
     private void zeroDamage(Graphics2D g2, Color color) {
         g2.setColor(color);
         g2.fillRect(this.getX(), this.getY() + GameScreen.getTileSize(), GameScreen.getTileSize(), 16);
     }
-
     private void oneDamage(Graphics2D g2) {
         zeroDamage(g2, Color.GREEN);
         g2.setColor(Color.RED);
         g2.fillRect(this.getX() + (16 * 2), this.getY() + GameScreen.getTileSize(), 16, 16);
     }
-
     private void twoDamage(Graphics2D g2) {
         oneDamage(g2);
         g2.setColor(Color.RED);
         g2.fillRect(this.getX() + 16, this.getY() + GameScreen.getTileSize(), 16, 16);
     }
 
-
     public Bullet getBullet() {
         return bullet;
     }
-
     public static void setBullet(Bullet bull) {
         bullet = bull;
     }
-
-    public KeyHandler getHandler() {
-        return handler;
-    }
-
     public List<Rectangle> getPlayerRectangles() {
         return playerRectangles;
     }
-
     public void setXSpeed(int speed) {
         xSpeed = speed;
     }
-
-
     public void setLives(int lives) {
         this.lives = lives;
     }
-
     public int getLives() {
         return lives;
     }
-
 }

@@ -11,15 +11,12 @@ import java.awt.event.MouseListener;
 public class MouseHandler extends MouseAdapter {
 
     private Button button;
-
     private GameScreen screen;
-
 
     public MouseHandler(GameScreen screen, Button button) {
       this.button = button;
       this.screen = screen;
     }
-
 
     public void mousePressed(MouseEvent e) {
         Point point = e.getPoint();
@@ -27,7 +24,4 @@ public class MouseHandler extends MouseAdapter {
             screen.restartGame();
         }
     }
-
-
-
 }
