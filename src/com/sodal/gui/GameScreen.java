@@ -8,6 +8,7 @@ import com.sodal.handler.MouseMotionHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
@@ -96,7 +97,62 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void addAllEnemies() {
-        addAllEnemy3();
+        //  addAllEnemy3();
+        addAllEnemy1();
+    }
+
+    private void addAllEnemy1() {
+
+        int x = tileSize * 3 - (tileSize / 2);
+        int y = tileSize * 9;
+
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 1; j++) {
+                Enemy enemy = new Enemy("./res/alien/alien1.png");
+                enemy.setLocation(x, y);
+                Enemy.getEnemyList().add(enemy);
+                //starting to the left all the way to the right.
+
+                //enemy1 left foot
+                Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 36, 3, 6);
+                enemy.setRectangleList(rect);
+
+
+                //enemy1 rect closest to the left foot.
+                rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 36, 6, 3);
+                enemy.setRectangleList(rect);
+
+
+                //second left foot
+                rect = new Rectangle(enemy.getX() + 18, enemy.getY() + 36, 3, 6);
+                enemy.setRectangleList(rect);
+
+
+                //stomach
+                rect = new Rectangle(enemy.getX() + 21, enemy.getY() + 33, 6, 3);
+                enemy.setRectangleList(rect);
+
+
+                //right foot
+                rect = new Rectangle(enemy.getX() + 27, enemy.getY() + 36, 3, 6);
+                enemy.setRectangleList(rect);
+
+
+                //the rectangle between the right feet.
+                rect = new Rectangle(enemy.getX() + 30, enemy.getY() + 36, 6, 3);
+                enemy.setRectangleList(rect);
+
+
+                // Even further right foot
+                rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 36, 3, 6);
+                enemy.setRectangleList(rect);
+
+                x += tileSize + (tileSize / 2);
+            }
+            y += tileSize + (tileSize / 2);
+            x = tileSize * 3 - (tileSize / 2);
+        }
+
     }
 
     public void restartGame() {
@@ -268,7 +324,7 @@ public class GameScreen extends JPanel implements Runnable {
                 Enemy.getEnemyList().get(i).update();
             }
         }
-        Enemy.enemiesShoot();
+        // Enemy.enemiesShoot();
     }
 
     private void createExplosion(int x, int y, Explosion[] explosion) {
@@ -325,6 +381,15 @@ public class GameScreen extends JPanel implements Runnable {
             enemyDeadExplosion[i].render(g2);
             playerDeadExplosion[i].render(g2);
             enemyBulletExplosion[i].render(g2);
+        }
+
+
+        g2.setColor(Color.pink);
+        for (Enemy enemy : Enemy.getEnemyList()) {
+            for (Rectangle rect : enemy.getRectangleList()) {
+                g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
+            }
+
         }
 
         //RESTART BUTTON.

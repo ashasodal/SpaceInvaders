@@ -30,7 +30,7 @@ public class Enemy extends Entity {
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
         }
-        updateXPos();
+       // updateXPos();
     }
 
     private void updateXPos() {
@@ -117,7 +117,8 @@ public class Enemy extends Entity {
         timer = 0;
    }
 
-   public static int getTimer() {
-        return timer;
+
+   public List<Rectangle> getRectangleList() {
+        return rectangleList;
    }
 }
