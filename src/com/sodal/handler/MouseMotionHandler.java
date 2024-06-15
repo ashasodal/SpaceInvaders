@@ -28,12 +28,10 @@ public class MouseMotionHandler extends  MouseMotionAdapter {
     public void mouseMoved(MouseEvent e) {
         Point point = e.getPoint();
         if(GameScreen.getGameOver() && button != darkerButton && point.x >= button.getX() && point.x <= button.getX() + button.getWidth() && point.y >= button.getY() && point.y <= button.getY() + button.getHeight()) {
-            System.out.println("dark button");
             button = darkerButton;
         }
         else if( GameScreen.getGameOver() && button != originalButton && !(point.x >= button.getX() && point.x <= button.getX() + button.getWidth() && point.y >= button.getY() && point.y <= button.getY() + button.getHeight())) {
             button = originalButton;
-            System.out.println("original button");
         }
     }
 

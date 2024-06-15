@@ -97,61 +97,66 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void addAllEnemies() {
-        //  addAllEnemy3();
-        addAllEnemy1();
-    }
 
-    private void addAllEnemy1() {
-
+        Random rand = new Random();
         int x = tileSize * 3 - (tileSize / 2);
-        int y = tileSize * 9;
-
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 1; j++) {
-                Enemy enemy = new Enemy("./res/alien/alien1.png");
-                enemy.setLocation(x, y);
-                Enemy.getEnemyList().add(enemy);
-                //starting to the left all the way to the right.
-
-                //enemy1 left foot
-                Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 36, 3, 6);
-                enemy.setRectangleList(rect);
-
-
-                //enemy1 rect closest to the left foot.
-                rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 36, 6, 3);
-                enemy.setRectangleList(rect);
-
-
-                //second left foot
-                rect = new Rectangle(enemy.getX() + 18, enemy.getY() + 36, 3, 6);
-                enemy.setRectangleList(rect);
-
-
-                //stomach
-                rect = new Rectangle(enemy.getX() + 21, enemy.getY() + 33, 6, 3);
-                enemy.setRectangleList(rect);
-
-
-                //right foot
-                rect = new Rectangle(enemy.getX() + 27, enemy.getY() + 36, 3, 6);
-                enemy.setRectangleList(rect);
-
-
-                //the rectangle between the right feet.
-                rect = new Rectangle(enemy.getX() + 30, enemy.getY() + 36, 6, 3);
-                enemy.setRectangleList(rect);
-
-
-                // Even further right foot
-                rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 36, 3, 6);
-                enemy.setRectangleList(rect);
-
+        int y = tileSize * 2;
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                int randIndex = rand.nextInt(2);
+                if (randIndex == 0) {
+                    addEnemy1(x, y);
+                } else {
+                    addEnemy3(x, y);
+                }
                 x += tileSize + (tileSize / 2);
             }
             y += tileSize + (tileSize / 2);
             x = tileSize * 3 - (tileSize / 2);
         }
+
+    }
+
+    private void addEnemy1(int x, int y) {
+
+        Enemy enemy = new Enemy("./res/alien/alien1.png");
+        enemy.setLocation(x, y);
+        Enemy.getEnemyList().add(enemy);
+        //starting to the left all the way to the right.
+
+        //enemy1 left foot
+        Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 36, 3, 6);
+        enemy.setRectangleList(rect);
+
+
+        //enemy1 rect closest to the left foot.
+        rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 36, 6, 3);
+        enemy.setRectangleList(rect);
+
+
+        //second left foot
+        rect = new Rectangle(enemy.getX() + 18, enemy.getY() + 36, 3, 6);
+        enemy.setRectangleList(rect);
+
+
+        //stomach
+        rect = new Rectangle(enemy.getX() + 21, enemy.getY() + 33, 6, 3);
+        enemy.setRectangleList(rect);
+
+
+        //right foot
+        rect = new Rectangle(enemy.getX() + 27, enemy.getY() + 36, 3, 6);
+        enemy.setRectangleList(rect);
+
+
+        //the rectangle between the right feet.
+        rect = new Rectangle(enemy.getX() + 30, enemy.getY() + 36, 6, 3);
+        enemy.setRectangleList(rect);
+
+
+        // Even further right foot
+        rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 36, 3, 6);
+        enemy.setRectangleList(rect);
 
     }
 
@@ -164,42 +169,32 @@ public class GameScreen extends JPanel implements Runnable {
         MouseMotionHandler.setButton(originalButton);
     }
 
-    private void addAllEnemy3() {
+    private void addEnemy3(int x, int y) {
 
-        int x = tileSize * 3 - (tileSize / 2);
-        int y = tileSize * 2;
+        Enemy enemy = new Enemy("./res/alien/alien3.png");
+        enemy.setLocation(x, y);
+        Enemy.getEnemyList().add(enemy);
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 7; j++) {
-                Enemy enemy = new Enemy("./res/alien/alien3.png");
-                enemy.setLocation(x, y);
-                Enemy.getEnemyList().add(enemy);
+        //enemy 3 head.
+        Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY(), 30, 24);
+        enemy.setRectangleList(rect);
 
-                //enemy 3 head.
-                Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY(), 30, 24);
-                enemy.setRectangleList(rect);
+        //enemy 3 neck.
+        rect = new Rectangle(enemy.getX() + 15, enemy.getY() + 24, 18, 3);
+        enemy.setRectangleList(rect);
 
-                //enemy 3 neck.
-                rect = new Rectangle(enemy.getX() + 15, enemy.getY() + 24, 18, 3);
-                enemy.setRectangleList(rect);
+        //enemy 3 stomach
+        rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
+        enemy.setRectangleList(rect);
 
-                //enemy 3 stomach
-                rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
-                enemy.setRectangleList(rect);
+        //enemy 3 left hand
+        rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
+        enemy.setRectangleList(rect);
 
-                //enemy 3 left hand
-                rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
-                enemy.setRectangleList(rect);
+        //enemy 3 right hand
+        rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
+        enemy.setRectangleList(rect);
 
-                //enemy 3 right hand
-                rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
-                enemy.setRectangleList(rect);
-
-                x += tileSize + (tileSize / 2);
-            }
-            y += tileSize + (tileSize / 2);
-            x = tileSize * 3 - (tileSize / 2);
-        }
     }
 
     //game loop.
@@ -324,7 +319,7 @@ public class GameScreen extends JPanel implements Runnable {
                 Enemy.getEnemyList().get(i).update();
             }
         }
-        // Enemy.enemiesShoot();
+        Enemy.enemiesShoot();
     }
 
     private void createExplosion(int x, int y, Explosion[] explosion) {
@@ -384,13 +379,13 @@ public class GameScreen extends JPanel implements Runnable {
         }
 
 
-        g2.setColor(Color.pink);
+      /*  g2.setColor(Color.pink);
         for (Enemy enemy : Enemy.getEnemyList()) {
             for (Rectangle rect : enemy.getRectangleList()) {
                 g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
             }
 
-        }
+        }*/
 
         //RESTART BUTTON.
         MouseMotionHandler.getButton().render(g2);

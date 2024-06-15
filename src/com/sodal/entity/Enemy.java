@@ -17,8 +17,11 @@ public class Enemy extends Entity {
     private static int timer;
     private static List<Bullet> enemyBullets = new ArrayList<>();
 
+    private String imagePath;
+
     public Enemy(String imagePath) {
         super(imagePath, 3);
+        this.imagePath = imagePath;
         xSpeed = 1;
     }
 
@@ -30,7 +33,7 @@ public class Enemy extends Entity {
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
         }
-       // updateXPos();
+         updateXPos();
     }
 
     private void updateXPos() {
@@ -40,7 +43,6 @@ public class Enemy extends Entity {
             enemyPart.x += xSpeed;
         }
     }
-
 
 
     @Override
@@ -70,7 +72,14 @@ public class Enemy extends Entity {
     //32 pixels.
     public void createBullet() {
         bullet = new Bullet("./res/alien/bullet/bullet.png", 2);
-        bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 6);
+        if (imagePath.equals("./res/alien/alien1.png")) {
+            bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 12);
+        }
+
+        else if (imagePath.equals("./res/alien/alien3.png")) {
+            bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 6);
+        }
+
         bullet.setBulletRect(new Rectangle(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight()));
     }
 
@@ -113,12 +122,12 @@ public class Enemy extends Entity {
     }
 
 
-   public static void resetTimer() {
+    public static void resetTimer() {
         timer = 0;
-   }
+    }
 
 
-   public List<Rectangle> getRectangleList() {
+    public List<Rectangle> getRectangleList() {
         return rectangleList;
-   }
+    }
 }
