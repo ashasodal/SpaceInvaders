@@ -33,7 +33,7 @@ public class Enemy extends Entity {
         if (this.getX() == (-1 * this.getSCALE() * this.getSCALE()) && xSpeed < 0) {
             xSpeed = -1 * xSpeed;
         }
-        // updateXPos();
+         updateXPos();
     }
 
     private void updateXPos() {
@@ -75,7 +75,9 @@ public class Enemy extends Entity {
         if (imagePath.equals("./res/alien/alien1.png")) {
             bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 12);
         }
-
+        else if(imagePath.equals("./res/alien/alien2.png")) {
+            bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 12);
+        }
         else if (imagePath.equals("./res/alien/alien3.png")) {
             bullet.setLocation(getX() + (getTileSize() - bullet.getWidth()) / 2, getY() + getTileSize() - 6);
         }

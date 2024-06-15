@@ -35,7 +35,7 @@ public class Bullet extends Entity {
             bulletRect.setLocation(getX(), getY());
 
             if (getY() <= 0) {
-               Player.setBullet(null);
+                Player.setBullet(null);
             }
         }
         //enemy bullet.
