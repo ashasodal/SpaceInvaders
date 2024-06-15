@@ -124,12 +124,12 @@ public class GameScreen extends JPanel implements Runnable {
         Enemy.getEnemyList().add(enemy);
         //starting to the left all the way to the right.
 
-        //enemy1 left foot
+        // left foot
         Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 36, 3, 6);
         enemy.setRectangleList(rect);
 
 
-        //enemy1 rect closest to the left foot.
+        // rect closest to the left foot.
         rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 36, 6, 3);
         enemy.setRectangleList(rect);
 
@@ -149,12 +149,12 @@ public class GameScreen extends JPanel implements Runnable {
         enemy.setRectangleList(rect);
 
 
-        //the rectangle between the right feet.
+        // rectangle between the right feet.
         rect = new Rectangle(enemy.getX() + 30, enemy.getY() + 36, 6, 3);
         enemy.setRectangleList(rect);
 
 
-        // Even further right foot
+        // even further right foot
         rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 36, 3, 6);
         enemy.setRectangleList(rect);
 
@@ -175,23 +175,16 @@ public class GameScreen extends JPanel implements Runnable {
         enemy.setLocation(x, y);
         Enemy.getEnemyList().add(enemy);
 
-        //enemy 3 head.
-        Rectangle rect = new Rectangle(enemy.getX() + 9, enemy.getY(), 30, 24);
+
+        // stomach
+        Rectangle rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 39, 24, 3);
         enemy.setRectangleList(rect);
 
-        //enemy 3 neck.
-        rect = new Rectangle(enemy.getX() + 15, enemy.getY() + 24, 18, 3);
-        enemy.setRectangleList(rect);
-
-        //enemy 3 stomach
-        rect = new Rectangle(enemy.getX() + 12, enemy.getY() + 27, 24, 15);
-        enemy.setRectangleList(rect);
-
-        //enemy 3 left hand
+        // left hand
         rect = new Rectangle(enemy.getX() + 9, enemy.getY() + 30, 3, 3);
         enemy.setRectangleList(rect);
 
-        //enemy 3 right hand
+        // right hand
         rect = new Rectangle(enemy.getX() + 36, enemy.getY() + 30, 3, 3);
         enemy.setRectangleList(rect);
 
@@ -319,7 +312,7 @@ public class GameScreen extends JPanel implements Runnable {
                 Enemy.getEnemyList().get(i).update();
             }
         }
-        Enemy.enemiesShoot();
+        // Enemy.enemiesShoot();
     }
 
     private void createExplosion(int x, int y, Explosion[] explosion) {
@@ -379,13 +372,13 @@ public class GameScreen extends JPanel implements Runnable {
         }
 
 
-      /*  g2.setColor(Color.pink);
+        g2.setColor(Color.pink);
         for (Enemy enemy : Enemy.getEnemyList()) {
             for (Rectangle rect : enemy.getRectangleList()) {
                 g2.fillRect(rect.x, rect.y, (int) rect.getWidth(), (int) rect.getHeight());
             }
 
-        }*/
+        }
 
         //RESTART BUTTON.
         MouseMotionHandler.getButton().render(g2);
