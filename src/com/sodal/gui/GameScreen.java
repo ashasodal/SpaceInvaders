@@ -4,6 +4,8 @@ import com.sodal.entity.Button;
 import com.sodal.handler.KeyHandler;
 import com.sodal.handler.MouseHandler;
 import com.sodal.handler.MouseMotionHandler;
+
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -59,6 +61,8 @@ public class GameScreen extends JPanel implements Runnable {
 
         gameLoop = new Thread(this);
         gameLoop.start();
+
+        Entity.playSound("./res/background/sound/music.wav", Clip.LOOP_CONTINUOUSLY);
     }
 
     private void setUpGameScreen() {
@@ -268,12 +272,12 @@ public class GameScreen extends JPanel implements Runnable {
                     player.setLives(player.getLives() - 1);
                     bulletIterator.remove();
                     if (player.getLives() == 0) {
-                        Entity.playSound("./res/explosion/sound/explosion.wav");
+                        Entity.playSound("./res/explosion/sound/explosion.wav",0);
                         createExplosion(player.getX() - tileSize, player.getY() - tileSize, playerDeadExplosion);
                         gameOver();
                         return;
                     } else {
-                        Entity.playSound("./res/explosion/sound/explosion.wav");
+                        Entity.playSound("./res/explosion/sound/explosion.wav",0);
                         createExplosion(bullet.getX(), bullet.getY(), enemyBulletExplosion);
                         break;
                     }
@@ -293,7 +297,7 @@ public class GameScreen extends JPanel implements Runnable {
                     if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
                         Enemy.getEnemyList().remove(enemy);
                         Player.setBullet(null);
-                        Entity.playSound("./res/explosion/sound/explosion.wav");
+                        Entity.playSound("./res/explosion/sound/explosion.wav",0);
                         createExplosion(enemy.getX(), enemy.getY(), enemyDeadExplosion);
                         if (Enemy.getEnemyList().isEmpty()) {
                             gameOver();

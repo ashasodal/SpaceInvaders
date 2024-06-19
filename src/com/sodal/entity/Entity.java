@@ -100,15 +100,17 @@ public abstract class Entity {
         this.y = y;
     }
 
-    public static void playSound(String filePath) {
+    public static void playSound(String filePath, int count) {
         File file = new File(filePath);
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
-            clip.start();
+            clip.loop(count);
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
         }
     }
+
+
 }
