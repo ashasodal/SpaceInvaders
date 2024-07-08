@@ -10,7 +10,7 @@ The player controls a spaceship to shoot down waves of invading aliens, similar 
 * Avoid Alien Shots: Move your spaceship to avoid being hit by shots fired by the aliens.
 * Game Over: The game ends when the spaceship is hit by the aliens three times or when all aliens are killed.
 
-  ## Screenshots
+## Screenshots
 
   
 <img width="716" alt="Screenshot 2024-07-09 at 00 08 11" src="https://github.com/ashasodal/SpaceInvaders/assets/104523607/51f5f97b-c184-416a-b8b8-9d0f41678912">
