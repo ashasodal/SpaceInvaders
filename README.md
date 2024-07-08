@@ -19,3 +19,12 @@ The player controls a spaceship to shoot down waves of invading aliens, similar 
 
 <img width="716" alt="Screenshot 2024-07-09 at 00 08 34" src="https://github.com/ashasodal/SpaceInvaders/assets/104523607/f1b1258e-6f69-451e-873b-0a780b5a21e2">
 
+## installation 🔧
+
+* Java 8+ required.
+
+* Clone the repository.
+
+* Navigate to the **** folder.
+
+* Type the following command: ****
