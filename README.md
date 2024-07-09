@@ -25,6 +25,6 @@ The player controls a spaceship to shoot down waves of invading aliens, similar 
 
 * Clone the repository.
 
-* Navigate to the **** folder.
+* Navigate to the **SpaceInvaders** folder.
 
-* Type the following command: ****
+* Type the following command: **java -cp bin com.sodal.main.Main**
