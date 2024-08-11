@@ -98,7 +98,9 @@ public class Player extends Entity {
     @Override
     public void render(Graphics2D g2) {
         if (!GameScreen.getGameOver()) {
-            g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
+            if(lives > 0) {
+                g2.drawImage(this.getBufferedImage(), this.getX(), this.getY(), null);
+            }
             //health bar
             if (lives == 3) {
                 zeroDamage(g2, Color.GREEN);
@@ -106,8 +108,6 @@ public class Player extends Entity {
                 oneDamage(g2);
             } else if (lives == 1) {
                 twoDamage(g2);
-            } else if (lives == 0) {
-                zeroDamage(g2, Color.RED);
             }
         }
     }

@@ -15,7 +15,7 @@ public class KeyHandler extends KeyAdapter {
         if (keyCode == KeyEvent.VK_LEFT) left = true;
         if (keyCode == KeyEvent.VK_RIGHT) right = true;
         if (keyCode == KeyEvent.VK_SPACE){
-            if(GameScreen.getPlayer().getBullet() == null && !GameScreen.getGameOver()) {
+            if( GameScreen.getPlayer().getLives() != 0 && GameScreen.getPlayer().getBullet() == null && !GameScreen.getGameOver()) {
                 GameScreen.getPlayer().createBullet();
             }
         }

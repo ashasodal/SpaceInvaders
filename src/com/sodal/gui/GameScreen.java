@@ -1,4 +1,5 @@
 package com.sodal.gui;
+
 import com.sodal.entity.*;
 import com.sodal.entity.Button;
 import com.sodal.handler.KeyHandler;
@@ -22,7 +23,7 @@ public class GameScreen extends JPanel implements Runnable {
     private MouseMotionHandler mouseMotionHandler;
 
     //GAME OVER FLAG.
-    private static boolean gameOver;
+    private static volatile boolean gameOver;
 
     //GAME LOOP.
     private boolean isRunning;
@@ -31,6 +32,7 @@ public class GameScreen extends JPanel implements Runnable {
 
     //PLAYER
     private static Player player;
+    private static boolean playerDead;
 
     //BACKGROUND.
     private Background background;
@@ -207,6 +209,7 @@ public class GameScreen extends JPanel implements Runnable {
         this.removeMouseListener(mouseHandler);
         Enemy.resetTimer();
         MouseMotionHandler.setButton(originalButton);
+        playerDead = false;
     }
 
     //game loop.
@@ -269,15 +272,18 @@ public class GameScreen extends JPanel implements Runnable {
             while (playerRectangles.hasNext()) {
                 Rectangle playerRect = playerRectangles.next();
                 if (bulletRect.intersects(playerRect)) {
-                    player.setLives(player.getLives() - 1);
-                    bulletIterator.remove();
-                    if (player.getLives() == 0) {
-                        Entity.playSound("./res/explosion/sound/explosion.wav",0);
+                    if (player.getLives() > 0) {
+                        player.setLives(player.getLives() - 1);
+                        bulletIterator.remove();
+                    }
+                    if (!playerDead && player.getLives() == 0) {
+                        Entity.playSound("./res/explosion/sound/explosion.wav", 0);
                         createExplosion(player.getX() - tileSize, player.getY() - tileSize, playerDeadExplosion);
+                        playerDead = true;
                         gameOver();
                         return;
-                    } else {
-                        Entity.playSound("./res/explosion/sound/explosion.wav",0);
+                    } else if (player.getLives() > 0) {
+                        Entity.playSound("./res/explosion/sound/explosion.wav", 0);
                         createExplosion(bullet.getX(), bullet.getY(), enemyBulletExplosion);
                         break;
                     }
@@ -297,9 +303,10 @@ public class GameScreen extends JPanel implements Runnable {
                     if (enemyBodyPart.intersects(player.getBullet().getBulletRect())) {
                         Enemy.getEnemyList().remove(enemy);
                         Player.setBullet(null);
-                        Entity.playSound("./res/explosion/sound/explosion.wav",0);
+                        Entity.playSound("./res/explosion/sound/explosion.wav", 0);
                         createExplosion(enemy.getX(), enemy.getY(), enemyDeadExplosion);
                         if (Enemy.getEnemyList().isEmpty()) {
+                            Enemy.getEnemyBullets().clear();
                             gameOver();
                         }
                         return;
@@ -348,12 +355,16 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     private void gameOver() {
-        Enemy.getEnemyList().clear();
-        Enemy.getEnemyBullets().clear();
-        this.addMouseListener(mouseHandler);
-        player.setXSpeed(0);
-        Player.setBullet(null);
-        gameOver = true;
+        GameScreen gameScreen = this;
+        new Thread(() -> {
+            sleep(2000);
+                Enemy.getEnemyList().clear();
+                Enemy.getEnemyBullets().clear();
+                gameScreen.addMouseListener(mouseHandler);
+                player.setXSpeed(0);
+                Player.setBullet(null);
+                gameOver = true;
+        }).start();
     }
 
     protected void paintComponent(Graphics g) {
